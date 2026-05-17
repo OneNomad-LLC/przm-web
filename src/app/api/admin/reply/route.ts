@@ -18,7 +18,7 @@ import { getSubmission, recordReply, setStatus } from '@/lib/submissions'
 
 export const runtime = 'nodejs'
 
-const FROM_ADDRESS = 'przm <hello@send.przm.sh>'
+const FROM_ADDRESS = 'przm <hello@przm.sh>'
 const REPLY_TO_DOMAIN = 'agent.przm.sh'
 
 /**

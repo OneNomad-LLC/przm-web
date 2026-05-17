@@ -24,7 +24,7 @@ import { sql, isDbConfigured } from '@/lib/db'
 
 export const runtime = 'nodejs'
 
-const FROM_ADDRESS = 'przm <hello@send.przm.sh>'
+const FROM_ADDRESS = 'przm <hello@przm.sh>'
 const NOTIFY_TO = 'hello@onenomad.dev'
 const REPLY_TO_DOMAIN = 'agent.przm.sh'
 
