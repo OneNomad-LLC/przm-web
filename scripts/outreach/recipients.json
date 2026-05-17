@@ -1,0 +1,162 @@
+{
+  "_note": "Outreach recipient database. Three plays: 'maintainer' (Play 1), 'charter' (Play 2), 'newsletter' (Play 3). Each recipient may have email=null if no public email exists — those need DM/contact-form outreach by the user manually. Verify name + company + funding stage are current before send. Last updated: 2026-05-17.",
+  "maintainer": [
+    {
+      "id": "crewai-joao",
+      "name": "João Moura",
+      "company": "CrewAI",
+      "framework": "CrewAI",
+      "email": null,
+      "contactNotes": "DM on X @joaomdmoura, or use crewai.com contact form. Most brand-conscious of the bunch; most likely to engage.",
+      "vars": {
+        "framework_lower": "CrewAI",
+        "framework_adapter_status": "v0.2 in flight; adapter scaffold pending review",
+        "specific_open": "Built and shipped przm in <3 weeks — CrewAI is the framework I think has the most to gain from a credible third-party number, and the most to lose from waiting.",
+        "scores_line": "(CrewAI adapter ships in v0.2 ~7-10 days; what's on the leaderboard today is baseline / AutoGen / gpt-5-mini / gpt-4o-mini)"
+      }
+    },
+    {
+      "id": "langchain-harrison",
+      "name": "Harrison Chase",
+      "company": "LangChain Inc.",
+      "framework": "LangGraph",
+      "email": "harrison@langchain.dev",
+      "contactNotes": "Public email on LangChain materials. Least likely to engage (LangChain has dealt with critical benchmarks before). Pitch as 'most-cited framework in agent literature, want adapter to be fair'.",
+      "vars": {
+        "framework_lower": "LangGraph",
+        "framework_adapter_status": "v0.2 in flight; LangGraph is on the next-up list given its citation share",
+        "specific_open": "LangGraph is the most-cited framework in published work on agent debate. That makes the fairness of our adapter implementation more important than for the others.",
+        "scores_line": "(LangGraph adapter ships in v0.2 ~7-10 days)"
+      }
+    },
+    {
+      "id": "openai-agents-ilan",
+      "name": "Ilan Bigio",
+      "company": "OpenAI",
+      "framework": "OpenAI Agents SDK",
+      "email": null,
+      "contactNotes": "DM on X @ibigio. OpenAI DX doesn't buy cert from third parties so SKIP the cert offer — frame as 'your number, your adapter, your feedback before we publish'.",
+      "vars": {
+        "framework_lower": "the OpenAI Agents SDK",
+        "framework_adapter_status": "Agents SDK adapter is v0.3 work; the closest thing in v0.1 is the baseline Anthropic adapter, which doesn't use a framework at all",
+        "specific_open": "I want to make sure the adapter we eventually run against the Agents SDK doesn't unfairly disadvantage your orchestration. Right now there's no adapter on the leaderboard — but when there is, it'd be useful to have your team's eyes on it first.",
+        "scores_line": "(no Agents SDK row on the leaderboard yet; v0.3)"
+      }
+    },
+    {
+      "id": "microsoft-agent-fw",
+      "name": "Microsoft Agent Framework team",
+      "company": "Microsoft",
+      "framework": "Microsoft Agent Framework",
+      "email": null,
+      "contactNotes": "No individual maintainer on README. Use Discord office hours per their COMMUNITY.md (aka.ms/agent-framework-discord). Acknowledge AutoGen is in maintenance mode.",
+      "vars": {
+        "framework_lower": "the Microsoft Agent Framework",
+        "framework_adapter_status": "Agent Framework adapter is v0.3 work. AutoGen (the predecessor in maintenance mode) IS on the v0.1 leaderboard already with the headline finding.",
+        "specific_open": "AutoGen's RoundRobinGroupChat is the v0.1 standout finding: same model as the baseline, 7.3× lower collapse rate. When the Agent Framework adapter lands, that pattern is worth re-testing under the new orchestration.",
+        "scores_line": "AutoGen on gpt-4o-mini: 83.3% correct, 13.3% collapse rate — vs hand-rolled baseline on the same model at 96.7% collapse"
+      }
+    },
+    {
+      "id": "autogen-community",
+      "name": "AutoGen community maintainers",
+      "company": "AutoGen (Microsoft, maintenance mode)",
+      "framework": "AutoGen",
+      "email": null,
+      "contactNotes": "Discord (aka.ms/autogen-discord). AutoGen IS on the v0.1 leaderboard already. Maintenance-mode community may engage sincerely. Tone: collaborative.",
+      "vars": {
+        "framework_lower": "AutoGen",
+        "framework_adapter_status": "AutoGen adapter shipped in v0.1 against the maintenance-mode 0.7.x release",
+        "specific_open": "Wanted to share the AutoGen numbers with the community before the public launch sequence kicks in — RoundRobinGroupChat ended up being the most convergence-resistant orchestration we tested.",
+        "scores_line": "AutoGen on gpt-4o-mini: 83.3% correct, 13.3% collapse rate, 0.0% sycophancy"
+      }
+    }
+  ],
+  "charter": [
+    {
+      "id": "mem0",
+      "name": "Mem0 team",
+      "company": "Mem0",
+      "email": null,
+      "contactNotes": "Need to look up DX/founders email on mem0.ai. Memory-axis cert: their pitch is memory recall — they're literally already on the memory benchmark.",
+      "vars": {
+        "specific_reason": "Mem0's memory-recall pitch deserves a third-party cert receipt, not a self-published number. The memory axis of przm already tracks you."
+      }
+    },
+    {
+      "id": "letta",
+      "name": "Letta team",
+      "company": "Letta",
+      "email": null,
+      "contactNotes": "Letta (formerly MemGPT). Look up founders email on letta.com.",
+      "vars": {
+        "specific_reason": "Letta competes on long-term memory + agent durability — both directly measured by przm. The signed receipt is something you can publish that customers can verify."
+      }
+    },
+    {
+      "id": "zep",
+      "name": "Zep team",
+      "company": "Zep",
+      "email": null,
+      "contactNotes": "YC W23. Look up founders email on getzep.com. Temporal-reasoning angle.",
+      "vars": {
+        "specific_reason": "LongMemEval-temporal is Zep's strongest axis on paper. A signed receipt makes that claim verifiable."
+      }
+    },
+    {
+      "id": "crewai-commercial",
+      "name": "CrewAI commercial team",
+      "company": "CrewAI / Crew Enterprise",
+      "email": null,
+      "contactNotes": "Same company as joaomdmoura but commercial side. Need to identify the right person (head of sales? VP of growth?). Use crewai.com contact form for now.",
+      "vars": {
+        "specific_reason": "Enterprise customers ask about agent reliability constantly. A signed convergence receipt is sales-side enablement you can cite in security questionnaires."
+      }
+    },
+    {
+      "id": "pinecone",
+      "name": "Pinecone DevRel",
+      "company": "Pinecone",
+      "email": null,
+      "contactNotes": "Series B. DevRel contact via pinecone.io. Their pitch is 'context for agents' — perfect angle.",
+      "vars": {
+        "specific_reason": "Pinecone's 'context for agents' positioning could use a third-party number that shows agents-on-Pinecone resist convergence collapse better than alternatives."
+      }
+    }
+  ],
+  "newsletter": [
+    {
+      "id": "interconnects-nathan",
+      "name": "Nathan Lambert",
+      "outlet": "Interconnects",
+      "email": "mail@interconnects.ai",
+      "contactNotes": "Best fit. Covers methodology rigor + benchmarks + post-training. Cite the two arXiv papers (2509.23055 and 2508.14918).",
+      "vars": {
+        "specific_open": "Long-time Interconnects reader; the rigor with which you cover benchmark integrity is exactly what I want stress-tested on przm's methodology page.",
+        "pitch_angle": "Convergence + sycophancy benchmarking for multi-agent systems, deterministic scoring, Ed25519 signed receipts, adversarial holdouts (planned)."
+      }
+    },
+    {
+      "id": "ai-tidbits",
+      "name": "Sahar Mor",
+      "outlet": "AI Tidbits",
+      "email": null,
+      "contactNotes": "LinkedIn DM. Newsletter format is weekly news roundup — pitch as event, not essay.",
+      "vars": {
+        "specific_open": "AI Tidbits covers AI engineering news weekly — przm just shipped v0.1 of an AI reliability benchmark suite that may be a fit for the next roundup.",
+        "pitch_angle": "Open source benchmark for multi-agent AI failure modes with signed receipts. Real finding: 7.3× collapse-rate difference from orchestration alone, same model."
+      }
+    },
+    {
+      "id": "pragmatic-engineer",
+      "name": "Gergely Orosz",
+      "outlet": "The Pragmatic Engineer",
+      "email": null,
+      "contactNotes": "pragmaticengineer.com newsletter pitch form. Long shot for v0.1 — better fit when we have an enterprise customer story.",
+      "vars": {
+        "specific_open": "Pragmatic Engineer covers engineering management decisions. przm gives AI engineering managers a third-party number to anchor framework-selection conversations.",
+        "pitch_angle": "How AI engineering teams choose between agent frameworks — and the data point nobody's measuring."
+      }
+    }
+  ]
+}

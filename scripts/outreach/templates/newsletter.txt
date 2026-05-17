@@ -1,0 +1,41 @@
+Subject: New AI reliability benchmark — multi-agent convergence with signed receipts
+
+Hi {{firstName}},
+
+{{specific_open}}
+
+przm.sh shipped v0.1 today: a vendor-neutral, deterministic, Ed25519-
+signed benchmark suite for AI reliability failure modes. Headline
+benchmark is multi-agent convergence + sycophancy.
+
+{{pitch_angle}}
+
+Specifics of what's on the leaderboard right now:
+- 30 hand-curated fixtures across 5 categories, every correct answer
+  verified against authoritative sources before commit.
+- 4 adapter configurations (baseline-Anthropic on Claude Haiku 4.5;
+  baseline-Azure on gpt-5-mini and gpt-4o-mini; AutoGen on gpt-4o-mini).
+- Pure-function scoring — no LLM in the grading loop.
+- Per-receipt Ed25519 signature + full per-round transcripts so
+  anyone can re-run and verify.
+- Methodology cites Peacemaker or Troublemaker (arXiv 2509.23055)
+  and Disentangling Drivers of LLM Social Conformity (arXiv 2508.14918).
+
+The most striking signed-receipt finding: same model (gpt-4o-mini),
+same scenarios, hand-rolled synchronous baseline produces 96.7%
+collapse rate while AutoGen's RoundRobinGroupChat produces 13.3%.
+The framework is a load-bearing reliability variable that goes
+unmeasured because the eval companies that could measure it sell to
+the same AI app builders whose frameworks would be benchmarked.
+
+Methodology:  https://przm.sh/methodology#convergence
+Leaderboard:  https://przm.sh/leaderboard
+Repo:         https://github.com/OneNomad-LLC/przm-bench (Apache-2.0)
+
+If it's worth a mention, I'd be honored. Happy to walk through the
+threats-to-validity section if rigor questions come up — that's where
+I'd want the methodology stress-tested hardest.
+
+— Matt Stvartak
+OneNomad LLC
+hello@onenomad.dev
