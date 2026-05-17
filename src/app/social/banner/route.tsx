@@ -5,6 +5,10 @@ export const runtime = 'edge'
 // X header / banner: 1500×500 recommended. On mobile, the top and
 // bottom ~20% are clipped by avatar overlay + nav UI. Keep the
 // brand mark + tagline in the middle ~60% (y=100..400).
+//
+// Satori notes: avoid `position: absolute` + multi-linear-gradient
+// backgrounds — they fail silently and return an empty PNG. Stick
+// to flex with explicit width/height children.
 export async function GET() {
   return new ImageResponse(
     (
@@ -16,25 +20,13 @@ export async function GET() {
           color: '#ebdbb2',
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between',
           padding: '0 96px',
           fontFamily: 'monospace',
-          position: 'relative',
         }}
       >
-        {/* Subtle grid (very low opacity) */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            opacity: 0.04,
-            backgroundImage:
-              'linear-gradient(#ebdbb2 1px, transparent 1px), linear-gradient(90deg, #ebdbb2 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
-          }}
-        />
-
         {/* Left: triangle + wordmark */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 28, zIndex: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
           <svg width="180" height="180" viewBox="0 0 32 32">
             <defs>
               <radialGradient id="bn-top" cx="16" cy="4" r="24" gradientUnits="userSpaceOnUse">
@@ -93,11 +85,9 @@ export async function GET() {
         {/* Right: headline finding */}
         <div
           style={{
-            marginLeft: 'auto',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-end',
-            zIndex: 1,
           }}
         >
           <div
@@ -128,13 +118,13 @@ export async function GET() {
               fontSize: 18,
               color: '#928374',
               textAlign: 'right',
-              maxWidth: 360,
+              display: 'flex',
+              flexDirection: 'column',
               lineHeight: 1.35,
             }}
           >
-            same model, different framework
-            <br />
-            difference in collapse rate
+            <span>same model, different framework</span>
+            <span>difference in collapse rate</span>
           </div>
         </div>
       </div>
