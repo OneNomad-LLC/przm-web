@@ -23,9 +23,19 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname);
-const RECIPIENTS = JSON.parse(fs.readFileSync(path.join(ROOT, 'recipients.json'), 'utf-8'));
+// recipients.json lives outside the public repo (local-data/ is gitignored)
+// because the per-recipient pitch notes are not for public consumption.
+// See README.md in this directory for the schema.
+const RECIPIENTS_PATH = path.join(__dirname, '..', '..', 'local-data', 'outreach', 'recipients.json');
+if (!fs.existsSync(RECIPIENTS_PATH)) {
+  console.error(`recipients.json not found at ${RECIPIENTS_PATH}.`);
+  console.error('Expected location: <repo-root>/local-data/outreach/recipients.json');
+  console.error('This file is gitignored; ask Matt for the current copy.');
+  process.exit(1);
+}
+const RECIPIENTS = JSON.parse(fs.readFileSync(RECIPIENTS_PATH, 'utf-8'));
 const TEMPLATES_DIR = path.join(ROOT, 'templates');
-const LOG_PATH = path.join(ROOT, 'outreach.log');
+const LOG_PATH = path.join(__dirname, '..', '..', 'local-data', 'outreach', 'outreach.log');
 
 const FROM = 'Matt Stvartak <hello@przm.sh>';
 const REPLY_TO = 'hello@onenomad.dev';
@@ -150,6 +160,11 @@ async function main() {
 
   for (const r of candidates) {
     const tag = `[${r.id}]`;
+
+    if (r.sendable === false) {
+      console.log(`${tag} SKIP — flagged sendable:false (track-only / do-not-cold-pitch). Notes: ${r.contactNotes}\n`);
+      continue;
+    }
 
     if (!r.email) {
       console.log(`${tag} SKIP — no email. Manual touch needed: ${r.contactNotes}\n`);

@@ -22,12 +22,12 @@ node scripts/outreach/send.cjs --play maintainer --send
 
 ## What's where
 
-- `recipients.json` — names, companies, contact info, per-recipient template variables.
+- `../../local-data/outreach/recipients.json` — names, companies, contact info, per-recipient template variables. **Lives outside the public repo** (`local-data/` is gitignored) because the per-recipient pitch notes critique real people and companies. Ask Matt if you need the current copy.
 - `templates/maintainer.txt` — Play 1: framework-maintainer respect-move outreach.
 - `templates/charter.txt` — Play 2: vendor-cert charter pitch.
 - `templates/newsletter.txt` — Play 3: earned-media pitches.
 - `send.cjs` — the runner.
-- `outreach.log` (created on first `--send`) — append-only JSONL of every send + Resend message id.
+- `../../local-data/outreach/outreach.log` (created on first `--send`) — append-only JSONL of every send + Resend message id.
 
 ## Important constraints
 

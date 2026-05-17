@@ -3,3 +3,10 @@ node_modules
 .env*.local
 tsconfig.tsbuildinfo
 .vercel
+
+# Outreach recipient DB + send log. Contains per-recipient pitch
+# notes about real people and companies — not for public repos.
+local-data/
+
+# Dev-only email preview output if ever generated
+.email-previews/
