@@ -90,20 +90,29 @@ async function findSubmissionByTag(tag: string): Promise<string | null> {
 
 /**
  * Fetch full body text from Resend's Received Emails API using the
- * email_id from the webhook payload. Returns text body or empty
- * string on failure (we still record the inbound, just without body).
+ * email_id from the webhook payload. Resend's webhook fires the
+ * moment they finish parsing the envelope; the body sometimes lags
+ * by 1-3 seconds. We retry with exponential backoff so we don't
+ * record body=empty for emails that have one.
  */
 async function fetchInboundBody(emailId: string, apiKey: string): Promise<string> {
-  try {
-    const res = await fetch(`${RESEND_API_BASE}/emails/${emailId}`, {
-      headers: { Authorization: `Bearer ${apiKey}` },
-    })
-    if (!res.ok) return ''
-    const body = (await res.json()) as { text?: string; html?: string }
-    return body.text ?? (body.html ?? '').replace(/<[^>]+>/g, '').slice(0, 20_000)
-  } catch {
-    return ''
+  const delaysMs = [0, 1500, 3500, 7500] // total ~12s budget across 4 tries
+  for (const delay of delaysMs) {
+    if (delay > 0) await new Promise((r) => setTimeout(r, delay))
+    try {
+      const res = await fetch(`${RESEND_API_BASE}/emails/${emailId}`, {
+        headers: { Authorization: `Bearer ${apiKey}` },
+      })
+      if (!res.ok) continue
+      const body = (await res.json()) as { text?: string; html?: string }
+      const text = body.text ?? (body.html ?? '').replace(/<[^>]+>/g, '').slice(0, 20_000)
+      if (text.trim().length > 0) return text
+      // Body still empty — Resend hasn't finished parsing; retry after delay
+    } catch {
+      // Network blip or 5xx — retry after delay
+    }
   }
+  return ''
 }
 
 export async function POST(request: Request) {
