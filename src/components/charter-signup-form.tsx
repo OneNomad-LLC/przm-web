@@ -1,0 +1,198 @@
+'use client'
+
+import { useState } from 'react'
+import { cn } from '@/lib/utils'
+
+type FormState =
+  | { kind: 'idle' }
+  | { kind: 'submitting' }
+  | { kind: 'success'; message?: string }
+  | { kind: 'error'; message: string }
+
+export function CharterSignupForm() {
+  const [state, setState] = useState<FormState>({ kind: 'idle' })
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    if (state.kind === 'submitting') return
+    setState({ kind: 'submitting' })
+
+    const form = e.currentTarget
+    const data = new FormData(form)
+    const payload = {
+      email: String(data.get('email') ?? ''),
+      company: String(data.get('company') ?? ''),
+      framework: String(data.get('framework') ?? ''),
+      release: String(data.get('release') ?? ''),
+      context: String(data.get('context') ?? ''),
+    }
+
+    try {
+      const res = await fetch('/api/charter-signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const json = (await res.json()) as { ok?: boolean; reason?: string; warning?: string }
+      if (res.ok && json.ok) {
+        setState({ kind: 'success', message: json.warning })
+        form.reset()
+      } else {
+        setState({
+          kind: 'error',
+          message: json.reason ?? `Server returned ${res.status}. Try again, or email hello@onenomad.dev directly.`,
+        })
+      }
+    } catch (err) {
+      setState({
+        kind: 'error',
+        message: err instanceof Error ? err.message : 'Network error. Try again, or email hello@onenomad.dev directly.',
+      })
+    }
+  }
+
+  if (state.kind === 'success') {
+    return (
+      <div className="rounded-lg border border-[color:var(--color-bench)]/40 bg-[color:var(--color-bench)]/10 p-6">
+        <div className="font-mono text-sm font-semibold text-[color:var(--color-bench)]">
+          Got it.
+        </div>
+        <p className="mt-2 font-mono text-xs leading-relaxed text-[color:var(--color-text-secondary)]">
+          Acknowledgment + next steps just hit your inbox. Matt will follow up
+          within one business day to schedule a 15-minute call.
+        </p>
+        {state.message ? (
+          <p className="mt-3 font-mono text-[10px] text-[color:var(--color-text-muted)]">
+            Note: {state.message}
+          </p>
+        ) : null}
+      </div>
+    )
+  }
+
+  const submitting = state.kind === 'submitting'
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="rounded-lg border border-[color:var(--color-bench)]/30 bg-[color:var(--color-bg-surface)]/40 p-6"
+    >
+      <div className="mb-5">
+        <h3 className="font-mono text-base font-semibold text-[color:var(--color-text-primary)]">
+          Claim a charter slot
+        </h3>
+        <p className="mt-2 font-mono text-xs leading-relaxed text-[color:var(--color-text-secondary)]">
+          Free signed receipt + leaderboard placement + charter-customer
+          badge, in exchange for a 1-2 sentence quote we can use on launch
+          day. 3 of 5 slots remaining.
+        </p>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field
+          name="email"
+          label="Work email"
+          type="email"
+          autoComplete="email"
+          required
+          placeholder="you@yourcompany.com"
+        />
+        <Field
+          name="company"
+          label="Company"
+          required
+          placeholder="e.g. CrewAI, Mem0, Pinecone"
+        />
+        <Field
+          name="framework"
+          label="Framework or product to certify"
+          required
+          placeholder="e.g. CrewAI v0.95"
+        />
+        <Field
+          name="release"
+          label="Release version (optional)"
+          placeholder="commit hash or version tag"
+        />
+      </div>
+
+      <div className="mt-4">
+        <label
+          htmlFor="charter-context"
+          className="mb-1.5 block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-text-muted)]"
+        >
+          Context (optional)
+        </label>
+        <textarea
+          id="charter-context"
+          name="context"
+          rows={4}
+          placeholder="What do you want out of this? Any methodology questions before we run?"
+          className="w-full rounded-md border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-base)]/60 p-3 font-mono text-xs text-[color:var(--color-text-primary)] placeholder-[color:var(--color-text-disabled)] outline-none transition-colors focus:border-[color:var(--color-bench)]/60"
+        />
+      </div>
+
+      {state.kind === 'error' ? (
+        <div className="mt-4 rounded-md border border-[color:var(--color-red)]/40 bg-[color:var(--color-red)]/10 p-3 font-mono text-xs text-[color:var(--color-red)]">
+          {state.message}
+        </div>
+      ) : null}
+
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+        <p className="font-mono text-[10px] text-[color:var(--color-text-muted)]">
+          We&apos;ll email you. We won&apos;t add you to any list.
+        </p>
+        <button
+          type="submit"
+          disabled={submitting}
+          className={cn(
+            'inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-mono text-xs font-semibold transition-opacity',
+            submitting
+              ? 'cursor-not-allowed bg-[color:var(--color-bg-elevated)] text-[color:var(--color-text-disabled)]'
+              : 'text-[color:var(--color-charcoal)] hover:opacity-90',
+          )}
+          style={submitting ? undefined : { background: 'var(--color-bench)' }}
+        >
+          {submitting ? 'Sending…' : 'Claim a charter slot →'}
+        </button>
+      </div>
+    </form>
+  )
+}
+
+function Field({
+  name,
+  label,
+  type = 'text',
+  required,
+  placeholder,
+  autoComplete,
+}: {
+  name: string
+  label: string
+  type?: string
+  required?: boolean
+  placeholder?: string
+  autoComplete?: string
+}) {
+  return (
+    <div>
+      <label
+        htmlFor={`charter-${name}`}
+        className="mb-1.5 block font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-text-muted)]"
+      >
+        {label}
+        {required ? <span className="ml-1 text-[color:var(--color-bench)]">*</span> : null}
+      </label>
+      <input
+        type={type}
+        id={`charter-${name}`}
+        name={name}
+        required={required}
+        placeholder={placeholder}
+        autoComplete={autoComplete}
+        className="w-full rounded-md border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-base)]/60 p-2.5 font-mono text-xs text-[color:var(--color-text-primary)] placeholder-[color:var(--color-text-disabled)] outline-none transition-colors focus:border-[color:var(--color-bench)]/60"
+      />
+    </div>
+  )
+}

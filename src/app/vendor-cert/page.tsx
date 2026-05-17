@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
+import { CharterSignupForm } from '@/components/charter-signup-form'
 
 export const metadata: Metadata = {
   title: 'Vendor certification | przm',
@@ -92,7 +93,7 @@ const tiers: Tier[] = [
     ],
     cta: {
       label: 'Claim a charter slot',
-      href: 'mailto:hello@onenomad.dev?subject=przm%20charter%20customer',
+      href: '#claim',
     },
   },
   {
@@ -402,23 +403,9 @@ export default function VendorCertPage() {
           </div>
         </section>
 
-        {/* CTA footer */}
-        <section className="rounded-lg border border-[color:var(--color-bench)]/30 bg-[color:var(--color-bg-surface)]/40 p-8 text-center">
-          <h3 className="mb-3 font-mono text-lg font-semibold text-[color:var(--color-text-primary)]">
-            Three charter slots are still open.
-          </h3>
-          <p className="mx-auto mb-6 max-w-xl font-mono text-xs leading-relaxed text-[color:var(--color-text-secondary)]">
-            One signed receipt, public leaderboard placement on launch day, and
-            a logo on the "charter customers" callout — free, in exchange for a
-            case-study quote.
-          </p>
-          <a
-            href="mailto:hello@onenomad.dev?subject=przm%20charter%20customer"
-            className="inline-flex items-center gap-2 rounded-full px-6 py-3 font-mono text-xs font-semibold text-[color:var(--color-charcoal)] transition-opacity hover:opacity-90"
-            style={{ background: 'var(--color-bench)' }}
-          >
-            Claim a charter slot &rarr;
-          </a>
+        {/* Charter signup form (replaces the static mailto: CTA) */}
+        <section id="claim" className="scroll-mt-24">
+          <CharterSignupForm />
         </section>
 
         <script
