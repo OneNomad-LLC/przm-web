@@ -22,14 +22,17 @@ export const metadata: Metadata = {
   },
 }
 
-function PreviewBadge() {
+function SignedBadge() {
   return (
     <span
       className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-bench)]/30 bg-[color:var(--color-bench)]/10 px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-bench)]"
-      title="These numbers are reproducible from the public fixture set + adapter code, but signed receipts are still being generated. The signed-receipt pipeline goes live this week."
+      title="All entries Ed25519-signed. Click 'signed →' on any row to download the receipt; verify it at /verify."
     >
-      <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-bench)]" />
-      preview · signed receipts in flight
+      <span
+        className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-bench)]"
+        style={{ boxShadow: '0 0 8px var(--color-bench)' }}
+      />
+      Ed25519-signed receipts
     </span>
   )
 }
@@ -70,7 +73,7 @@ export default function LeaderboardPage() {
             <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
               // leaderboard / convergence v0.1
             </span>
-            <PreviewBadge />
+            <SignedBadge />
           </div>
           <h1 className="font-mono text-3xl font-semibold leading-tight tracking-tight text-[color:var(--color-text-primary)] md:text-4xl">
             Multi-agent{' '}
@@ -116,9 +119,9 @@ export default function LeaderboardPage() {
             </code>{' '}
             ), the same scenarios produce a{' '}
             <span style={{ color: 'var(--color-bench)' }} className="font-semibold">
-              5.4× difference in collapse rate
+              7.3× difference in collapse rate
             </span>{' '}
-            depending on orchestration framework. Baseline synchronous rounds: 93.1%. AutoGen RoundRobin: 17.2%. The framework affects agent consensus dynamics independently of the underlying LLM.
+            depending on orchestration framework. Baseline synchronous rounds: 96.7%. AutoGen RoundRobin: 13.3%. The framework affects agent consensus dynamics independently of the underlying LLM.
           </p>
         </section>
 

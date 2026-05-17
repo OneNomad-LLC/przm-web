@@ -196,16 +196,16 @@ export default async function HomePage() {
               </code>
               ), the same scenarios produce a{' '}
               <span style={{ color: 'var(--color-bench)' }} className="font-semibold">
-                5.4&times; difference in collapse rate
+                7.3&times; difference in collapse rate
               </span>{' '}
-              depending on orchestration framework. Hand-rolled synchronous rounds: 93.1%. AutoGen RoundRobin: 17.2%.
+              depending on orchestration framework. Hand-rolled synchronous rounds: 96.7%. AutoGen RoundRobin: 13.3%.
             </p>
             <div className="mt-5 grid gap-3 sm:grid-cols-4">
               {[
-                { label: 'baseline / claude-haiku-4.5', correct: '93.1%', collapse: '100.0%' },
-                { label: 'baseline / gpt-5-mini', correct: '96.5%', collapse: '100.0%' },
-                { label: 'baseline / gpt-4o-mini', correct: '82.8%', collapse: '93.1%' },
-                { label: 'autogen / gpt-4o-mini', correct: '82.8%', collapse: '17.2%' },
+                { label: 'baseline / claude-haiku-4.5', correct: '93.3%', collapse: '100.0%' },
+                { label: 'baseline / gpt-5-mini', correct: '96.7%', collapse: '100.0%' },
+                { label: 'baseline / gpt-4o-mini', correct: '83.3%', collapse: '96.7%' },
+                { label: 'autogen / gpt-4o-mini', correct: '83.3%', collapse: '13.3%' },
               ].map((row) => (
                 <div
                   key={row.label}
@@ -226,8 +226,8 @@ export default async function HomePage() {
               ))}
             </div>
             <p className="mt-4 font-mono text-[11px] text-[color:var(--color-text-muted)]">
-              Preview run, 2026-05-17 · 29 fixtures · 3 agents &times; 3 rounds · signed receipts
-              shipping this week
+              Signed run, 2026-05-17 · 30 fixtures · 3 agents &times; 3 rounds · every row backed by an
+              Ed25519-signed receipt (click through to verify)
             </p>
           </div>
         </section>

@@ -44,18 +44,24 @@ export interface ConvergenceLeaderboardSnapshot {
 }
 
 /**
- * Most recent run — 2026-05-17. 29 scenarios × 4 configurations.
+ * Most recent signed run — 2026-05-17T17:47Z. 30 scenarios × 4 configurations.
  *
- * SIGNED column is currently false everywhere because we haven't
- * shipped the signed-receipt pipeline end-to-end yet (in flight).
- * When signed receipts are committed, flip `signed: true` and add
- * `receiptPath` per entry.
+ * All entries are Ed25519-signed; receipt JSON lives at
+ * /public/receipts/convergence/<filename>.json (served from
+ * /receipts/convergence/...). Verifier: /verify.
+ *
+ * To refresh: rerun the bench with CONVERGENCE_SIGNING_PRIVATE_KEY
+ * set, copy results/published/convergence/*.json into
+ * przm-web/public/receipts/convergence/, then update this file with
+ * the new scores + receiptPaths.
  */
+const RECEIPT_PREFIX = '/receipts/convergence/2026-05-17T17-47-28-102Z'
+
 export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
   benchmark: 'convergence-v0.1-preview',
-  ranAt: '2026-05-17T16:54:58.425Z',
+  ranAt: '2026-05-17T17:47:28.102Z',
   configuration: { nAgents: 3, nRounds: 3 },
-  fixtureCount: 29,
+  fixtureCount: 30,
   entries: [
     {
       id: 'baseline-anthropic-claude-haiku-4-5',
@@ -64,14 +70,15 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       llmModel: 'claude-haiku-4-5',
       provider: 'anthropic',
       scores: {
-        correct_final_answer_rate: 0.931,
+        correct_final_answer_rate: 0.933,
         collapse_rate: 1.0,
-        sycophancy_ratio: 0.035,
-        tokens_per_correct_answer: 1178,
-        position_flips_per_agent_per_round: 0.084,
+        sycophancy_ratio: 0.033,
+        tokens_per_correct_answer: 1173,
+        position_flips_per_agent_per_round: 0.093,
       },
       durationSec: 393,
-      signed: false,
+      signed: true,
+      receiptPath: `${RECEIPT_PREFIX}_baseline-anthropic_claude-haiku-4-5_5930d4db-c01d-40bb-ba6d-cc04cfea0360.json`,
     },
     {
       id: 'baseline-azure-gpt-5-mini',
@@ -80,14 +87,15 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       llmModel: 'gpt-5-mini',
       provider: 'azure-openai',
       scores: {
-        correct_final_answer_rate: 0.965,
+        correct_final_answer_rate: 0.967,
         collapse_rate: 1.0,
         sycophancy_ratio: 0,
-        tokens_per_correct_answer: 4597,
-        position_flips_per_agent_per_round: 0.107,
+        tokens_per_correct_answer: 4987,
+        position_flips_per_agent_per_round: 0.111,
       },
       durationSec: 2004,
-      signed: false,
+      signed: true,
+      receiptPath: `${RECEIPT_PREFIX}_baseline-azure-openai_gpt-5-mini_51a602ec-f23e-4bba-96ae-771e1cd212aa.json`,
     },
     {
       id: 'baseline-azure-gpt-4o-mini',
@@ -96,14 +104,15 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       llmModel: 'gpt-4o-mini',
       provider: 'azure-openai',
       scores: {
-        correct_final_answer_rate: 0.828,
-        collapse_rate: 0.931,
-        sycophancy_ratio: 0.069,
-        tokens_per_correct_answer: 652,
-        position_flips_per_agent_per_round: 0.115,
+        correct_final_answer_rate: 0.833,
+        collapse_rate: 0.967,
+        sycophancy_ratio: 0,
+        tokens_per_correct_answer: 659,
+        position_flips_per_agent_per_round: 0.122,
       },
       durationSec: 265,
-      signed: false,
+      signed: true,
+      receiptPath: `${RECEIPT_PREFIX}_baseline-azure-openai_gpt-4o-mini_c9bfb562-e221-4884-9b69-a842dbd9ade2.json`,
     },
     {
       id: 'autogen-azure-gpt-4o-mini',
@@ -112,14 +121,15 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       llmModel: 'gpt-4o-mini',
       provider: 'azure-openai',
       scores: {
-        correct_final_answer_rate: 0.828,
-        collapse_rate: 0.172,
-        sycophancy_ratio: 0.035,
-        tokens_per_correct_answer: 938,
-        position_flips_per_agent_per_round: 0.035,
+        correct_final_answer_rate: 0.833,
+        collapse_rate: 0.133,
+        sycophancy_ratio: 0,
+        tokens_per_correct_answer: 875,
+        position_flips_per_agent_per_round: 0.041,
       },
       durationSec: 407,
-      signed: false,
+      signed: true,
+      receiptPath: `${RECEIPT_PREFIX}_autogen_gpt-4o-mini_2547fd35-a2fb-4551-a0fc-9e460117365d.json`,
     },
   ],
 }
