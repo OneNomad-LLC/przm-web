@@ -19,7 +19,17 @@ import { getSubmission, recordReply, setStatus } from '@/lib/submissions'
 export const runtime = 'nodejs'
 
 const FROM_ADDRESS = 'przm <hello@send.przm.sh>'
-const REPLY_TO = 'hello@onenomad.dev'
+const REPLY_TO_DOMAIN = 'agent.przm.sh'
+
+/**
+ * Plus-addressed Reply-To so prospect replies route back to the right
+ * submission. agent+<first-8-of-uuid>@agent.przm.sh — the inbound
+ * webhook (POST /api/email/inbound) parses the +tag and threads.
+ */
+function replyToFor(submissionId: string): string {
+  const tag = submissionId.replace(/-/g, '').slice(0, 8)
+  return `agent+${tag}@${REPLY_TO_DOMAIN}`
+}
 
 interface Payload {
   submissionId?: unknown
@@ -81,7 +91,7 @@ export async function POST(request: Request) {
     const result = await resend.emails.send({
       from: FROM_ADDRESS,
       to: submission.email,
-      replyTo: REPLY_TO,
+      replyTo: replyToFor(submissionId),
       subject,
       text: body,
     })

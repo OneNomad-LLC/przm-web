@@ -25,8 +25,15 @@ import { sql, isDbConfigured } from '@/lib/db'
 export const runtime = 'nodejs'
 
 const FROM_ADDRESS = 'przm <hello@send.przm.sh>'
-const REPLY_TO = 'hello@onenomad.dev'
 const NOTIFY_TO = 'hello@onenomad.dev'
+const REPLY_TO_DOMAIN = 'agent.przm.sh'
+
+/** Plus-addressed Reply-To so prospect replies route back to this
+ *  exact submission via the /api/email/inbound webhook. */
+function replyToFor(submissionId: string): string {
+  const tag = submissionId.replace(/-/g, '').slice(0, 8)
+  return `agent+${tag}@${REPLY_TO_DOMAIN}`
+}
 const ADMIN_INBOX_URL = 'https://przm.sh/admin/inbox'
 
 type Tier = 'charter' | 'standard' | 'extended' | 'enterprise'
@@ -216,11 +223,12 @@ export async function POST(request: Request) {
     })
 
     try {
+      const ackReplyTo = submissionId ? replyToFor(submissionId) : NOTIFY_TO
       const [ackResult, notifyResult] = await Promise.all([
         resend.emails.send({
           from: FROM_ADDRESS,
           to: email,
-          replyTo: REPLY_TO,
+          replyTo: ackReplyTo,
           subject: ack.subject,
           text: ack.text,
         }),
