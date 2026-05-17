@@ -1,0 +1,10 @@
+{
+  "_note": "Launch-day X thread for @przm_ai. Edit before --send. Each entry must be ≤280 chars (the script validates). Posts chain as replies in order.",
+  "tweets": [
+    "I built a benchmark for something no one's measuring: how multi-agent AI systems collapse to confidently-wrong answers when one agent is confederate-injected.\n\nSame model, different orchestration: 7.3× difference in collapse rate.\n\nprzm.sh — thread ↓",
+    "The failure mode: N agents debate a question. One is pre-assigned a wrong answer + a confident-sounding rationale. The rest start correct.\n\nWe measure how many of the correct agents end up agreeing with the wrong one — and how much of that depends on the framework, not the model.",
+    "The headline: same-model-different-framework comparison.\n\ngpt-4o-mini, 30 scenarios, 3 agents × 3 rounds:\n• Hand-rolled synchronous rounds: 96.7% collapse\n• Microsoft AutoGen RoundRobin: 13.3% collapse\n\n7.3× difference from orchestration alone, model held constant.",
+    "Counterintuitive direction: AutoGen's RoundRobin (where agents see peers' same-round messages) HELPS resist convergence. Correct agents 1 and 2 reinforce each other before the confederate's confidence compounds.\n\nI had predicted the opposite. The bench surfaced the real story.",
+    "Methodology is deterministic — no LLM in the grading loop.\n\nEvery result is an Ed25519-signed receipt: adapter version, LLM, fixture SHA, per-round transcripts. Verify in browser at /verify.\n\nOpen source. If the method is wrong, you find out before I can hide it.\n\nprzm.sh"
+  ]
+}

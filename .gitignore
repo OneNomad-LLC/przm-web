@@ -10,3 +10,6 @@ local-data/
 
 # Dev-only email preview output if ever generated
 .email-previews/
+
+# X posting log — append-only JSONL with real tweet IDs from sends.
+scripts/social/*.log
