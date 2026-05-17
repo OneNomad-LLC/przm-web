@@ -1,30 +1,14 @@
 ﻿import type { Metadata } from 'next'
-import { readFile } from 'fs/promises'
-import path from 'path'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
-import { FilterChips } from '@/components/filter-chips'
-import type { ReceiptSummary } from '@/types/receipt'
 
 export const metadata: Metadata = {
-  title: 'przm â€” Vendor-neutral AI reliability benchmarks',
+  title: 'przm — Vendor-neutral AI reliability benchmarks',
   description:
     'Signed, reproducible, adversarial benchmarks for AI failure modes that do not have standards yet. Multi-agent convergence. Memory recall. Code review reliability.',
 }
 
-async function getReceipts(): Promise<ReceiptSummary[]> {
-  try {
-    const filePath = path.join(process.cwd(), 'data', 'receipts.json')
-    const raw = await readFile(filePath, 'utf-8')
-    return JSON.parse(raw) as ReceiptSummary[]
-  } catch {
-    return []
-  }
-}
-
 export default async function HomePage() {
-  const receipts = await getReceipts()
-
   return (
     <>
       <Navbar />
@@ -232,12 +216,34 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Memory-bench receipt grid with filters */}
-        <section className="mt-16">
-          <h2 className="mb-6 font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            // Memory-bench receipt ledger
-          </h2>
-          <FilterChips receipts={receipts} />
+        {/* Memory bench — pointer to the second axis */}
+        <section className="mt-16 rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/30 p-6">
+          <div className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
+            <span
+              className="h-1.5 w-1.5 rounded-full"
+              style={{ background: 'var(--color-memory)' }}
+            />
+            second axis · AI memory recall
+          </div>
+          <p className="font-mono text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
+            The second benchmark axis is{' '}
+            <a
+              href="/methodology#memory"
+              className="text-[color:var(--color-memory)] underline-offset-4 hover:underline"
+            >
+              AI memory recall
+            </a>{' '}
+            — deterministic R@K + NDCG scoring on LongMemEval temporal-inference and LoCoMo. The methodology is published; signed receipts publish alongside v0.2 when the memory adapters get back through the new signing pipeline. The reference implementation lives in{' '}
+            <a
+              href="https://github.com/OneNomad-LLC/przm-bench/tree/main/src/adapters"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[color:var(--color-bench)] underline-offset-4 hover:underline"
+            >
+              przm-bench/src/adapters
+            </a>{' '}
+            and tracks Engram, Mem0, Letta, Zep, MemPalace, and HippoRAG.
+          </p>
         </section>
 
         {/* For vendors */}
