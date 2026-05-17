@@ -21,6 +21,7 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { sql, isDbConfigured } from '@/lib/db'
+import { renderSignupAck } from '@/lib/email/signup-ack'
 
 export const runtime = 'nodejs'
 
@@ -58,69 +59,6 @@ function emailLooksValid(s: string): boolean {
 
 function sanitize(s: string, max = 2000): string {
   return s.replace(/[\x00-\x1f\x7f]/g, '').slice(0, max)
-}
-
-function tierLabel(tier: Tier): string {
-  return tier.charAt(0).toUpperCase() + tier.slice(1)
-}
-
-function ackEmail(tier: Tier, company: string, framework: string): { subject: string; text: string } {
-  const intro = {
-    charter: `Got your charter-customer interest from przm.sh — thank you.`,
-    standard: `Got your Standard certification request from przm.sh — thank you.`,
-    extended: `Got your Extended certification request from przm.sh — thank you.`,
-    enterprise: `Got your Enterprise certification inquiry from przm.sh — thank you.`,
-  }[tier]
-
-  const turnaround = {
-    charter: 'one business day',
-    standard: 'one business day',
-    extended: 'same business day',
-    enterprise: 'same business day',
-  }[tier]
-
-  const tierSpecific = {
-    charter:
-      `Charter customers get a free signed receipt + leaderboard placement + a charter\nbadge, in exchange for permission to cite ${company} by name and a 1-2 sentence\nquote we can use on launch day.`,
-    standard:
-      `Standard certification is $999/release: one full benchmark run, signed receipt,\npublic leaderboard entry, private findings brief, 5 business day turnaround.`,
-    extended:
-      `Extended certification is $2,499/release: everything in Standard plus the 20%\nholdout subset run (so your number reflects generalization, not fixture\ntuning) and 72-hour priority turnaround.`,
-    enterprise:
-      `Enterprise certification is $9,999/release: custom fixture set authored\nagainst your domain, private receipt unless you choose to publish, 30-day\nre-run option after patches.`,
-  }[tier]
-
-  const subject = `przm ${tierLabel(tier)} cert — got it, here's what's next`
-  const text = [
-    `Hi,`,
-    ``,
-    intro,
-    ``,
-    `Here's what happens next: Matt will reach out within ${turnaround} to`,
-    `schedule a 15-minute call. Before that call, three things are useful to`,
-    `know on your end:`,
-    ``,
-    `1. Which release of ${framework} you want certified (commit hash or version tag).`,
-    `2. Which LLM your framework will run during the bench (we run your`,
-    `   adapter with your model; you provide a sample API key so the run is`,
-    `   billed to you and you can audit what was called).`,
-    `3. What "good" looks like to you.`,
-    ``,
-    tierSpecific,
-    ``,
-    `Methodology spec:  https://przm.sh/methodology#convergence`,
-    `Public key:        https://github.com/OneNomad-LLC/przm-bench/blob/main/keys/convergence-preview.pub`,
-    `Adapter source:    https://github.com/OneNomad-LLC/przm-bench/tree/main/src/adapters/multiagent`,
-    ``,
-    `If anything looks unfair about the adapter we'd run against ${framework}, you`,
-    `can PR our adapter file directly.`,
-    ``,
-    `— Matt`,
-    `OneNomad LLC`,
-    `hello@onenomad.dev`,
-  ].join('\n')
-
-  return { subject, text }
 }
 
 function notifyEmail(payload: {
@@ -211,7 +149,7 @@ export async function POST(request: Request) {
   const apiKey = process.env['RESEND_API_KEY']
   if (apiKey) {
     const resend = new Resend(apiKey)
-    const ack = ackEmail(tier, company, framework)
+    const ack = renderSignupAck({ tier, company, framework })
     const notify = notifyEmail({
       id: submissionId,
       tier,
@@ -230,6 +168,7 @@ export async function POST(request: Request) {
           to: email,
           replyTo: ackReplyTo,
           subject: ack.subject,
+          html: ack.html,
           text: ack.text,
         }),
         resend.emails.send({

@@ -15,6 +15,7 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { getSubmission, recordReply, setStatus } from '@/lib/submissions'
+import { renderAdminReply } from '@/lib/email/admin-reply'
 
 export const runtime = 'nodejs'
 
@@ -83,7 +84,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, reason: 'submission not found' }, { status: 404 })
   }
 
-  const subject = `Re: przm ${submission.tier} cert — ${submission.framework}`
+  const rendered = renderAdminReply({
+    body,
+    tier: submission.tier,
+    framework: submission.framework,
+  })
+  const subject = rendered.subject
 
   let resendId: string | undefined
   try {
@@ -93,7 +99,8 @@ export async function POST(request: Request) {
       to: submission.email,
       replyTo: replyToFor(submissionId),
       subject,
-      text: body,
+      html: rendered.html,
+      text: rendered.text,
     })
     if (result.error) {
       console.error('admin/reply: resend returned error', result.error)
