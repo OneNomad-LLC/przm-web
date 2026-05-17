@@ -23,16 +23,37 @@ export default async function Image() {
       >
         {/* Top: logo + wordmark */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-          <svg width="56" height="56" viewBox="0 0 32 32">
+          <svg width="64" height="64" viewBox="0 0 32 32">
+            <defs>
+              <radialGradient id="og-top" cx="16" cy="4" r="24" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stopColor="#34C468" stopOpacity="1" />
+                <stop offset="1" stopColor="#34C468" stopOpacity="0" />
+              </radialGradient>
+              <radialGradient id="og-bl" cx="4" cy="28" r="24" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stopColor="#E84040" stopOpacity="1" />
+                <stop offset="1" stopColor="#E84040" stopOpacity="0" />
+              </radialGradient>
+              <radialGradient id="og-br" cx="28" cy="28" r="24" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stopColor="#FABD2F" stopOpacity="1" />
+                <stop offset="1" stopColor="#FABD2F" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <path d="M16 4 L28 28 L4 28 Z" fill="#1d2021" />
+            <g style={{ mixBlendMode: 'screen' }}>
+              <path d="M16 4 L28 28 L4 28 Z" fill="url(#og-top)" />
+              <path d="M16 4 L28 28 L4 28 Z" fill="url(#og-bl)" />
+              <path d="M16 4 L28 28 L4 28 Z" fill="url(#og-br)" />
+            </g>
             <path
-              d="M16 6 L26 24 L6 24 Z"
-              fill="#34C468"
-              stroke="#34C468"
-              strokeWidth="1.5"
+              d="M16 4 L28 28 L4 28 Z"
+              fill="none"
+              stroke="#ebdbb2"
+              strokeOpacity="0.2"
+              strokeWidth="0.5"
               strokeLinejoin="round"
             />
           </svg>
-          <div style={{ fontSize: 52, fontWeight: 600, letterSpacing: '-0.02em' }}>
+          <div style={{ fontSize: 56, fontWeight: 600, letterSpacing: '-0.02em' }}>
             przm
           </div>
         </div>
@@ -55,6 +76,7 @@ export default async function Image() {
           <span style={{ color: '#E84040' }}>●</span>
           <span>memory</span>
           <span>·</span>
+          <span style={{ color: '#FABD2F' }}>●</span>
           <span>code-review (next)</span>
           <span style={{ marginLeft: 'auto', color: '#665c54' }}>przm.sh</span>
         </div>
