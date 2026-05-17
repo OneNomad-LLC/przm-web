@@ -7,14 +7,14 @@ export function Footer() {
         <div className="flex flex-col items-start justify-between gap-4 font-mono text-xs text-[color:var(--color-text-muted)] md:flex-row md:items-center">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <span>
-              Built by{' '}
+              made with 🩷 by{' '}
               <a
                 href="https://onenomad.dev"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="transition-colors hover:text-[color:var(--color-bench)]"
               >
-                Matt Stvartak
+                onenomad
               </a>
               {' '}&middot; Apache-2.0
             </span>
