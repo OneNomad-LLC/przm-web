@@ -86,13 +86,17 @@ export default async function HomePage() {
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a
-              href="https://github.com/OneNomad-LLC/przm-bench"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-mono text-xs font-semibold text-[color:var(--color-charcoal)] transition-colors"
+              href="/leaderboard"
+              className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-mono text-xs font-semibold text-[color:var(--color-charcoal)] transition-opacity hover:opacity-90"
               style={{ background: 'var(--color-bench)' }}
             >
-              View on GitHub &rarr;
+              See the leaderboard &rarr;
+            </a>
+            <a
+              href="/vendor-cert"
+              className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-bench)]/40 px-5 py-2.5 font-mono text-xs text-[color:var(--color-bench)] transition-colors hover:border-[color:var(--color-bench)] hover:bg-[color:var(--color-bench)]/10"
+            >
+              Get your framework certified
             </a>
             <a
               href="/methodology"
@@ -101,10 +105,12 @@ export default async function HomePage() {
               Methodology
             </a>
             <a
-              href="/verify"
+              href="https://github.com/OneNomad-LLC/przm-bench"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-border-default)] px-5 py-2.5 font-mono text-xs text-[color:var(--color-text-muted)] transition-colors hover:border-[color:var(--color-bench)] hover:text-[color:var(--color-bench)]"
             >
-              Verify a receipt
+              GitHub
             </a>
           </div>
 
