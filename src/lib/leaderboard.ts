@@ -55,7 +55,10 @@ export interface ConvergenceLeaderboardSnapshot {
  * przm-web/public/receipts/convergence/, then update this file with
  * the new scores + receiptPaths.
  */
-const RECEIPT_PREFIX = '/receipts/convergence/2026-05-17T17-47-28-102Z'
+/** Pretty receipt URL = /receipts/<uuid>. Raw JSON download served
+ *  from /receipts/convergence/<filename>.json as a static asset; the
+ *  pretty page links there as 'Download JSON'. */
+const PRETTY_RECEIPT_PREFIX = '/receipts'
 
 export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
   benchmark: 'convergence-v0.1-preview',
@@ -78,7 +81,7 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       },
       durationSec: 393,
       signed: true,
-      receiptPath: `${RECEIPT_PREFIX}_baseline-anthropic_claude-haiku-4-5_5930d4db-c01d-40bb-ba6d-cc04cfea0360.json`,
+      receiptPath: `${PRETTY_RECEIPT_PREFIX}/5930d4db-c01d-40bb-ba6d-cc04cfea0360`,
     },
     {
       id: 'baseline-azure-gpt-5-mini',
@@ -95,7 +98,7 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       },
       durationSec: 2004,
       signed: true,
-      receiptPath: `${RECEIPT_PREFIX}_baseline-azure-openai_gpt-5-mini_51a602ec-f23e-4bba-96ae-771e1cd212aa.json`,
+      receiptPath: `${PRETTY_RECEIPT_PREFIX}/51a602ec-f23e-4bba-96ae-771e1cd212aa`,
     },
     {
       id: 'baseline-azure-gpt-4o-mini',
@@ -112,7 +115,7 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       },
       durationSec: 265,
       signed: true,
-      receiptPath: `${RECEIPT_PREFIX}_baseline-azure-openai_gpt-4o-mini_c9bfb562-e221-4884-9b69-a842dbd9ade2.json`,
+      receiptPath: `${PRETTY_RECEIPT_PREFIX}/c9bfb562-e221-4884-9b69-a842dbd9ade2`,
     },
     {
       id: 'autogen-azure-gpt-4o-mini',
@@ -129,7 +132,7 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       },
       durationSec: 407,
       signed: true,
-      receiptPath: `${RECEIPT_PREFIX}_autogen_gpt-4o-mini_2547fd35-a2fb-4551-a0fc-9e460117365d.json`,
+      receiptPath: `${PRETTY_RECEIPT_PREFIX}/2547fd35-a2fb-4551-a0fc-9e460117365d`,
     },
   ],
 }
