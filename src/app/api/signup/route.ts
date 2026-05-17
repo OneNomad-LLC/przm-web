@@ -216,7 +216,7 @@ export async function POST(request: Request) {
     })
 
     try {
-      await Promise.all([
+      const [ackResult, notifyResult] = await Promise.all([
         resend.emails.send({
           from: FROM_ADDRESS,
           to: email,
@@ -232,8 +232,28 @@ export async function POST(request: Request) {
           text: notify.text,
         }),
       ])
+      // Resend returns { data: null, error: {...} } on send failure — must
+      // explicitly check; the SDK does not throw for 4xx/5xx by default.
+      const failures: string[] = []
+      if (ackResult.error) failures.push('ack: ' + (ackResult.error.message ?? ackResult.error.name))
+      if (notifyResult.error)
+        failures.push('notify: ' + (notifyResult.error.message ?? notifyResult.error.name))
+      if (failures.length > 0) {
+        console.error('signup: resend reported errors', failures)
+        return NextResponse.json(
+          {
+            ok: true,
+            warning:
+              'submission received and saved, but mail delivery had an issue (' +
+              failures.join('; ') +
+              ') — please also drop us a line at hello@onenomad.dev so we can follow up manually',
+            submissionId,
+          },
+          { status: 200 },
+        )
+      }
     } catch (e) {
-      console.error('signup: resend.send failed', e)
+      console.error('signup: resend.send threw', e)
       return NextResponse.json(
         {
           ok: true,

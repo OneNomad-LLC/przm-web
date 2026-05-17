@@ -85,9 +85,24 @@ export async function POST(request: Request) {
       subject,
       text: body,
     })
+    if (result.error) {
+      console.error('admin/reply: resend returned error', result.error)
+      return NextResponse.json(
+        {
+          ok: false,
+          reason:
+            'mail send failed: ' +
+            (result.error.message ?? result.error.name ?? 'unknown Resend error'),
+        },
+        { status: 502 },
+      )
+    }
     resendId = result.data?.id
+    if (!resendId) {
+      console.warn('admin/reply: resend returned no id but no error either', result)
+    }
   } catch (e) {
-    console.error('admin/reply: resend.send failed', e)
+    console.error('admin/reply: resend.send threw', e)
     return NextResponse.json(
       { ok: false, reason: 'mail send failed: ' + (e instanceof Error ? e.message : String(e)) },
       { status: 502 },
