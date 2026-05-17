@@ -6,6 +6,7 @@ import {
   CURRENT_SNAPSHOT,
   pctFormat,
   numFormat,
+  primarySubset,
 } from '@/lib/leaderboard'
 
 export const metadata: Metadata = {
@@ -52,15 +53,31 @@ function Sparkline({ value, max, lowerIsBetter }: { value: number; max: number; 
   )
 }
 
+function delta(holdout: number, primary: number): React.ReactNode {
+  const d = holdout - primary
+  if (Math.abs(d) < 0.005) return null
+  const sign = d > 0 ? '+' : ''
+  const color = Math.abs(d) > 0.05 ? 'var(--color-memory)' : 'var(--color-text-muted)'
+  return (
+    <span style={{ color }} className="ml-1 text-[10px]">
+      ({sign}
+      {(d * 100).toFixed(1)}pp)
+    </span>
+  )
+}
+
 export default function LeaderboardPage() {
   const { entries, fixtureCount, configuration, ranAt } = CURRENT_SNAPSHOT
 
-  // Rank entries by correctness (descending); split tied entries by collapse rate (ascending — lower is better)
+  // Rank entries by primary (combined-or-seen) correctness desc; tie-break by collapse rate asc
   const ranked = [...entries].sort((a, b) => {
-    if (b.scores.correct_final_answer_rate !== a.scores.correct_final_answer_rate) {
-      return b.scores.correct_final_answer_rate - a.scores.correct_final_answer_rate
+    const pa = primarySubset(a)
+    const pb = primarySubset(b)
+    if (!pa || !pb) return 0
+    if (pb.scores.correct_final_answer_rate !== pa.scores.correct_final_answer_rate) {
+      return pb.scores.correct_final_answer_rate - pa.scores.correct_final_answer_rate
     }
-    return a.scores.collapse_rate - b.scores.collapse_rate
+    return pa.scores.collapse_rate - pb.scores.collapse_rate
   })
 
   return (
@@ -127,6 +144,14 @@ export default function LeaderboardPage() {
 
         {/* Leaderboard table */}
         <section className="mb-12">
+          <p className="mb-3 font-mono text-[11px] text-[color:var(--color-text-muted)]">
+            Primary score is the combined 30-fixture run. The{' '}
+            <span style={{ color: 'var(--color-memory)' }}>(±Npp)</span> delta
+            in parens is the holdout-set delta — same model, same prompts, 6
+            randomly-sealed fixtures not used during methodology development.
+            Wide deltas (&gt;5pp) suggest fixture overfit on our end and get
+            highlighted.
+          </p>
           <div className="overflow-x-auto rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/30">
             <table className="w-full font-mono text-xs">
               <thead className="border-b border-[color:var(--color-border-subtle)] text-[10px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
@@ -142,66 +167,79 @@ export default function LeaderboardPage() {
                 </tr>
               </thead>
               <tbody>
-                {ranked.map((e, i) => (
-                  <tr
-                    key={e.id}
-                    className="border-b border-[color:var(--color-border-subtle)] last:border-b-0 hover:bg-[color:var(--color-bg-elevated)]/40"
-                  >
-                    <td className="px-4 py-4">
-                      <div className="text-[color:var(--color-text-primary)]">
-                        <span
-                          className="mr-2 font-semibold"
-                          style={{ color: 'var(--color-bench)' }}
-                        >
-                          #{i + 1}
-                        </span>
-                        {e.displayName}
-                      </div>
-                      <div className="mt-1 text-[10px] text-[color:var(--color-text-muted)]">
-                        {e.orchestration} · {e.provider}
-                      </div>
-                    </td>
-                    <td className="px-4 py-4 text-right text-[color:var(--color-text-primary)]">
-                      {pctFormat(e.scores.correct_final_answer_rate)}
-                      <Sparkline value={e.scores.correct_final_answer_rate} max={1} />
-                    </td>
-                    <td className="px-4 py-4 text-right text-[color:var(--color-text-secondary)]">
-                      {pctFormat(e.scores.collapse_rate)}
-                      <Sparkline value={e.scores.collapse_rate} max={1} lowerIsBetter />
-                    </td>
-                    <td className="px-4 py-4 text-right text-[color:var(--color-text-secondary)]">
-                      {pctFormat(e.scores.sycophancy_ratio)}
-                      <Sparkline
-                        value={e.scores.sycophancy_ratio}
-                        max={0.2}
-                        lowerIsBetter
-                      />
-                    </td>
-                    <td className="px-4 py-4 text-right text-[color:var(--color-text-secondary)]">
-                      {e.scores.tokens_per_correct_answer.toLocaleString()}
-                    </td>
-                    <td className="px-4 py-4 text-right text-[color:var(--color-text-secondary)]">
-                      {numFormat(e.scores.position_flips_per_agent_per_round)}
-                    </td>
-                    <td className="px-4 py-4 text-right text-[color:var(--color-text-muted)]">
-                      {(e.durationSec / 60).toFixed(1)}m
-                    </td>
-                    <td className="px-4 py-4 text-right">
-                      {e.signed && e.receiptPath ? (
-                        <a
-                          href={e.receiptPath}
-                          className="text-[color:var(--color-bench)] hover:underline"
-                        >
-                          signed →
-                        </a>
-                      ) : (
-                        <span className="text-[color:var(--color-text-muted)]">
-                          pending
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                {ranked.map((e, i) => {
+                  const primary = primarySubset(e)
+                  if (!primary) return null
+                  const s = primary.scores
+                  const h = e.holdout?.scores
+                  return (
+                    <tr
+                      key={e.id}
+                      className="border-b border-[color:var(--color-border-subtle)] last:border-b-0 hover:bg-[color:var(--color-bg-elevated)]/40"
+                    >
+                      <td className="px-4 py-4">
+                        <div className="text-[color:var(--color-text-primary)]">
+                          <span
+                            className="mr-2 font-semibold"
+                            style={{ color: 'var(--color-bench)' }}
+                          >
+                            #{i + 1}
+                          </span>
+                          {e.displayName}
+                        </div>
+                        <div className="mt-1 text-[10px] text-[color:var(--color-text-muted)]">
+                          {e.orchestration} · {e.provider}
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 text-right text-[color:var(--color-text-primary)]">
+                        {pctFormat(s.correct_final_answer_rate)}
+                        {h ? delta(h.correct_final_answer_rate, s.correct_final_answer_rate) : null}
+                        <Sparkline value={s.correct_final_answer_rate} max={1} />
+                      </td>
+                      <td className="px-4 py-4 text-right text-[color:var(--color-text-secondary)]">
+                        {pctFormat(s.collapse_rate)}
+                        {h ? delta(h.collapse_rate, s.collapse_rate) : null}
+                        <Sparkline value={s.collapse_rate} max={1} lowerIsBetter />
+                      </td>
+                      <td className="px-4 py-4 text-right text-[color:var(--color-text-secondary)]">
+                        {pctFormat(s.sycophancy_ratio)}
+                        {h ? delta(h.sycophancy_ratio, s.sycophancy_ratio) : null}
+                        <Sparkline
+                          value={s.sycophancy_ratio}
+                          max={0.2}
+                          lowerIsBetter
+                        />
+                      </td>
+                      <td className="px-4 py-4 text-right text-[color:var(--color-text-secondary)]">
+                        {s.tokens_per_correct_answer.toLocaleString()}
+                      </td>
+                      <td className="px-4 py-4 text-right text-[color:var(--color-text-secondary)]">
+                        {numFormat(s.position_flips_per_agent_per_round)}
+                      </td>
+                      <td className="px-4 py-4 text-right text-[color:var(--color-text-muted)]">
+                        {(primary.durationSec / 60).toFixed(1)}m
+                      </td>
+                      <td className="px-4 py-4 text-right">
+                        <div className="flex flex-col items-end gap-1">
+                          <a
+                            href={primary.receiptPath}
+                            className="text-[color:var(--color-bench)] hover:underline"
+                          >
+                            combined →
+                          </a>
+                          {e.holdout ? (
+                            <a
+                              href={e.holdout.receiptPath}
+                              className="text-[10px] text-[color:var(--color-text-muted)] hover:text-[color:var(--color-memory)] hover:underline"
+                            >
+                              holdout →
+                            </a>
+                          ) : null}
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
