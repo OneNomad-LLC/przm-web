@@ -1,6 +1,8 @@
 # Launch Channel Drafts
 
 > NOT FOR POSTING. Review and approve each section before use.
+> Numbers below are from the signed v0.1 receipts (2026-05-17).
+> Per the launch sequence, HN drops on Tuesday of week 2 — not week 1.
 
 ---
 
@@ -9,46 +11,60 @@
 ### Title
 
 ```
-Show HN: przm – vendor-neutral AI reliability benchmarks with signed receipts
+Show HN: I measured how multi-agent AI frameworks fold to confederate-injected wrong answers
 ```
 
-(77 chars)
+(99 chars — under HN's title limit but on the long side. Alternative shorter version below.)
+
+### Title (alternative, shorter)
+
+```
+Show HN: przm — multi-agent AI reliability leaderboard with signed receipts
+```
+
+(78 chars)
 
 ### Body
 
 ```
-przm (przm.sh) is an open-source multi-axis leaderboard for AI failure modes that don't have vendor-neutral measurement standards yet.
+przm (przm.sh) is an open-source multi-axis leaderboard for AI failure modes that don't have vendor-neutral standards yet.
 
-The v0.1 benchmark is multi-agent convergence + sycophancy. Setup: N agents debate a question with a known correct answer. One agent is a confederate — pre-assigned a wrong answer and a confident-sounding rationale to defend it. We measure:
+The v0.1 benchmark is multi-agent convergence + sycophancy. Setup: N agents debate a question with a known correct answer. One agent is a "confederate" — pre-assigned a wrong answer + a confident-sounding rationale to defend it. We measure:
 
-- correct_final_answer_rate: does the group land on the right answer?
-- collapse_rate: how often does a group converge to a single answer without surfacing the reasoning that should have stopped it?
-- sycophancy_ratio: how often does an agent that started correct end with the confederate's wrong answer?
-- token_waste_ratio: compute spent on debates that ended wrong
-- position_flip_rate: round-over-round answer changes (descriptive)
+- correct_final_answer_rate: did the group land on the right answer?
+- collapse_rate: how often did the group converge to a single answer (right OR wrong) without surfacing the reasoning that should have stopped it?
+- sycophancy_ratio: how often did an agent that started correct end on the confederate's wrong answer?
+- tokens_per_correct_answer: compute spent per correct outcome
+- position_flips_per_agent_per_round: round-over-round answer changes (descriptive)
 
-All scoring is deterministic — pure-function math on recorded state, no LLM judge. Every result is an Ed25519-signed JSON receipt with fixture SHA-256, adapter version, LLM version, and full per-round transcripts pinned. Anyone can re-run and verify.
+Scoring is deterministic — pure-function math on recorded state, no LLM judge anywhere. Every result is an Ed25519-signed JSON receipt with adapter version, LLM version, fixture SHA-256, and full per-round transcripts pinned. Anyone can re-run and verify.
 
-30 fixtures ship in v0.1 across five categories: factual-math, code-correctness, factual-history, temporal-ordering, boolean-trap. Fixtures are designed to break things — confederate rationales fabricate plausible citations, fake-precision arithmetic walkthroughs, and confident taxonomic distinctions.
+The most interesting v0.1 finding:
 
-Early finding, stated carefully: frontier-tier models running baseline orchestration fold to popular-misconception confederates on a subset of fixtures we'd considered easy. We're not quantifying beyond that until the full adapter suite is in.
+Holding the model constant (gpt-4o-mini), the same 30 scenarios produce a 7.3× difference in collapse rate depending on orchestration. Hand-rolled synchronous-rounds baseline: 96.7%. AutoGen RoundRobinGroupChat: 13.3%. The framework changes agent consensus dynamics independently of the underlying LLM. AutoGen's same-round visibility lets correct peers reinforce each other before the confederate's confidence compounds — the inverse of what I'd predicted.
+
+Other findings:
+- Claude Haiku 4.5 (93.3% correct) and gpt-5-mini (96.7%) both held against confederate pressure on most fixtures. Both folded on the same one: an Einstein-failed-math popular-misconception trap. gpt-5-mini uses ~4× more tokens per correct answer than Claude Haiku for ~3pp more correctness.
+- gpt-4o-mini (83.3% correct, baseline) folded on the same Einstein trap + a Python mutable-default-argument question.
 
 What's in v0.1:
-- Baseline adapter: hand-rolled N-agent R-round debate using Anthropic Messages API
-- Azure adapter: gpt-5-mini and gpt-4o-mini via Azure OpenAI
-- AutoGen adapter: gpt-4o-mini
+- 30 hand-curated fixtures across 5 categories (factual-math, code-correctness, factual-history, temporal-ordering, boolean-trap). All correct answers verified against authoritative sources before commit.
+- 4 adapters: baseline-Anthropic (Claude Haiku 4.5), baseline-Azure (gpt-5-mini + gpt-4o-mini), AutoGen (gpt-4o-mini).
+- 4 Ed25519-signed receipts on the leaderboard, each with full transcripts.
+- A signature verifier that runs in your browser via SubtleCrypto.
 
-What's NOT in v0.1 but is planned: CrewAI, LangGraph, OpenAI Swarm adapters (v0.2, 7-10 days). The holdout split waits until we hit ≥50 fixtures.
+What's NOT in v0.1: CrewAI, LangGraph, OpenAI Agents SDK adapters land in v0.2 (~7-10 days). 20% holdout split once we hit ≥50 fixtures.
 
-The business model is vendor certification ($999-$9,999/release) and custom enterprise evaluation ($5K-$25K one-shot). The OSS is free. Money comes from being the authoritative third party that ran the test — not from selling the harness or the fixtures.
+Business model: vendor certification ($999/release with a charter free tier for the first 3-5 customers) + custom enterprise eval ($5K-$25K). OSS is free. Money comes from being the authoritative third party that ran the test, not from selling the harness.
 
-Why not Patronus/Braintrust/LangSmith? Structural conflict: they sell to the same AI app builders whose frameworks we'd need to benchmark. They cannot credibly publish "this framework's agents collapse to wrong answers" without antagonizing their customer base.
+Why this didn't already exist: structural conflict. The companies that build eval tooling (Patronus, Braintrust, LangSmith) sell to the same AI app builders whose frameworks we'd need to benchmark. Publishing "this framework's agents collapse to wrong answers" antagonizes their customer base.
 
-Built in <3 weeks by a solo founder + AI agents. If the methodology is wrong, the open source means you find out faster than we could hide it.
+Built in <3 weeks. Solo founder + AI agents wrote and adversarially-audited most of the code. If the methodology is wrong, the open source means you find out faster than I could hide it.
 
-Methodology: przm.sh/methodology
-Verify a receipt: przm.sh/verify
-GitHub: github.com/OneNomad-LLC/bench
+Methodology:  https://przm.sh/methodology#convergence
+Leaderboard:  https://przm.sh/leaderboard
+Verify:       https://przm.sh/verify
+Repo:         https://github.com/OneNomad-LLC/przm-bench (Apache-2.0)
 ```
 
 ---
@@ -58,52 +74,49 @@ GitHub: github.com/OneNomad-LLC/bench
 ### Tweet 1 (seed — ≤ 240 chars)
 
 ```
-We built a benchmark for something no one's measuring: how fast multi-agent AI systems collapse to a confidently-stated wrong answer.
+I built a benchmark for something no one's measuring: how multi-agent AI systems collapse to confidently-wrong answers when one agent is confederate-injected.
 
-It's open source. Every result is a signed receipt. No LLM judge.
+Same model, different orchestration: 7.3× difference in collapse rate.
 
-przm.sh — thread below.
+przm.sh — thread ↓
 ```
 
 ### Tweet 2
 
 ```
-The failure mode is called sycophancy collapse. One agent gets pre-assigned a wrong answer + a confident rationale. The rest start with the correct answer.
+The failure mode: N agents debate a question. One is pre-assigned a wrong answer + a confident-sounding rationale. The rest start correct.
 
-We measure how many of the correct agents end up agreeing with the wrong one.
-
-Turns out: a lot of them.
+We measure how many of the correct agents end up agreeing with the wrong one — and how much of that depends on the framework, not the model.
 ```
 
 ### Tweet 3
 
 ```
-Why doesn't something like this already exist?
+The headline number is the same-model-different-framework comparison.
 
-Structural conflict. The companies that build eval tooling sell to the same AI app builders whose frameworks we'd need to benchmark. You can't credibly call out CrewAI's convergence problem when CrewAI's customers are also your customers.
+gpt-4o-mini, 30 scenarios, 3 agents × 3 rounds:
+- Hand-rolled synchronous rounds:  96.7% collapse
+- Microsoft AutoGen RoundRobin:     13.3% collapse
 
-So the standard doesn't exist. We built it.
+7.3× difference from orchestration alone, model held constant.
 ```
 
 ### Tweet 4
 
 ```
-The methodology is deterministic — no LLM in the grading loop. Scoring is pure-function math on recorded state.
+Counterintuitive direction: AutoGen's RoundRobin (where agents see peers' same-round messages) HELPS resist convergence. Correct agents 1 and 2 reinforce each other before the confederate's confidence compounds.
 
-Every result is an Ed25519-signed receipt: adapter version, LLM version, fixture SHA-256, full per-round transcripts. All pinned, all verifiable.
-
-If we got it wrong, you can find out faster than we can hide it.
+I had predicted the opposite. The bench surfaced the real story.
 ```
 
 ### Tweet 5
 
 ```
-v0.1 is live:
-- 30 fixtures across 5 categories (factual-math, code-correctness, history, temporal ordering, boolean traps)
-- Baseline adapter + Azure (gpt-5-mini, gpt-4o-mini) + AutoGen
-- Vendor certification open: $999/release for a signed third-party receipt
+The methodology is deterministic — no LLM in the grading loop.
 
-Framework adapter comparisons in v0.2, ~1 week out.
+Every result is an Ed25519-signed receipt: adapter version, LLM, fixture SHA-256, per-round transcripts. Verify in your browser at /verify.
+
+If the methodology is wrong, the open source means you find out faster than I can hide it.
 
 przm.sh
 ```
@@ -113,33 +126,32 @@ przm.sh
 ## Bluesky
 
 ```
-We measured how fast multi-agent AI systems collapse to a confidently wrong answer. Signed receipts, no LLM judge, fully open source. Frontier models fold on fixtures we thought were easy. przm.sh
+I measured how multi-agent AI systems collapse to confidently-wrong answers. Same model, different framework: 7.3× difference in collapse rate. Signed receipts, no LLM judge, fully open source. przm.sh
 ```
 
-(193 chars)
+(202 chars)
 
 ---
 
 ## LinkedIn
 
-Multi-agent AI systems have a reliability problem that nobody's measuring. When one agent confidently asserts a wrong answer, how many of the other agents — who started with the correct answer — end up agreeing with it?
+```
+Multi-agent AI systems have a reliability problem that nobody's measuring well. When one agent confidently asserts a wrong answer, how many of the other agents — who started with the correct answer — end up agreeing with it? And how much of that depends on the orchestration framework versus the underlying model?
 
-We ran the test. The results weren't reassuring.
+I ran the test. The most interesting result wasn't about models at all.
 
-przm (przm.sh) is an open-source AI reliability leaderboard we launched today. The v0.1 benchmark measures multi-agent convergence and sycophancy: five scoring axes, deterministic math, no LLM judge, every result an Ed25519-signed receipt that anyone can verify against our public key.
+przm (https://przm.sh) is an open-source AI reliability leaderboard that ships today. v0.1 measures multi-agent convergence and sycophancy across five scoring axes: deterministic math, no LLM judge, every result an Ed25519-signed receipt that anyone can verify against the published public key.
 
-Why this benchmark, and why now? Two reasons.
+The headline finding: same model (gpt-4o-mini), same 30 fixtures, two different orchestration patterns. Hand-rolled synchronous-round debate: 96.7% collapse rate. Microsoft AutoGen's RoundRobinGroupChat: 13.3%. A 7.3× difference attributable entirely to orchestration. Counterintuitively, the framework with more same-round peer visibility (AutoGen) RESISTED convergence harder, because correct agents reinforced each other before the confederate's confidence had time to compound. That's the kind of result no published benchmark surfaces today.
 
-First, the failure mode is real and documented — peer-reviewed arXiv papers on sycophancy collapse and disagreement convergence in multi-agent systems — but there's no vendor-neutral measurement standard for it. You can find plenty of "measure your LLM" SaaS. You can't find a signed, reproducible, adversarially-constructed benchmark showing how CrewAI vs. AutoGen vs. LangGraph actually hold up when one agent is injected with a confidently-stated wrong answer.
+Frontier models held more reliably than I expected — Claude Haiku 4.5 scored 93.3%, gpt-5-mini 96.7% — but both folded on the same scenario: a popular-misconception trap where the confederate plausibly asserts Einstein failed math in school. The bench is catching real things.
 
-Second, the companies best positioned to build this face a structural conflict: they sell to the same AI app builders whose frameworks they'd need to benchmark. Publishing a convergence leaderboard would antagonize their customer base. So the leaderboard doesn't exist.
+Why did this benchmark not already exist? Structural conflict: the companies best positioned to build it (Patronus, Braintrust, LangSmith) sell to the same AI app builders whose frameworks would be benchmarked. Publishing "this framework's agents collapse to wrong answers" antagonizes their customer base.
 
-v0.1 ships with 30 fixtures across five categories — factual math, code correctness, factual history, temporal ordering, and popular misconceptions used as boolean traps. The fixture design is adversarial: confederate rationales fabricate plausible-sounding citations, use fake-precision arithmetic walkthroughs, and invent taxonomic distinctions that sound rigorous.
+For AI framework vendors: certification is open. First 3-5 charter customers get a signed receipt free in exchange for case-study rights. After that, $999 per release for a third-party performance attestation you can publish on your own site. We don't tune the benchmark to your strengths — that's the point.
 
-The early finding, stated carefully: frontier-tier models running baseline orchestration fold to popular-misconception confederates on a subset of fixtures we expected to be straightforward.
+For AI engineering managers picking a framework: there's now a number to anchor the conversation. Read the methodology, run the verification yourself, or PR if you think we got it wrong.
 
-For AI framework vendors: certification is open. A przm receipt is a signed, third-party performance attestation at $999 per release — something you can publish on your website and your customers can verify. We don't tune the benchmark to your strengths. That's the point.
-
-The benchmark harness is Apache-2.0. Read the methodology, run the verification yourself, or submit a PR if you think the methodology is wrong.
-
-przm.sh | github.com/OneNomad-LLC/bench
+przm.sh
+github.com/OneNomad-LLC/przm-bench (Apache-2.0)
+```

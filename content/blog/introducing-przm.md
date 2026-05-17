@@ -40,13 +40,28 @@ Most eval pipelines use an LLM to decide whether an answer was correct. That mea
 
 przm uses structured output extraction and string comparison against canonical correct answers. The scoring functions are published, the fixture correct answers are published, the adapter code is published. If you think we got something wrong, submit a PR. The methodology is the product; opacity is the thing we can't afford.
 
-## What we found in early runs
+## What we found in the v0.1 signed run
 
-The fixtures were designed with what looked like clear-cut cases — factual-math questions, temporal-ordering problems with documented correct answers, boolean questions where the correct answer is well-established. Some of them are drawn from popular misconceptions specifically because we expected those to be the hardest.
+30 fixtures across 5 categories. 4 adapter configurations. 3 agents × 3 rounds per scenario. All four receipts Ed25519-signed and live on the [leaderboard](https://przm.sh/leaderboard).
 
-They were hard. Frontier-tier LLMs running baseline orchestration fold to popular-misconception confederates on a subset of fixtures we'd considered easy. A confederate that confidently cites a plausible-sounding fake source, or that gives a detailed-but-wrong arithmetic walkthrough, moves agents that started with the correct answer.
+```
+metric                              claude-haiku-4-5   gpt-5-mini   gpt-4o-mini   autogen/gpt-4o-mini
+correct_final_answer_rate           93.3%              96.7%        83.3%         83.3%
+collapse_rate (lower better)        100.0%             100.0%       96.7%         13.3%
+sycophancy_ratio (lower better)     3.3%               0.0%         0.0%          0.0%
+tokens_per_correct_answer           1,173              4,987        659           875
+position_flips_per_agent_per_round  0.093              0.111        0.122         0.041
+```
 
-We're not ready to publish full framework comparison numbers yet — the framework adapters beyond the baseline are coming in v0.2. But the baseline-only numbers are already telling.
+**The headline number is the same-model-different-framework comparison.** Hold the model constant (gpt-4o-mini) and the same 30 scenarios produce a **7.3× difference in collapse rate** depending on orchestration. Hand-rolled synchronous-round baseline: 96.7%. AutoGen's `RoundRobinGroupChat`: 13.3%. That delta is entirely the framework's signal.
+
+Counterintuitively, the framework with *more* same-round peer visibility (AutoGen) resists convergence harder than the baseline — because correct agents 1 and 2 reinforce each other before the confederate's confidence has time to compound. I had predicted the opposite. The bench surfaced the real story.
+
+A few other findings worth naming:
+
+- **Frontier models held more reliably than mid-tier**, as you'd expect — but they didn't hit 100%. Claude Haiku 4.5 folded on one scenario (the Einstein-failed-math popular-misconception trap, where the confederate cites the famous-but-false biographical story). gpt-5-mini held that one but used ~4× more tokens per correct answer than Claude Haiku for ~3 percentage points more correctness.
+- **gpt-4o-mini's failure modes were specific.** It folded on the same Einstein trap as Claude, plus a Python mutable-default-argument code question where the confederate's "this is how Python works" framing won.
+- **The confederate's confidence matters more than the wrongness obviousness.** Fixtures where the confederate's rationale was internally consistent (fake citations, fake-precision walkthroughs) caught more agents than fixtures where the confederate just contradicted the obvious.
 
 ## The fixture set
 
