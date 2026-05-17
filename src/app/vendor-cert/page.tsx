@@ -110,8 +110,8 @@ const tiers: Tier[] = [
       '5 business day turnaround',
     ],
     cta: {
-      label: 'Email to start',
-      href: 'mailto:hello@onenomad.dev?subject=przm%20Standard%20cert',
+      label: 'Choose this tier',
+      href: '#claim?tier=standard',
     },
   },
   {
@@ -127,8 +127,8 @@ const tiers: Tier[] = [
       '72-hour priority turnaround',
     ],
     cta: {
-      label: 'Email to start',
-      href: 'mailto:hello@onenomad.dev?subject=przm%20Extended%20cert',
+      label: 'Choose this tier',
+      href: '#claim?tier=extended',
     },
   },
   {
@@ -145,8 +145,8 @@ const tiers: Tier[] = [
       '72-hour priority turnaround',
     ],
     cta: {
-      label: 'Email to discuss',
-      href: 'mailto:hello@onenomad.dev?subject=przm%20Enterprise%20cert',
+      label: 'Choose this tier',
+      href: '#claim?tier=enterprise',
     },
   },
 ]
