@@ -2,13 +2,29 @@
 
 import { useState } from 'react'
 import { ShieldCheck, ShieldX, Shield, AlertCircle } from 'lucide-react'
-import type { Receipt } from '@/types/receipt'
 import { cn } from '@/lib/utils'
 
+export interface PubKey {
+  id: string
+  benchmark: string
+  pem: string
+  fingerprint: string
+}
+
+interface SignedReceipt {
+  signature?: {
+    algorithm?: string
+    publicKeyFingerprint?: string
+    value?: string
+  }
+  benchmark?: string
+}
+
 type VerifyResult =
-  | { status: 'verified' }
+  | { status: 'verified'; keyId: string; benchmark: string }
   | { status: 'invalid'; reason: string }
   | { status: 'unsigned' }
+  | { status: 'unknown-key'; receiptFingerprint: string }
   | { status: 'error'; reason: string }
 
 /** JCS (RFC 8785) stringify */
@@ -30,61 +46,80 @@ function jcsStringify(value: unknown): string {
   return JSON.stringify(value)
 }
 
-async function verifyReceiptJson(receiptJson: string, pubKeyPem: string): Promise<VerifyResult> {
-  let receipt: Receipt
+async function verifyReceiptJson(
+  receiptJson: string,
+  keys: PubKey[],
+): Promise<VerifyResult> {
+  let receipt: SignedReceipt & Record<string, unknown>
   try {
-    receipt = JSON.parse(receiptJson) as Receipt
+    receipt = JSON.parse(receiptJson)
   } catch {
-    return { status: 'error', reason: 'Invalid JSON â€” could not parse receipt.' }
+    return { status: 'error', reason: 'Invalid JSON — could not parse receipt.' }
   }
 
-  if (!receipt.signature) {
+  if (!receipt.signature?.value) {
     return { status: 'unsigned' }
   }
 
-  if (pubKeyPem.startsWith('placeholder')) {
-    return { status: 'error', reason: 'Public key not yet published for this deployment.' }
+  const receiptFingerprint = receipt.signature.publicKeyFingerprint
+  // Find the key whose fingerprint matches the receipt's claim. If the
+  // receipt doesn't claim one, fall through and try every key — costs
+  // nothing and old receipts may not include the fingerprint.
+  const candidates = receiptFingerprint
+    ? keys.filter((k) => k.fingerprint === receiptFingerprint)
+    : keys
+
+  if (candidates.length === 0) {
+    return { status: 'unknown-key', receiptFingerprint: receiptFingerprint ?? '(unspecified)' }
   }
 
-  try {
-    const b64 = pubKeyPem
-      .replace(/-----BEGIN PUBLIC KEY-----/g, '')
-      .replace(/-----END PUBLIC KEY-----/g, '')
-      .replace(/\s+/g, '')
+  for (const key of candidates) {
+    try {
+      const b64 = key.pem
+        .replace(/-----BEGIN PUBLIC KEY-----/g, '')
+        .replace(/-----END PUBLIC KEY-----/g, '')
+        .replace(/\s+/g, '')
 
-    const keyBytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0))
-    const cryptoKey = await crypto.subtle.importKey(
-      'spki',
-      keyBytes,
-      { name: 'Ed25519' },
-      false,
-      ['verify'],
-    )
+      const keyBytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0))
+      const cryptoKey = await crypto.subtle.importKey(
+        'spki',
+        keyBytes,
+        { name: 'Ed25519' },
+        false,
+        ['verify'],
+      )
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { signature: _sig, ...receiptBody } = receipt
-    const canonical = jcsStringify(receiptBody)
-    const payloadBytes = new TextEncoder().encode(canonical)
+      const { signature: _sig, ...receiptBody } = receipt
+      const canonical = jcsStringify(receiptBody)
+      const payloadBytes = new TextEncoder().encode(canonical)
 
-    const sigB64 = receipt.signature.value.replace(/-/g, '+').replace(/_/g, '/')
-    const sigBytes = Uint8Array.from(atob(sigB64), (c) => c.charCodeAt(0))
+      const sigB64 = receipt.signature.value.replace(/-/g, '+').replace(/_/g, '/')
+      const sigBytes = Uint8Array.from(atob(sigB64), (c) => c.charCodeAt(0))
 
-    const ok = await crypto.subtle.verify('Ed25519', cryptoKey, sigBytes, payloadBytes)
-    return ok ? { status: 'verified' } : { status: 'invalid', reason: 'Signature mismatch.' }
-  } catch (e) {
-    return {
-      status: 'error',
-      reason: `Verification failed: ${e instanceof Error ? e.message : String(e)}`,
+      const ok = await crypto.subtle.verify('Ed25519', cryptoKey, sigBytes, payloadBytes)
+      if (ok) {
+        return {
+          status: 'verified',
+          keyId: key.id,
+          benchmark: typeof receipt.benchmark === 'string' ? receipt.benchmark : key.benchmark,
+        }
+      }
+    } catch {
+      // try the next candidate
     }
+  }
+
+  return {
+    status: 'invalid',
+    reason: 'Signature did not verify against the matching public key.',
   }
 }
 
 interface VerifyFormProps {
-  pubKeyPem: string
-  pubKeyFingerprint: string
+  keys: PubKey[]
 }
 
-export function VerifyForm({ pubKeyPem, pubKeyFingerprint }: VerifyFormProps) {
+export function VerifyForm({ keys }: VerifyFormProps) {
   const [json, setJson] = useState('')
   const [result, setResult] = useState<VerifyResult | null>(null)
   const [loading, setLoading] = useState(false)
@@ -93,34 +128,13 @@ export function VerifyForm({ pubKeyPem, pubKeyFingerprint }: VerifyFormProps) {
     if (!json.trim()) return
     setLoading(true)
     setResult(null)
-    const res = await verifyReceiptJson(json.trim(), pubKeyPem)
+    const res = await verifyReceiptJson(json.trim(), keys)
     setResult(res)
     setLoading(false)
   }
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Public key fingerprint */}
-      <div className="rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)] p-4">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
-          Signing key fingerprint
-        </p>
-        <code className="mt-1.5 block break-all font-mono text-xs text-[color:var(--color-text-secondary)]">
-          {pubKeyFingerprint}
-        </code>
-        <p className="mt-2 font-mono text-[10px] text-[color:var(--color-text-disabled)]">
-          Cross-check at{' '}
-          <a
-            href="https://github.com/OneNomad-LLC/przm-bench/blob/main/keys/receipt-signing.pub"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[color:var(--color-bench)] hover:underline"
-          >
-            github.com/OneNomad-LLC/przm-bench
-          </a>
-        </p>
-      </div>
-
       {/* Textarea */}
       <div>
         <label
@@ -175,8 +189,9 @@ function VerifyResultBanner({ result }: { result: VerifyResult }) {
             Signature verified
           </p>
           <p className="mt-1 font-mono text-xs text-[color:var(--color-text-secondary)]">
-            The receipt is authentic and was signed with the przm bench private key. Scores have
-            not been altered.
+            The receipt is authentic and was signed with the{' '}
+            <code className="text-[color:var(--color-green)]">{result.keyId}</code> przm
+            private key ({result.benchmark}). Scores have not been altered.
           </p>
         </div>
       </div>
@@ -193,6 +208,28 @@ function VerifyResultBanner({ result }: { result: VerifyResult }) {
           </p>
           <p className="mt-1 font-mono text-xs text-[color:var(--color-text-secondary)]">
             {result.reason}
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  if (result.status === 'unknown-key') {
+    return (
+      <div className="flex items-start gap-3 rounded-lg border border-[color:var(--color-orange)]/40 bg-[color:var(--color-orange)]/10 p-4">
+        <AlertCircle size={18} className="mt-0.5 shrink-0 text-[color:var(--color-orange)]" />
+        <div>
+          <p className="font-mono text-sm font-semibold text-[color:var(--color-orange)]">
+            Unknown signing key
+          </p>
+          <p className="mt-1 font-mono text-xs text-[color:var(--color-text-secondary)]">
+            The receipt claims fingerprint{' '}
+            <code className="break-all text-[color:var(--color-orange)]">
+              {result.receiptFingerprint}
+            </code>{' '}
+            which is not one of the published przm keys. Either the receipt is
+            from a different benchmark suite or the key hasn&apos;t been mirrored
+            here yet.
           </p>
         </div>
       </div>
