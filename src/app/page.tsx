@@ -110,15 +110,14 @@ export default async function HomePage() {
                   }}
                 />
                 <span className="uppercase tracking-widest text-[color:var(--color-text-muted)]">
-                  v0.1 &middot; headline
+                  v0.1 &middot; signed
                 </span>
               </div>
               <div className="mb-1 text-[color:var(--color-text-primary)]">
                 Multi-agent convergence
               </div>
               <div className="text-[color:var(--color-text-secondary)]">
-                CrewAI &middot; AutoGen &middot; LangGraph &middot; Claude Agents SDK &middot;
-                OpenAI Swarm
+                baseline &middot; AutoGen <span className="text-[color:var(--color-text-disabled)]">&middot; CrewAI · LangGraph · OpenAI Agents SDK (v0.2)</span>
               </div>
             </div>
             <div className="rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40 p-4 font-mono text-xs">
@@ -128,12 +127,12 @@ export default async function HomePage() {
                   style={{ background: 'var(--color-memory)' }}
                 />
                 <span className="uppercase tracking-widest text-[color:var(--color-text-muted)]">
-                  live
+                  v0.2 &middot; adapters built
                 </span>
               </div>
               <div className="mb-1 text-[color:var(--color-text-primary)]">AI memory recall</div>
               <div className="text-[color:var(--color-text-secondary)]">
-                Engram &middot; Mem0 &middot; Letta &middot; Zep &middot; MemPalace
+                Engram &middot; Mem0 <span className="text-[color:var(--color-text-disabled)]">&middot; Letta · Zep · MemPalace · HippoRAG (v0.2)</span>
               </div>
             </div>
             <div className="rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40 p-4 font-mono text-xs">
@@ -233,16 +232,16 @@ export default async function HomePage() {
             >
               AI memory recall
             </a>{' '}
-            — deterministic R@K + NDCG scoring on LongMemEval temporal-inference and LoCoMo. The methodology is published; signed receipts publish alongside v0.2 when the memory adapters get back through the new signing pipeline. The reference implementation lives in{' '}
+            &mdash; deterministic R@K + NDCG scoring on LongMemEval temporal-inference and LoCoMo. The methodology is published. The runner and adapters for Engram + Mem0 are committed in the{' '}
             <a
               href="https://github.com/OneNomad-LLC/przm-bench/tree/main/src/adapters"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[color:var(--color-bench)] underline-offset-4 hover:underline"
             >
-              przm-bench/src/adapters
-            </a>{' '}
-            and tracks Engram, Mem0, Letta, Zep, MemPalace, and HippoRAG.
+              przm-bench repo
+            </a>
+            ; signed memory receipts publish on the v0.2 cycle alongside Letta, Zep, MemPalace, and HippoRAG adapters. The convergence axis above is the v0.1 wedge — multi-axis follows when each axis ships with its own signed receipt, not before.
           </p>
         </section>
 

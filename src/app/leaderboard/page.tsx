@@ -12,7 +12,7 @@ import {
 export const metadata: Metadata = {
   title: 'Convergence leaderboard | przm',
   description:
-    'Multi-agent convergence and sycophancy scores across frontier LLMs and AI frameworks. Same model, different orchestration: 5.4× difference in collapse rate.',
+    'Multi-agent convergence and sycophancy scores across frontier LLMs and AI frameworks. Same model, different orchestration: 7.3× difference in collapse rate.',
   alternates: { canonical: '/leaderboard' },
   openGraph: {
     type: 'website',

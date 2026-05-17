@@ -76,7 +76,7 @@ interface Tier {
 
 const tiers: Tier[] = [
   {
-    badge: '3 of 5 slots remaining',
+    badge: '5 charter slots open',
     name: 'Charter',
     price: '$0',
     priceNote: 'first 3–5 vendors only',
@@ -281,8 +281,8 @@ export default function VendorCertPage() {
             {[
               {
                 n: '01',
-                title: 'Email us',
-                body: 'Your framework name, the release version you want certified, which LLM model your framework will run.',
+                title: 'Fill out the form below',
+                body: 'Your framework name, the release version you want certified, which LLM model your framework will run. You get an automated ack within minutes; Matt follows up within one business day.',
               },
               {
                 n: '02',
