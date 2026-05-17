@@ -8,8 +8,10 @@ import { Logo } from '@/components/logo'
 import { cn } from '@/lib/utils'
 
 const navLinks = [
-  { href: '/verify', label: 'Verify' },
   { href: '/methodology', label: 'Methodology' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/vendor-cert', label: 'Certify' },
+  { href: '/verify', label: 'Verify' },
 ]
 
 function isActive(pathname: string, href: string): boolean {
