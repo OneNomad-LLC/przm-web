@@ -166,10 +166,70 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Receipt grid with filters */}
-        <section>
+        {/* Convergence headline finding */}
+        <section className="mt-16">
+          <div className="mb-6 flex items-center justify-between gap-4">
+            <h2 className="font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
+              // Latest finding · convergence v0.1
+            </h2>
+            <a
+              href="/leaderboard"
+              className="font-mono text-xs text-[color:var(--color-text-muted)] transition-colors hover:text-[color:var(--color-bench)]"
+            >
+              Full leaderboard &rarr;
+            </a>
+          </div>
+          <div
+            className="rounded-lg border border-[color:var(--color-bench)]/30 bg-[color:var(--color-bg-surface)]/40 p-6"
+            style={{ boxShadow: '0 0 20px rgba(52,196,104,0.06)' }}
+          >
+            <p className="font-mono text-base leading-relaxed text-[color:var(--color-text-primary)]">
+              Holding the model constant (
+              <code className="rounded bg-[color:var(--color-bg-elevated)] px-1.5 py-0.5 text-sm">
+                gpt-4o-mini
+              </code>
+              ), the same scenarios produce a{' '}
+              <span style={{ color: 'var(--color-bench)' }} className="font-semibold">
+                5.4&times; difference in collapse rate
+              </span>{' '}
+              depending on orchestration framework. Hand-rolled synchronous rounds: 93.1%. AutoGen RoundRobin: 17.2%.
+            </p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-4">
+              {[
+                { label: 'baseline / claude-haiku-4.5', correct: '93.1%', collapse: '100.0%' },
+                { label: 'baseline / gpt-5-mini', correct: '96.5%', collapse: '100.0%' },
+                { label: 'baseline / gpt-4o-mini', correct: '82.8%', collapse: '93.1%' },
+                { label: 'autogen / gpt-4o-mini', correct: '82.8%', collapse: '17.2%' },
+              ].map((row) => (
+                <div
+                  key={row.label}
+                  className="rounded-md border border-[color:var(--color-border-subtle)] bg-[color:var(--color-bg-base)]/40 p-3 font-mono text-[11px]"
+                >
+                  <div className="mb-1 truncate text-[color:var(--color-text-secondary)]">
+                    {row.label}
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-[color:var(--color-text-muted)]">correct</span>
+                    <span className="text-[color:var(--color-text-primary)]">{row.correct}</span>
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-[color:var(--color-text-muted)]">collapse</span>
+                    <span style={{ color: 'var(--color-memory)' }}>{row.collapse}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4 font-mono text-[11px] text-[color:var(--color-text-muted)]">
+              Preview run, 2026-05-17 · 29 fixtures · 3 agents &times; 3 rounds · signed receipts
+              shipping this week
+            </p>
+          </div>
+        </section>
+
+        {/* Memory-bench receipt grid with filters */}
+        <section className="mt-16">
           <h2 className="mb-6 font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            // Receipt ledger
+            // Memory-bench receipt ledger
           </h2>
           <FilterChips receipts={receipts} />
         </section>

@@ -8,6 +8,7 @@ import { Logo } from '@/components/logo'
 import { cn } from '@/lib/utils'
 
 const navLinks = [
+  { href: '/leaderboard', label: 'Leaderboard' },
   { href: '/methodology', label: 'Methodology' },
   { href: '/blog', label: 'Blog' },
   { href: '/vendor-cert', label: 'Certify' },
