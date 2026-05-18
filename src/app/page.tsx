@@ -63,8 +63,8 @@ export default async function HomePage() {
             We publish vendor-neutral benchmarks for AI failure modes that don't have standards
             yet. Multi-agent debates that collapse to confidently wrong answers. Memory systems
             that forget the things you need. Code review tools that miss what they should catch.
-            Deterministic scoring &mdash;{' '}
-            <span style={{ color: 'var(--color-bench)' }}>no LLM judge anywhere</span> &mdash;
+            Deterministic scoring with{' '}
+            <span style={{ color: 'var(--color-bench)' }}>no LLM judge anywhere</span>,
             and every result is an Ed25519-signed receipt that anyone can verify.
           </p>
 
@@ -231,8 +231,8 @@ export default async function HomePage() {
               className="text-[color:var(--color-memory)] underline-offset-4 hover:underline"
             >
               AI memory recall
-            </a>{' '}
-            &mdash; deterministic R@K + NDCG scoring on LongMemEval temporal-inference and LoCoMo. The methodology is published. The runner and adapters for Engram + Mem0 are committed in the{' '}
+            </a>
+            : deterministic R@K and NDCG scoring on LongMemEval temporal-inference and LoCoMo. The methodology is published. The runner and adapters for Engram and Mem0 are committed in the{' '}
             <a
               href="https://github.com/OneNomad-LLC/przm-bench/tree/main/src/adapters"
               target="_blank"
@@ -241,7 +241,7 @@ export default async function HomePage() {
             >
               przm-bench repo
             </a>
-            ; signed memory receipts publish on the v0.2 cycle alongside Letta, Zep, MemPalace, and HippoRAG adapters. The convergence axis above is the v0.1 wedge — multi-axis follows when each axis ships with its own signed receipt, not before.
+            . Signed memory receipts publish on the v0.2 cycle alongside Letta, Zep, MemPalace, and HippoRAG adapters. The convergence axis above is the v0.1 wedge; multi-axis follows when each axis ships with its own signed receipt, not before.
           </p>
         </section>
 
@@ -256,10 +256,10 @@ export default async function HomePage() {
             performance attestation you can put on your own website. We do not
             sell the harness; we run the test.{' '}
             <a
-              href="mailto:matt@przm.sh?subject=przm%20vendor%20certification"
+              href="/vendor-cert"
               className="text-[color:var(--color-bench)] underline-offset-4 hover:underline"
             >
-              matt@przm.sh
+              See certification tiers and start a charter request &rarr;
             </a>
           </p>
         </section>

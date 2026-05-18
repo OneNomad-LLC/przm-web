@@ -10,7 +10,7 @@ import { VerifyForm } from '@/components/verify-form'
 export const metadata: Metadata = {
   title: 'Verify a receipt | przm',
   description:
-    'Paste any signed przm receipt JSON and verify its Ed25519 signature in your browser — no server roundtrip, no data leaves your machine.',
+    'Paste any signed przm receipt JSON and verify its Ed25519 signature in your browser. No server roundtrip, no data leaves your machine.',
   alternates: { canonical: '/verify' },
 }
 
@@ -90,10 +90,10 @@ export default async function VerifyPage() {
           </h1>
           <p className="mt-4 font-mono text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
             Paste any signed receipt JSON below. Verification runs entirely in
-            your browser using SubtleCrypto &mdash; no data leaves your
-            machine. The form auto-detects which benchmark the receipt
-            belongs to (convergence, memory, etc.) and verifies against the
-            right public key.
+            your browser using SubtleCrypto. No data leaves your machine. The
+            form auto-detects which benchmark the receipt belongs to
+            (convergence, memory, etc.) and verifies against the right public
+            key.
           </p>
         </div>
 

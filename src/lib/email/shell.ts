@@ -90,7 +90,7 @@ ${bodyHtml}
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
               <tr>
                 <td>
-                  <strong style="color:${TEXT_SECONDARY};font-weight:600;">przm</strong> &mdash; vendor-neutral AI reliability benchmarks.<br>
+                  <strong style="color:${TEXT_SECONDARY};font-weight:600;">przm</strong>, vendor-neutral AI reliability benchmarks.<br>
                   <a href="${SITE}" style="color:${ACCENT};text-decoration:none;">przm.sh</a> &nbsp;·&nbsp;
                   <a href="${SITE}/methodology" style="color:${ACCENT};text-decoration:none;">methodology</a> &nbsp;·&nbsp;
                   <a href="${SITE}/leaderboard" style="color:${ACCENT};text-decoration:none;">leaderboard</a>
@@ -178,7 +178,7 @@ export const html = {
 </table>`
   },
   sig(name: string, role: string, email: string): string {
-    return `<p style="margin:24px 0 0 0;font-size:14px;line-height:1.6;color:${TEXT_SECONDARY};">— ${escapeHtml(name)}<br><span style="color:${TEXT_MUTED};font-size:13px;">${escapeHtml(role)}</span><br><a href="mailto:${escapeAttr(email)}" style="color:${ACCENT};text-decoration:none;font-size:13px;">${escapeHtml(email)}</a></p>`
+    return `<p style="margin:24px 0 0 0;font-size:14px;line-height:1.6;color:${TEXT_SECONDARY};">Thanks,<br>${escapeHtml(name)}<br><span style="color:${TEXT_MUTED};font-size:13px;">${escapeHtml(role)}</span><br><a href="mailto:${escapeAttr(email)}" style="color:${ACCENT};text-decoration:none;font-size:13px;">${escapeHtml(email)}</a></p>`
   },
   /** Renders a free-form text body (newlines → <br>, blank lines → <p>).
    *  Used by admin reply where Matt types markdown-ish text. */

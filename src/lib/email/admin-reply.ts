@@ -25,7 +25,7 @@ export function renderAdminReply({
 
   const bodyHtml = [
     html.fromPlainText(body),
-    html.sig('Matt Stvartak', 'founder · przm', 'matt@przm.sh'),
+    html.sig('Matt Stvartak', 'founder, przm', 'matt@przm.sh'),
   ].join('\n')
 
   const htmlOut = renderEmailShell({

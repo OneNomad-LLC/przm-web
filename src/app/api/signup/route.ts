@@ -70,7 +70,7 @@ function notifyEmail(payload: {
   release: string
   context: string
 }): { subject: string; text: string } {
-  const subject = `[przm ${payload.tier}] ${payload.company} — ${payload.framework}`
+  const subject = `[przm ${payload.tier}] ${payload.company}, ${payload.framework}`
   const lines = [
     `New ${payload.tier} signup from the vendor-cert page.`,
     ``,
@@ -193,7 +193,7 @@ export async function POST(request: Request) {
             warning:
               'submission received and saved, but mail delivery had an issue (' +
               failures.join('; ') +
-              ') — please also drop us a line at matt@przm.sh so we can follow up manually',
+              '). Please also drop us a line at matt@przm.sh so we can follow up manually',
             submissionId,
           },
           { status: 200 },
@@ -205,7 +205,7 @@ export async function POST(request: Request) {
         {
           ok: true,
           warning:
-            'submission received but mail delivery had an issue — please also drop us a line at matt@przm.sh so we can follow up manually',
+            'submission received but mail delivery had an issue. Please also drop us a line at matt@przm.sh so we can follow up manually',
           submissionId,
         },
         { status: 200 },

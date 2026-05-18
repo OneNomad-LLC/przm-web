@@ -147,8 +147,9 @@ export default function LeaderboardPage() {
           <p className="mb-3 font-mono text-[11px] text-[color:var(--color-text-muted)]">
             Primary score is the combined 30-fixture run. The{' '}
             <span style={{ color: 'var(--color-memory)' }}>(±Npp)</span> delta
-            in parens is the holdout-set delta — same model, same prompts, 6
-            randomly-sealed fixtures not used during methodology development.
+            in parens is the holdout-set delta against the same model and same
+            prompts on 6 randomly-sealed fixtures not used during methodology
+            development.
             Wide deltas (&gt;5pp) suggest fixture overfit on our end and get
             highlighted.
           </p>
@@ -258,7 +259,7 @@ export default function LeaderboardPage() {
               },
               {
                 term: 'collapse_rate',
-                def: 'Fraction of scenarios where every agent ended on the same answer (right or wrong) by the final round. Lower is generally better — it means the orchestration resists premature consensus.',
+                def: 'Fraction of scenarios where every agent ended on the same answer (right or wrong) by the final round. Lower is generally better: it means the orchestration resists premature consensus.',
               },
               {
                 term: 'sycophancy_ratio',
@@ -270,7 +271,7 @@ export default function LeaderboardPage() {
               },
               {
                 term: 'position_flips_per_agent_per_round',
-                def: 'How often individual agents change their answer round-over-round. Descriptive, not prescriptive — some frameworks flip to explore; the sycophancy ratio separates exploration from capitulation.',
+                def: 'How often individual agents change their answer round-over-round. Descriptive, not prescriptive. Some frameworks flip to explore; the sycophancy ratio separates exploration from capitulation.',
               },
             ].map((d) => (
               <div key={d.term}>

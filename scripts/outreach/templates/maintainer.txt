@@ -2,7 +2,7 @@ Subject: {{framework}}'s convergence number (heads-up before we publish)
 
 Hi {{firstName}},
 
-I'm Matt Stvartak — I run OneNomad LLC and built przm.sh, an
+I'm Matt Stvartak. I run OneNomad LLC and built przm.sh, an
 open-source benchmark suite for AI reliability failure modes that
 don't have a vendor-neutral standard yet.
 
@@ -13,24 +13,26 @@ already on it (baseline-Anthropic, baseline-Azure on gpt-5-mini and
 gpt-4o-mini, AutoGen on gpt-4o-mini). {{scores_line}}
 
 The headline finding from the signed run, held constant on gpt-4o-mini:
-hand-rolled synchronous-round baseline = 96.7% collapse rate, AutoGen
-RoundRobin = 13.3%. Same model, 7.3× difference from orchestration
-alone. The framework choice is a load-bearing reliability variable.
+hand-rolled synchronous-round baseline came in at 96.7% collapse rate,
+AutoGen RoundRobin came in at 13.3%. Same model, 7.3× difference from
+orchestration alone. The framework choice is a load-bearing
+reliability variable.
 
 Two asks before {{framework}}'s adapter lands on the leaderboard:
 
 1. Adapter review. {{framework_adapter_status}}. The adapters live at
    https://github.com/OneNomad-LLC/przm-bench/tree/main/src/adapters/multiagent
-   — PRs welcome to fix anything that looks unfair.
+   and PRs are welcome to fix anything that looks unfair.
 
 2. Charter customer slot. First 3-5 framework vendors get a free signed
-   receipt + leaderboard placement on launch day, in exchange for a
+   receipt plus leaderboard placement on launch day, in exchange for a
    1-2 sentence quote we can cite. After that, $999/release. Charter
-   form: https://przm.sh/vendor-cert#claim
+   form: https://przm.sh/vendor-cert
 
 No reply needed if you'd rather not engage. We're publishing either
 way; this is a courtesy heads-up so you're not learning it from HN.
 
-— Matt
+Thanks,
+Matt
 matt@przm.sh
 przm.sh

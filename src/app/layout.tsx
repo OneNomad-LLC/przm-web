@@ -4,7 +4,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: {
-    default: 'przm — Vendor-neutral AI reliability benchmarks',
+    default: 'przm: vendor-neutral AI reliability benchmarks',
     template: '%s | przm',
   },
   description:
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'przm',
-    title: 'przm — Vendor-neutral AI reliability benchmarks',
+    title: 'przm: vendor-neutral AI reliability benchmarks',
     description:
       'Multi-axis AI reliability leaderboard. Signed, reproducible, adversarial. Apache-2.0.',
     url: 'https://przm.sh',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'przm — Vendor-neutral AI reliability benchmarks',
+    title: 'przm: vendor-neutral AI reliability benchmarks',
     description:
       'Multi-axis AI reliability leaderboard. Signed, reproducible, adversarial. Apache-2.0.',
   },

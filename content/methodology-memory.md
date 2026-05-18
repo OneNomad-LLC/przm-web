@@ -1,4 +1,4 @@
-# AI Memory Recall Benchmark — Methodology v0.1
+# AI Memory Recall Benchmark: Methodology v0.1
 
 This document specifies how przm scores a memory system and
 how a receipt is produced. Everything here is intentionally precise so
@@ -17,7 +17,7 @@ a result can be independently audited or reproduced.
   ever in a GitHub Actions secret; it never enters source, agent
   context, or any other surface.
 - **Public audit log.** Every receipt is committed to
-  `results/published/`. Once committed, never edited — only superseded
+  `results/published/`. Once committed, never edited. Only superseded
   by a new receipt with a new ID.
 
 ## The adapter contract
@@ -100,7 +100,7 @@ All implemented as pure functions in `src/scoring/`.
 - **`recallAtK(retrieved, expected, k)`**: fraction of fixtures where
   any of `expected` appears in `retrieved.slice(0, k)`. Note: empty
   `expected` arrays are excluded from the denominator (the engram-known
-  inflation bug — see `tests/scoring.test.ts`).
+  inflation bug; see `tests/scoring.test.ts`).
 - **`ndcgAtK(retrieved, expected, k)`**: normalized DCG at K. Standard
   formulation.
 - **`latencyP50`, `latencyP95`**: percentiles of per-query wall-clock

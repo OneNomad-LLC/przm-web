@@ -1,22 +1,22 @@
-Subject: First 5 logos on przm's convergence leaderboard — free for charter customers
+Subject: First 5 logos on przm's convergence leaderboard, free for charter customers
 
 Hi {{firstName}},
 
-I'm Matt — I run OneNomad LLC and built przm.sh, a vendor-neutral
+I'm Matt. I run OneNomad LLC and built przm.sh, a vendor-neutral
 benchmark suite for AI reliability failure modes.
 
-The convergence + sycophancy benchmark just shipped v0.1 with signed
-Ed25519 receipts. Headline finding: same model (gpt-4o-mini), same
-30 scenarios, the orchestration framework alone produces a 7.3×
-difference in collapse rate. The framework is a load-bearing
-reliability variable nobody's measuring.
+The convergence and sycophancy benchmark just shipped v0.1 with
+signed Ed25519 receipts. Headline finding: same model (gpt-4o-mini),
+same 30 scenarios, and the orchestration framework alone produces a
+7.3× difference in collapse rate. The framework is a load-bearing
+reliability variable that nobody's been measuring.
 
 {{company}} is on my "should have a signed receipt for this"
 shortlist. Specifically, {{specific_reason}}
 
-I'm signing the first 3-5 vendors as charter customers — free
-release receipt + leaderboard placement, in exchange for a quote
-we can use and permission to cite {{company}} by name on launch day.
+I'm signing the first 3-5 vendors as charter customers. Free release
+receipt plus leaderboard placement, in exchange for a quote we can
+use and permission to cite {{company}} by name on launch day.
 
 15 minutes this week to walk you through the methodology and what
 the signed receipt looks like?
@@ -26,5 +26,6 @@ Methodology:               https://przm.sh/methodology#convergence
 Cert details:              https://przm.sh/vendor-cert
 Repo:                      https://github.com/OneNomad-LLC/przm-bench
 
-— Matt
+Thanks,
+Matt
 matt@przm.sh

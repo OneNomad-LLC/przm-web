@@ -8,7 +8,7 @@ import { Footer } from '@/components/footer'
 export const metadata: Metadata = {
   title: 'Methodology | przm',
   description:
-    'How przm scores AI reliability — deterministic scoring, Ed25519-signed receipts, SHA-pinned fixtures, adversarial holdouts. Methodology specs for every benchmark we publish.',
+    'How przm scores AI reliability. Deterministic scoring, Ed25519-signed receipts, SHA-pinned fixtures, adversarial holdouts. Methodology specs for every benchmark we publish.',
 }
 
 interface BenchmarkDoc {
@@ -107,8 +107,8 @@ export default async function MethodologyPage() {
             <li>
               <span className="text-[color:var(--color-text-primary)]">Deterministic scoring.</span>{' '}
               Two runs of the same fixture against the same adapter version produce byte-identical
-              scores. No LLM judge anywhere in the grading loop &mdash; scoring is pure-function
-              math on system state.
+              scores. No LLM judge anywhere in the grading loop. Scoring is pure-function math
+              on system state.
             </li>
             <li>
               <span className="text-[color:var(--color-text-primary)]">Signed.</span> Every receipt
@@ -136,8 +136,7 @@ export default async function MethodologyPage() {
               <code className="rounded bg-[color:var(--color-bg-elevated)] px-1.5 py-0.5 text-xs">
                 results/published/
               </code>
-              . Once committed, never edited &mdash; only superseded by a new receipt with a new
-              ID.
+              . Once committed, never edited. Only superseded by a new receipt with a new ID.
             </li>
           </ul>
         </section>

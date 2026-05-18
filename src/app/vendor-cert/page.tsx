@@ -174,8 +174,8 @@ export default function VendorCertPage() {
             We run the benchmark independently against your release, sign the
             receipt with our Ed25519 key, and publish it on the public
             leaderboard. You get a third-party performance attestation you can
-            link from your README, your sales deck, your landing page —
-            anywhere "this is what the test said" beats "trust us."
+            link from your README, your sales deck, your landing page,
+            or anywhere "this is what the test said" beats "trust us."
           </p>
         </section>
 
@@ -337,7 +337,7 @@ export default function VendorCertPage() {
             {[
               {
                 title: 'You do not see the fixtures in advance.',
-                body: "That's the point. If you saw the test questions, the score would be meaningless. The holdout set is sealed from everyone vendor-side — including us.",
+                body: "That's the point. If you saw the test questions, the score would be meaningless. The holdout set is sealed from everyone vendor-side, including us.",
               },
               {
                 title: 'We do not tune the benchmark to your strengths.',
@@ -349,7 +349,7 @@ export default function VendorCertPage() {
               },
               {
                 title: 'Certification is not an endorsement.',
-                body: '"przm recommends this product" is not what a receipt says. A receipt says "this is what we found when we ran the test." Vendors with high scores AND low scores can publish — the meaning depends on context and the comparison.',
+                body: '"przm recommends this product" is not what a receipt says. A receipt says "this is what we found when we ran the test." Vendors with high scores AND low scores can publish; the meaning depends on context and the comparison.',
               },
             ].map((item) => (
               <div
@@ -380,7 +380,7 @@ export default function VendorCertPage() {
               },
               {
                 q: 'What if I disagree with the methodology?',
-                a: 'The methodology is open source. Submit a PR. We take adversarial feedback seriously — the spec explicitly allows competitors to submit replacement confederate prompts and we publish both runs. If your objection is substantive, it makes the benchmark better.',
+                a: 'The methodology is open source. Submit a PR. We take adversarial feedback seriously. The spec explicitly allows competitors to submit replacement confederate prompts and we publish both runs. If your objection is substantive, it makes the benchmark better.',
               },
               {
                 q: 'What if the benchmark changes between my v1 cert and my v2 cert?',

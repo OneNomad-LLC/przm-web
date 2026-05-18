@@ -116,7 +116,7 @@ export function renderSignupAck({
     html.pRaw(
       `If anything looks unfair about the adapter we'd run against <strong style="color:#1a1a1a;">${escapeHtmlInline(framework)}</strong>, you can PR our adapter file directly.`,
     ),
-    html.sig('Matt Stvartak', 'founder · przm', 'matt@przm.sh'),
+    html.sig('Matt Stvartak', 'founder, przm', 'matt@przm.sh'),
   ].join('\n')
 
   const htmlOut = renderEmailShell({
@@ -150,8 +150,9 @@ export function renderSignupAck({
     `If anything looks unfair about the adapter we'd run against ${framework}, you`,
     `can PR our adapter file directly.`,
     ``,
-    `— Matt`,
-    `founder · przm`,
+    `Thanks,`,
+    `Matt`,
+    `founder, przm`,
     `matt@przm.sh`,
   ].join('\n')
 

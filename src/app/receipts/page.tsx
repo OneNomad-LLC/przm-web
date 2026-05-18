@@ -191,7 +191,7 @@ export default async function ReceiptsIndexPage() {
                             {e.signed ? (
                               <span style={{ color: 'var(--color-bench)' }}>✓</span>
                             ) : (
-                              <span className="text-[color:var(--color-text-disabled)]">—</span>
+                              <span className="text-[color:var(--color-text-disabled)]">·</span>
                             )}
                           </td>
                         </tr>
