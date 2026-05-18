@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import { rainbowWedges } from '@/lib/brand/rainbow-wedges'
 
 export const runtime = 'edge'
 
@@ -7,6 +8,9 @@ export const runtime = 'edge'
 // the corners is clipped. Keep the meaningful brand mark centered
 // and well inside the safe zone.
 export async function GET() {
+  // Triangle in 32-unit viewBox, centroid at (16, 20).
+  const wedges = rainbowWedges(16, 20, 32, 24)
+
   return new ImageResponse(
     (
       <div
@@ -22,17 +26,23 @@ export async function GET() {
       >
         <svg width="280" height="280" viewBox="0 0 32 32">
           <defs>
-            <radialGradient id="av-rainbow" cx="16" cy="20" r="18" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#E84040" />
-              <stop offset="0.17" stopColor="#F59520" />
-              <stop offset="0.33" stopColor="#E8C830" />
-              <stop offset="0.5" stopColor="#34C468" />
-              <stop offset="0.67" stopColor="#3B9EFF" />
-              <stop offset="0.83" stopColor="#6655DD" />
-              <stop offset="1" stopColor="#9955CC" />
-            </radialGradient>
+            <clipPath id="av-tri">
+              <path d="M16 4 L28 28 L4 28 Z" />
+            </clipPath>
           </defs>
-          <path d="M16 4 L28 28 L4 28 Z" fill="url(#av-rainbow)" />
+          <g clipPath="url(#av-tri)">
+            {wedges.map((w, i) => (
+              <path key={i} d={w.d} fill={w.color} />
+            ))}
+          </g>
+          <path
+            d="M16 4 L28 28 L4 28 Z"
+            fill="none"
+            stroke="#ebdbb2"
+            strokeOpacity="0.4"
+            strokeWidth="0.5"
+            strokeLinejoin="round"
+          />
         </svg>
       </div>
     ),

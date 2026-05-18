@@ -1,3 +1,5 @@
+import { rainbowWedges } from '@/lib/brand/rainbow-wedges'
+
 interface LogoProps {
   size?: number
   /** Optional solid color override. When set, suppresses the rainbow gradient. */
@@ -6,34 +8,56 @@ interface LogoProps {
 }
 
 /**
- * przm logo: equilateral triangle filled with a conic-gradient
- * rainbow (color-wheel sweep, ROY G BIV around the center). Uses
- * CSS conic-gradient inside a clipped div rather than SVG because
- * SVG has no native conic gradient primitive. Browser support for
- * conic-gradient is 95%+ (Chrome 69, Safari 12.1, Firefox 83).
+ * przm logo: triangle filled with a conic-rainbow sweep around the
+ * centroid (approximated via 24 SVG wedge slices clipped to the
+ * triangle). Thin cream stroke defines the edges.
  *
- * Static images (favicon, OG, avatar, banner) use a 24-wedge SVG
- * approximation for the same look in raster contexts.
+ * Path lives in a 32-unit viewBox so the navbar, favicon, OG image,
+ * avatar, and banner are all pixel-identical when scaled. Do not
+ * change the path or the centroid here without also re-generating
+ * public/favicon.svg via scripts/gen-favicon.cjs.
  */
-export function Logo({ size = 20, color, className }: LogoProps) {
-  // Equilateral triangle clip-path expressed in percentages so it
-  // scales with the box. Centroid is at 50%, 66.7%.
-  const clipPath = 'polygon(50% 6%, 100% 92%, 0% 92%)'
+const VIEWBOX = 32
+const TRIANGLE_D = 'M16 4 L28 28 L4 28 Z'
+const CENTROID_X = 16
+const CENTROID_Y = 20 // (4 + 28 + 28) / 3
+const WEDGE_RADIUS = 18 // covers the apex (16 units from centroid) with margin
+const WEDGES = rainbowWedges(CENTROID_X, CENTROID_Y, WEDGE_RADIUS, 24)
 
+export function Logo({ size = 20, color, className }: LogoProps) {
   return (
-    <div
-      role="img"
-      aria-label="przm"
+    <svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${VIEWBOX} ${VIEWBOX}`}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
       className={className}
-      style={{
-        width: size,
-        height: size,
-        clipPath,
-        WebkitClipPath: clipPath,
-        background: color
-          ? color
-          : 'conic-gradient(from 0deg at 50% 66.7%, #E84040, #F59520, #E8C830, #34C468, #3B9EFF, #6655DD, #9955CC, #E84040)',
-      }}
-    />
+      aria-label="przm"
+      role="img"
+    >
+      <defs>
+        <clipPath id="przm-tri-clip">
+          <path d={TRIANGLE_D} />
+        </clipPath>
+      </defs>
+      {color ? (
+        <path d={TRIANGLE_D} fill={color} />
+      ) : (
+        <g clipPath="url(#przm-tri-clip)">
+          {WEDGES.map((w, i) => (
+            <path key={i} d={w.d} fill={w.color} />
+          ))}
+        </g>
+      )}
+      <path
+        d={TRIANGLE_D}
+        fill="none"
+        stroke="#ebdbb2"
+        strokeOpacity="0.4"
+        strokeWidth="0.5"
+        strokeLinejoin="round"
+      />
+    </svg>
   )
 }

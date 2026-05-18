@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import { rainbowWedges } from '@/lib/brand/rainbow-wedges'
 
 export const runtime = 'edge'
 
@@ -10,6 +11,8 @@ export const runtime = 'edge'
 // backgrounds — they fail silently and return an empty PNG. Stick
 // to flex with explicit width/height children.
 export async function GET() {
+  const wedges = rainbowWedges(16, 20, 32, 24)
+
   return new ImageResponse(
     (
       <div
@@ -29,17 +32,23 @@ export async function GET() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
           <svg width="180" height="180" viewBox="0 0 32 32">
             <defs>
-              <radialGradient id="bn-rainbow" cx="16" cy="20" r="18" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stopColor="#E84040" />
-                <stop offset="0.17" stopColor="#F59520" />
-                <stop offset="0.33" stopColor="#E8C830" />
-                <stop offset="0.5" stopColor="#34C468" />
-                <stop offset="0.67" stopColor="#3B9EFF" />
-                <stop offset="0.83" stopColor="#6655DD" />
-                <stop offset="1" stopColor="#9955CC" />
-              </radialGradient>
+              <clipPath id="bn-tri">
+                <path d="M16 4 L28 28 L4 28 Z" />
+              </clipPath>
             </defs>
-            <path d="M16 4 L28 28 L4 28 Z" fill="url(#bn-rainbow)" />
+            <g clipPath="url(#bn-tri)">
+              {wedges.map((w, i) => (
+                <path key={i} d={w.d} fill={w.color} />
+              ))}
+            </g>
+            <path
+              d="M16 4 L28 28 L4 28 Z"
+              fill="none"
+              stroke="#ebdbb2"
+              strokeOpacity="0.4"
+              strokeWidth="0.5"
+              strokeLinejoin="round"
+            />
           </svg>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div
