@@ -4,6 +4,24 @@ export function Footer() {
   return (
     <footer className="border-t border-[color:var(--color-border-subtle)] bg-[color:var(--color-bg-surface)]/30 px-6 py-10">
       <div className="mx-auto max-w-6xl">
+        <div className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[11px] text-[color:var(--color-text-muted)]">
+          <span className="text-[color:var(--color-text-disabled)]">przm suite:</span>
+          <Link href="/memory" className="hover:underline" style={{ color: 'var(--color-memory)' }}>
+            Memory
+          </Link>
+          <span className="text-[color:var(--color-text-disabled)]">·</span>
+          <Link href="/voice" className="hover:underline" style={{ color: 'var(--color-voice)' }}>
+            Voice
+          </Link>
+          <span className="text-[color:var(--color-text-disabled)]">·</span>
+          <span className="text-[color:var(--color-text-disabled)]">Knowledge (soon)</span>
+          <span className="text-[color:var(--color-text-disabled)]">·</span>
+          <Link href="/" className="hover:underline" style={{ color: 'var(--color-bench)' }}>
+            Bench
+          </Link>
+          <span className="text-[color:var(--color-text-disabled)]">·</span>
+          <span className="text-[color:var(--color-text-disabled)]">Runtime (soon)</span>
+        </div>
         <div className="flex flex-col items-start justify-between gap-4 font-mono text-xs text-[color:var(--color-text-muted)] md:flex-row md:items-center">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <span>
