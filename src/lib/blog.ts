@@ -53,9 +53,11 @@ async function loadByFilename(filename: string): Promise<BlogPost | null> {
   const slugFromName = filename.replace(/\.md$/, '')
   const slug = typeof data.slug === 'string' ? data.slug : slugFromName
 
-  if (typeof data.title !== 'string' || typeof data.publishedAt !== 'string') {
-    // Reject posts without required frontmatter so build doesn't render
-    // a broken card.
+  // gray-matter parses unquoted YAML dates as JS Date objects. Accept
+  // both shapes and normalize to an ISO date string. Reject only if
+  // the field is missing or unparseable.
+  const publishedAt = normalizePublishedAt(data.publishedAt)
+  if (typeof data.title !== 'string' || publishedAt === null) {
     return null
   }
 
@@ -66,9 +68,19 @@ async function loadByFilename(filename: string): Promise<BlogPost | null> {
     title: data.title,
     description:
       typeof data.description === 'string' ? data.description : '',
-    publishedAt: String(data.publishedAt),
+    publishedAt,
     author: typeof data.author === 'string' ? data.author : undefined,
     htmlBody,
     markdownBody: content,
   }
+}
+
+function normalizePublishedAt(raw: unknown): string | null {
+  if (raw instanceof Date && !isNaN(raw.getTime())) {
+    return raw.toISOString().slice(0, 10) // YYYY-MM-DD
+  }
+  if (typeof raw === 'string' && raw.trim().length > 0) {
+    return raw.trim()
+  }
+  return null
 }

@@ -34,9 +34,9 @@ const BENCHMARK_DOCS: Omit<BenchmarkDoc, 'html'>[] = [
   {
     slug: 'memory',
     title: 'AI memory recall',
-    status: 'live',
+    status: 'next',
     description:
-      'Deterministic R@K and NDCG on LongMemEval temporal-inference and LoCoMo, with seen + 20% holdout splits.',
+      'Deterministic R@K and NDCG on LongMemEval temporal-inference and LoCoMo, with seen + 20% holdout splits. Spec finalized; signed receipts publish on the v0.2 cycle.',
     sourcePath: 'content/methodology-memory.md',
   },
 ]

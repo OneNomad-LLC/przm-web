@@ -1,6 +1,6 @@
-# Onenomad Bench Methodology
+# AI Memory Recall Benchmark — Methodology v0.1
 
-This document specifies how Onenomad Bench scores a memory system and
+This document specifies how przm scores a memory system and
 how a receipt is produced. Everything here is intentionally precise so
 a result can be independently audited or reproduced.
 
@@ -67,7 +67,6 @@ include the expected_answer_ids."
   "environment": {
     "node": "22.11.0",
     "platform": "linux/amd64",
-    "containerImage": "ghcr.io/onenomad-llc/bench-runner:<sha>",
     "git": { "commit": "<sha>", "dirty": false }
   },
   "scores": {
@@ -113,13 +112,11 @@ All implemented as pure functions in `src/scoring/`.
 
 A receipt is considered defensible if:
 
-1. The `environment.git.commit` is a tagged release of `bench`.
+1. The `environment.git.commit` is a tagged release of `przm-bench`.
 2. The `environment.git.dirty` is `false`.
-3. The container image hash matches a tagged image at
-   `ghcr.io/onenomad-llc/bench-runner`.
-4. The `fixture.sha256` matches the fixture content at that commit.
-5. The signature verifies against `keys/receipt-signing.pub`.
-6. Re-running the same adapter version + fixture + environment
+3. The `fixture.sha256` matches the fixture content at that commit.
+4. The signature verifies against the published public key.
+5. Re-running the same adapter version + fixture + environment
    produces byte-identical `scores` (modulo timestamp).
 
 ## Threats to validity
