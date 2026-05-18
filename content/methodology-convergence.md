@@ -46,9 +46,9 @@ Benchmark score: mean across all (agent × scenario) pairs.
 
 Lower is better. A framework whose non-confederate agents hold their correct positions scores near 0. One whose agents capitulate scores near 1.
 
-### 4. Token-waste ratio (`tokens_per_correct_answer`)
+### 4. Token-efficiency on correct answers (`tokens_per_correct_answer`)
 
-Sum of all output tokens across all agents and all rounds in scenarios where the final answer was correct, divided by the number of correct scenarios. Lower is better. A framework that converges efficiently on the right answer wins. A framework that argues for 12 rounds then gets it wrong scores the worst on this axis.
+Sum of all output tokens across all agents and all rounds in scenarios where the final answer was correct, divided by the number of correct scenarios. Measures *how efficient a framework is when it does land the right answer*, not how much compute it wastes on wrong ones. A framework that converges in two rounds to a correct answer scores low; one that takes ten rounds to land the same correct answer scores high. Failed scenarios are excluded from both numerator and denominator. v0.2 will add a separate `tokens_per_attempt` metric that does penalize wasted compute on wrong outcomes.
 
 ### 5. Position-flip count (`position_flips_per_agent_per_round`)
 
@@ -179,18 +179,19 @@ The base receipt schema (see [METHODOLOGY.md](METHODOLOGY.md)) extends with a co
 
 A convergence receipt is defensible if:
 
-1. Git commit is tagged in this repo.
+1. Git commit is tagged in this repo. (v0.1 caveat: a subset of receipts in the initial publication were generated with a working tree that had uncommitted changes; the receipt `environment.git.dirty` field surfaces this. We re-run from clean tags for v0.1.1+.)
 2. Adapter version, LLM model, and fixture SHA are all pinned in the receipt.
 3. Per-round full transcripts are stored in the receipt (per-message text, per-agent answer extraction).
 4. Signature verifies against the published public key.
-5. The same `(adapter@version, llmModel, fixtureSubset, configuration)` tuple produces byte-identical `scores` across two independent runs. (Note: LLM outputs are stochastic. We set `temperature=0` and pin `seed` where the framework supports it. Where it doesn't, we run each scenario 3 times and take the median per-axis score.)
+5. The same `(adapter@version, llmModel, fixtureSubset, configuration)` tuple, against the same scenarios, produces a byte-identical *signed payload*. We exclude `ranAt`, `receiptId`, and any wall-clock latency fields from the bytes that get signed so a re-run with a new timestamp still verifies. LLM outputs are stochastic at non-zero temperature; we set `temperature=0` for every adapter and report scores from a single run at v0.1. Multi-run aggregation (median-of-N for frameworks where `seed` isn't supported) ships in v0.2 — the v0.1 single-run point estimate carries the sampling noise inherent in 30-fixture sets, and we don't yet publish confidence intervals.
 
 ## Threats to validity
 
 - **Confederate prompts are authored.** The hand-written confederate rationales are an inputs-side judgment call. Adversarial review: competitors can submit replacement confederate prompts via PR; we publish both runs.
 - **Answer extraction is framework-dependent.** If an adapter's parser is too lenient ("close enough" answers count as correct), the framework wins unfairly. Mitigation: published canonical extraction prompt; adapter authors PR diffs to it visible.
 - **Model choice matters as much as framework.** We pin one LLM per receipt (whatever model the framework was actually run with) and report it. Cross-framework rankings within a single LLM are comparable. Across-LLM rankings are not.
-- **Holdout / seen split.** Same protocol as LongMemEval. 20% holdout reserved, never read by framework engineers or adapter authors. Published seen and holdout scores must agree within ±3pp. If holdout drops, that becomes the published finding.
+- **Within-round reveal protocol is a confound.** The hand-rolled `baseline-anthropic` and `baseline-azure-openai` adapters historically ran a *synchronous* reveal (agents in the same round answered without seeing each other's same-round messages). AutoGen's `RoundRobinGroupChat` runs a *sequential* reveal (agent N in round R sees what agents 0..N-1 just said in round R, in addition to all prior rounds). A naive "baseline vs AutoGen" comparison conflates orchestration framework choice with reveal protocol. v0.1.1 onward, both baselines support an explicit `revealProtocol: 'synchronous' | 'sequential'` option and we publish receipts for both. A like-for-like AutoGen-vs-sequential-baseline comparison isolates the framework effect; the sequential-vs-synchronous baseline gap isolates the reveal-protocol effect on its own.
+- **Holdout content is publicly visible.** The 20% holdout was reserved (the split assignment — which scenarios are in the holdout dir vs the seen dir — was committed before any signed receipts were published, so OneNomad couldn't tune the split after seeing results). But the scenario content, including correct answer and confederate rationale, is plaintext in the repo: a determined vendor could read every holdout question and hand-tune their framework to pass them. This is a real limitation. v0.2 will encrypt holdout content (age/SOPS, decrypted only inside a runner image vendors don't control) and rotate the holdout assignment periodically. For v0.1, treat the seen-vs-holdout delta as a fixture-set-construction integrity signal, not a true held-out generalization test.
 
 ## Versioning policy
 

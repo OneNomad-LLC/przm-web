@@ -27,7 +27,7 @@ type VerifyResult =
   | { status: 'unknown-key'; receiptFingerprint: string }
   | { status: 'error'; reason: string }
 
-/** JCS (RFC 8785) stringify */
+/** JCS (RFC 8785) stringify. */
 function jcsStringify(value: unknown): string {
   if (value === null || value === undefined) return 'null'
   if (typeof value === 'boolean' || typeof value === 'number') return String(value)
@@ -44,6 +44,47 @@ function jcsStringify(value: unknown): string {
     return '{' + pairs.join(',') + '}'
   }
   return JSON.stringify(value)
+}
+
+/**
+ * Non-deterministic fields excluded from the signed payload. Must
+ * match `NON_DETERMINISTIC_FIELDS` + `NON_DETERMINISTIC_SCORE_FIELDS`
+ * in przm-bench/src/receipt/canonicalize.ts. Browser verifier and
+ * Node signer/verifier all have to strip the same set or signatures
+ * won't verify.
+ */
+const STRIP_TOP_LEVEL = new Set(['signature', 'ranAt', 'receiptId'])
+const STRIP_FROM_SCORES = new Set([
+  'latency_p50_ms',
+  'latency_p95_ms',
+  'ingest_throughput_items_per_sec',
+])
+
+function stripNonDeterministic(value: unknown): unknown {
+  if (value === null || typeof value !== 'object' || Array.isArray(value)) {
+    return value
+  }
+  const src = value as Record<string, unknown>
+  const out: Record<string, unknown> = {}
+  for (const [k, v] of Object.entries(src)) {
+    if (STRIP_TOP_LEVEL.has(k)) continue
+    if (
+      k === 'scores' &&
+      v !== null &&
+      typeof v === 'object' &&
+      !Array.isArray(v)
+    ) {
+      const cleanScores: Record<string, unknown> = {}
+      for (const [sk, sv] of Object.entries(v as Record<string, unknown>)) {
+        if (STRIP_FROM_SCORES.has(sk)) continue
+        cleanScores[sk] = sv
+      }
+      out[k] = cleanScores
+      continue
+    }
+    out[k] = v
+  }
+  return out
 }
 
 async function verifyReceiptJson(
@@ -89,8 +130,13 @@ async function verifyReceiptJson(
         ['verify'],
       )
 
-      const { signature: _sig, ...receiptBody } = receipt
-      const canonical = jcsStringify(receiptBody)
+      // Strip signature + non-deterministic fields (ranAt, receiptId,
+      // wall-clock latency/throughput) BEFORE canonicalizing. Has to
+      // match the signer's exclusion set in
+      // przm-bench/src/receipt/canonicalize.ts or signatures won't
+      // verify.
+      const receiptForSigning = stripNonDeterministic(receipt)
+      const canonical = jcsStringify(receiptForSigning)
       const payloadBytes = new TextEncoder().encode(canonical)
 
       const sigB64 = receipt.signature.value.replace(/-/g, '+').replace(/_/g, '/')
