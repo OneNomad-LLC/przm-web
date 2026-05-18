@@ -67,6 +67,25 @@ Verify:       https://przm.sh/verify
 Repo:         https://github.com/OneNomad-LLC/przm-bench (Apache-2.0)
 ```
 
+### First OP comment (post immediately after submission)
+
+Post this as the first reply to your own Show HN as soon as the submission lands. It frames the discussion, signals you're actively engaging, and surfaces the things people will reasonably want to question.
+
+```
+OP here, happy to dig into anything. A few things worth flagging up front since I'd be asking them in your shoes:
+
+(1) Sample size. v0.1 is 30 hand-curated convergence scenarios across 5 categories. That's a small N to claim "this is how frameworks behave," and the headline 7.3× collapse-rate gap could narrow as fixtures expand. I'm sized for "this is enough to demonstrate the methodology works and the orchestration delta is real and large"; not "this is a final ranking." Holdout split (20% sealed from anyone vendor-side) is the partial defense, but I'd happily take fixture PRs.
+
+(2) Confederate prompts are authored. Each scenario's confederate uses a hand-written wrong-but-confident rationale. That's an inputs-side judgment call. The mitigation in the methodology: competitors can submit replacement confederate prompts via PR and we publish both runs side by side. If you think a specific fixture's confederate is too weak or too strong, that's a real bug, file it.
+
+(3) AI-built and AI-audited. The whole stack (methodology docs, scoring functions, fixture set, adapter contract, receipt schema) was drafted, reviewed, and iterated by Claude. I made the calls and wrote the positioning; the agents wrote and tested the code. That's why "no LLM in the grading loop" is load-bearing for us, not aesthetic: it's the only path to a credibility chain that doesn't end at "trust the AI that wrote the eval."
+
+(4) v0.1 has 2 framework adapters, not 5. CrewAI / LangGraph / OpenAI Agents SDK ship v0.2 (the CrewAI adapter is built but hit a litellm/Azure interop quirk on full-bench runs). What's published today is baseline + AutoGen, same model. If you're a framework maintainer reading this and want adapter input, the source is at github.com/OneNomad-LLC/przm-bench and PRs are welcome.
+
+Will be here all day. Hard questions get the most attention.
+```
+(~1,650 chars; fits HN's 5K comment limit with plenty of margin.)
+
 ---
 
 ## Twitter / X Thread
