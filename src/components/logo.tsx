@@ -1,24 +1,31 @@
 interface LogoProps {
   size?: number
+  /** Optional solid color override. When set, suppresses the rainbow gradient. */
   color?: string
   className?: string
 }
 
 /**
- * przm logo — equilateral triangle suggesting a prism wedge.
- * Filled with a spectral gradient (red→green→blue) to hint at refraction.
- * At small navbar sizes the gradient reads as a subtle shimmer rather than
- * literal rainbow, which keeps the aesthetic infrastructure-grade.
+ * przm logo: equilateral triangle suggesting a prism wedge.
+ * Rainbow radial gradient from the centroid outward (red core, violet edge)
+ * so the mark reads as a literal prism refraction at any size. At small
+ * navbar sizes the spectrum compresses into a glowing transition; at larger
+ * sizes (favicon, OG image, banner) the distinct ROY G BIV bands separate.
  */
 export function Logo({ size = 20, color, className }: LogoProps) {
-  const id = 'przm-prism-grad'
-
-  // Equilateral triangle points for a `size × size` bounding box, centered
+  // Equilateral triangle points for a size×size bounding box, centered.
   const h = size * (Math.sqrt(3) / 2)
   const cx = size / 2
   const top = (size - h) / 2
   const bottom = top + h
   const points = `${cx},${top} ${size},${bottom} 0,${bottom}`
+
+  // Centroid of an equilateral triangle is 1/3 up from the base.
+  const centroidY = top + (2 * h) / 3
+  const radius = size * 0.55 // reaches the apex from the centroid
+
+  // Stable ID per render instance prevents collisions when multiple Logos exist on a page.
+  const id = `przm-rainbow-${size}-${Math.round(centroidY * 100)}`
 
   return (
     <svg
@@ -32,18 +39,24 @@ export function Logo({ size = 20, color, className }: LogoProps) {
     >
       {!color && (
         <defs>
-          <linearGradient id={id} x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="var(--color-memory)" />
-            <stop offset="50%" stopColor="var(--color-bench)" />
-            <stop offset="100%" stopColor="var(--color-runtime)" />
-          </linearGradient>
+          <radialGradient
+            id={id}
+            cx={cx}
+            cy={centroidY}
+            r={radius}
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0%" stopColor="#E84040" />
+            <stop offset="17%" stopColor="#F59520" />
+            <stop offset="33%" stopColor="#E8C830" />
+            <stop offset="50%" stopColor="#34C468" />
+            <stop offset="67%" stopColor="#3B9EFF" />
+            <stop offset="83%" stopColor="#6655DD" />
+            <stop offset="100%" stopColor="#9955CC" />
+          </radialGradient>
         </defs>
       )}
-      <polygon
-        points={points}
-        fill={color ?? `url(#${id})`}
-        opacity={0.92}
-      />
+      <polygon points={points} fill={color ?? `url(#${id})`} />
     </svg>
   )
 }

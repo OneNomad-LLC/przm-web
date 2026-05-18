@@ -29,33 +29,17 @@ export default async function Image() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
           <svg width="160" height="160" viewBox="0 0 32 32">
             <defs>
-              <radialGradient id="og-top" cx="16" cy="4" r="24" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stopColor="#34C468" stopOpacity="1" />
-                <stop offset="1" stopColor="#34C468" stopOpacity="0" />
-              </radialGradient>
-              <radialGradient id="og-bl" cx="4" cy="28" r="24" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stopColor="#E84040" stopOpacity="1" />
-                <stop offset="1" stopColor="#E84040" stopOpacity="0" />
-              </radialGradient>
-              <radialGradient id="og-br" cx="28" cy="28" r="24" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stopColor="#FABD2F" stopOpacity="1" />
-                <stop offset="1" stopColor="#FABD2F" stopOpacity="0" />
+              <radialGradient id="og-rainbow" cx="16" cy="20" r="18" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stopColor="#E84040" />
+                <stop offset="0.17" stopColor="#F59520" />
+                <stop offset="0.33" stopColor="#E8C830" />
+                <stop offset="0.5" stopColor="#34C468" />
+                <stop offset="0.67" stopColor="#3B9EFF" />
+                <stop offset="0.83" stopColor="#6655DD" />
+                <stop offset="1" stopColor="#9955CC" />
               </radialGradient>
             </defs>
-            <path d="M16 4 L28 28 L4 28 Z" fill="#1d2021" />
-            <g style={{ mixBlendMode: 'screen' }}>
-              <path d="M16 4 L28 28 L4 28 Z" fill="url(#og-top)" />
-              <path d="M16 4 L28 28 L4 28 Z" fill="url(#og-bl)" />
-              <path d="M16 4 L28 28 L4 28 Z" fill="url(#og-br)" />
-            </g>
-            <path
-              d="M16 4 L28 28 L4 28 Z"
-              fill="none"
-              stroke="#ebdbb2"
-              strokeOpacity="0.25"
-              strokeWidth="0.4"
-              strokeLinejoin="round"
-            />
+            <path d="M16 4 L28 28 L4 28 Z" fill="url(#og-rainbow)" />
           </svg>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div

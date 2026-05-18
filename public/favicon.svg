@@ -1,26 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" fill="#1d2021"/>
   <defs>
-    <radialGradient id="g-top" cx="16" cy="4" r="24" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#34C468" stop-opacity="1"/>
-      <stop offset="1" stop-color="#34C468" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="g-bl" cx="4" cy="28" r="24" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#E84040" stop-opacity="1"/>
-      <stop offset="1" stop-color="#E84040" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="g-br" cx="28" cy="28" r="24" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#FABD2F" stop-opacity="1"/>
-      <stop offset="1" stop-color="#FABD2F" stop-opacity="0"/>
+    <radialGradient id="g-rainbow" cx="16" cy="20" r="18" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E84040"/>
+      <stop offset="0.17" stop-color="#F59520"/>
+      <stop offset="0.33" stop-color="#E8C830"/>
+      <stop offset="0.5" stop-color="#34C468"/>
+      <stop offset="0.67" stop-color="#3B9EFF"/>
+      <stop offset="0.83" stop-color="#6655DD"/>
+      <stop offset="1" stop-color="#9955CC"/>
     </radialGradient>
   </defs>
-  <g style="isolation: isolate">
-    <path d="M16 4 L28 28 L4 28 Z" fill="#1d2021"/>
-    <g style="mix-blend-mode: screen">
-      <path d="M16 4 L28 28 L4 28 Z" fill="url(#g-top)"/>
-      <path d="M16 4 L28 28 L4 28 Z" fill="url(#g-bl)"/>
-      <path d="M16 4 L28 28 L4 28 Z" fill="url(#g-br)"/>
-    </g>
-    <path d="M16 4 L28 28 L4 28 Z" fill="none" stroke="#ebdbb2" stroke-opacity="0.18" stroke-width="0.5" stroke-linejoin="round"/>
-  </g>
+  <path d="M16 4 L28 28 L4 28 Z" fill="url(#g-rainbow)"/>
 </svg>
