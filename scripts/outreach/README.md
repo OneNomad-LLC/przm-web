@@ -34,7 +34,7 @@ node scripts/outreach/send.cjs --play maintainer --send
 - **Recipients with `email: null` are skipped** with a note. Those need manual outreach (DM, Discord, contact form). The note in `contactNotes` explains the channel.
 - **Subject lines are taken from the first `Subject:` line of each template.** Anything before is ignored; anything after the blank line is the body.
 - **Variable substitution** is `{{var}}`. Unresolved vars are left visible in dry-run output so you can spot missing fields before sending.
-- **From address** is `Matt Stvartak <hello@przm.sh>`. **Reply-To** is `hello@onenomad.dev`. (Reply-To here is your inbox, not the agent-inbox plus-address — outreach replies should land in your normal mail, not get auto-filed against a submission that doesn't exist yet.)
+- **From address** is `Matt Stvartak <hello@przm.sh>`. **Reply-To** is `matt@przm.sh`. (Reply-To here is your inbox, not the agent-inbox plus-address — outreach replies should land in your normal mail, not get auto-filed against a submission that doesn't exist yet.)
 
 ## Sequencing
 

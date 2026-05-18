@@ -38,7 +38,7 @@ const TEMPLATES_DIR = path.join(ROOT, 'templates');
 const LOG_PATH = path.join(__dirname, '..', '..', 'local-data', 'outreach', 'outreach.log');
 
 const FROM = 'Matt Stvartak <hello@przm.sh>';
-const REPLY_TO = 'hello@onenomad.dev';
+const REPLY_TO = 'matt@przm.sh';
 
 function parseArgs(argv) {
   const out = { play: null, mode: 'dry-run', only: null };

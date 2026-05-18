@@ -133,25 +133,49 @@ I measured how multi-agent AI systems collapse to confidently-wrong answers. Sam
 
 ---
 
-## LinkedIn
+## LinkedIn — OneNomad company page
+
+Voice: OneNomad-announces-przm (third-person company voice). Posts from <https://www.linkedin.com/company/onenomad/>.
 
 ```
-Multi-agent AI systems have a reliability problem that nobody's measuring well. When one agent confidently asserts a wrong answer, how many of the other agents — who started with the correct answer — end up agreeing with it? And how much of that depends on the orchestration framework versus the underlying model?
+OneNomad is launching przm — an open-source, vendor-neutral leaderboard for AI reliability.
 
-I ran the test. The most interesting result wasn't about models at all.
+Multi-agent AI systems have a reliability problem nobody's been measuring well: when one agent confidently asserts a wrong answer, how many of the other agents — who started correct — end up agreeing with it? And how much of that depends on the orchestration framework versus the underlying model?
 
-przm (https://przm.sh) is an open-source AI reliability leaderboard that ships today. v0.1 measures multi-agent convergence and sycophancy across five scoring axes: deterministic math, no LLM judge, every result an Ed25519-signed receipt that anyone can verify against the published public key.
+przm v0.1 (https://przm.sh) ships today. It measures multi-agent convergence and sycophancy across five scoring axes. Deterministic math. No LLM in the grading loop. Every result is an Ed25519-signed receipt anyone can verify against the published public key.
 
-The headline finding: same model (gpt-4o-mini), same 30 fixtures, two different orchestration patterns. Hand-rolled synchronous-round debate: 96.7% collapse rate. Microsoft AutoGen's RoundRobinGroupChat: 13.3%. A 7.3× difference attributable entirely to orchestration. Counterintuitively, the framework with more same-round peer visibility (AutoGen) RESISTED convergence harder, because correct agents reinforced each other before the confederate's confidence had time to compound. That's the kind of result no published benchmark surfaces today.
+The headline finding: same model (gpt-4o-mini), same 30 fixtures, two different orchestration patterns. Hand-rolled synchronous-round debate: 96.7% collapse rate. Microsoft AutoGen's RoundRobinGroupChat: 13.3%. A 7.3× difference attributable entirely to orchestration. Counterintuitively, the framework with more same-round peer visibility (AutoGen) RESISTED convergence harder — correct agents reinforced each other before the confederate's confidence had time to compound. Not the direction we'd predicted.
 
-Frontier models held more reliably than I expected — Claude Haiku 4.5 scored 93.3%, gpt-5-mini 96.7% — but both folded on the same scenario: a popular-misconception trap where the confederate plausibly asserts Einstein failed math in school. The bench is catching real things.
+Frontier models held more reliably than expected — Claude Haiku 4.5 at 93.3%, gpt-5-mini at 96.7% — but both folded on the same scenario: a popular-misconception trap where a confederate plausibly asserts Einstein failed math. The bench is catching real things.
 
-Why did this benchmark not already exist? Structural conflict: the companies best positioned to build it (Patronus, Braintrust, LangSmith) sell to the same AI app builders whose frameworks would be benchmarked. Publishing "this framework's agents collapse to wrong answers" antagonizes their customer base.
+Why didn't this benchmark already exist? Structural conflict: the companies best positioned to build it (Patronus, Braintrust, LangSmith) sell to the same AI app builders whose frameworks would be benchmarked. Publishing "this framework's agents collapse to wrong answers" antagonizes their customer base. A vendor-neutral third party — that doesn't sell into the framework market — is the only entity that can credibly run this.
 
-For AI framework vendors: certification is open. First 3-5 charter customers get a signed receipt free in exchange for case-study rights. After that, $999 per release for a third-party performance attestation you can publish on your own site. We don't tune the benchmark to your strengths — that's the point.
+For AI framework vendors: certification is open. The first 5 charter customers get a signed receipt free in exchange for case-study rights. After that, $999 per release for a third-party performance attestation you can publish on your own site. We don't tune the benchmark to your strengths — that's the point.
 
-For AI engineering managers picking a framework: there's now a number to anchor the conversation. Read the methodology, run the verification yourself, or PR if you think we got it wrong.
+For AI engineering managers choosing a framework: there's now a number to anchor the conversation. Read the methodology, run the verification yourself, or PR our adapter implementation if you think it handicaps your framework.
 
-przm.sh
-github.com/OneNomad-LLC/przm-bench (Apache-2.0)
+przm is the first product from OneNomad LLC, an independent research-and-tools shop building infrastructure for the AI reliability problem.
+
+→ przm.sh
+→ github.com/OneNomad-LLC/przm-bench (Apache-2.0)
+
+#AIReliability #MultiAgent #OpenSource #AgentBenchmarks
+```
+
+(~2,900 chars — fits LinkedIn's 3,000-char limit; long-form posts on company pages perform OK but lean shorter if you want to repost as a separate Article instead.)
+
+---
+
+## LinkedIn — short variant
+
+If the long-form post above feels heavy for a company-page debut, here's a tighter alternative (~700 chars):
+
+```
+OneNomad is launching przm — an open-source, vendor-neutral AI reliability leaderboard.
+
+The v0.1 finding worth flagging: holding the model constant (gpt-4o-mini), AutoGen's RoundRobin orchestration produced a 7.3× lower agent-collapse rate than a hand-rolled synchronous-round baseline. The framework choice is a load-bearing reliability variable, not just a developer-experience preference.
+
+Methodology is deterministic — no LLM in the grading loop. Every result is an Ed25519-signed receipt anyone can verify. Charter certifications open for AI framework vendors.
+
+→ przm.sh (Apache-2.0)
 ```

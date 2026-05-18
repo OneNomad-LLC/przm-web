@@ -72,7 +72,7 @@ export function CharterSignupForm() {
           kind: 'error',
           message:
             json.reason ??
-            `Server returned ${res.status}. Try again, or email hello@onenomad.dev directly.`,
+            `Server returned ${res.status}. Try again, or email matt@przm.sh directly.`,
         })
       }
     } catch (err) {
@@ -81,7 +81,7 @@ export function CharterSignupForm() {
         message:
           err instanceof Error
             ? err.message
-            : 'Network error. Try again, or email hello@onenomad.dev directly.',
+            : 'Network error. Try again, or email matt@przm.sh directly.',
       })
     }
   }

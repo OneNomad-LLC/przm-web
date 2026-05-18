@@ -256,10 +256,10 @@ export default async function HomePage() {
             performance attestation you can put on your own website. We do not
             sell the harness; we run the test.{' '}
             <a
-              href="mailto:hello@onenomad.dev?subject=przm%20vendor%20certification"
+              href="mailto:matt@przm.sh?subject=przm%20vendor%20certification"
               className="text-[color:var(--color-bench)] underline-offset-4 hover:underline"
             >
-              hello@onenomad.dev
+              matt@przm.sh
             </a>
           </p>
         </section>

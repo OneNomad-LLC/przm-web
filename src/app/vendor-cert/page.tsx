@@ -264,7 +264,7 @@ export default function VendorCertPage() {
             Volume pricing available for framework vendors who certify each
             major release.{' '}
             <a
-              href="mailto:hello@onenomad.dev?subject=przm%20volume%20pricing"
+              href="mailto:matt@przm.sh?subject=przm%20volume%20pricing"
               className="text-[color:var(--color-bench)] underline-offset-4 hover:underline"
             >
               Get in touch.

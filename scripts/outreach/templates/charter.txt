@@ -27,4 +27,4 @@ Cert details:              https://przm.sh/vendor-cert
 Repo:                      https://github.com/OneNomad-LLC/przm-bench
 
 — Matt
-hello@onenomad.dev
+matt@przm.sh

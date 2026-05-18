@@ -8,7 +8,7 @@
  * 1. Validate payload (email format, required fields, length caps)
  * 2. Insert into submissions table (Neon Postgres)
  * 3. Send acknowledgment email to the prospect (tier-specific copy)
- * 4. Send notification email to hello@onenomad.dev with admin-inbox link
+ * 4. Send notification email to matt@przm.sh with admin-inbox link
  *
  * If the database write fails, we still try to send the notification
  * email so Matt knows a lead came in (degraded mode). If both DB and
@@ -26,7 +26,7 @@ import { renderSignupAck } from '@/lib/email/signup-ack'
 export const runtime = 'nodejs'
 
 const FROM_ADDRESS = 'przm <hello@przm.sh>'
-const NOTIFY_TO = 'hello@onenomad.dev'
+const NOTIFY_TO = 'matt@przm.sh'
 const REPLY_TO_DOMAIN = 'agent.przm.sh'
 
 /** Plus-addressed Reply-To so prospect replies route back to this
@@ -193,7 +193,7 @@ export async function POST(request: Request) {
             warning:
               'submission received and saved, but mail delivery had an issue (' +
               failures.join('; ') +
-              ') — please also drop us a line at hello@onenomad.dev so we can follow up manually',
+              ') — please also drop us a line at matt@przm.sh so we can follow up manually',
             submissionId,
           },
           { status: 200 },
@@ -205,7 +205,7 @@ export async function POST(request: Request) {
         {
           ok: true,
           warning:
-            'submission received but mail delivery had an issue — please also drop us a line at hello@onenomad.dev so we can follow up manually',
+            'submission received but mail delivery had an issue — please also drop us a line at matt@przm.sh so we can follow up manually',
           submissionId,
         },
         { status: 200 },
