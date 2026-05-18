@@ -80,7 +80,7 @@ export default async function VerifyPage() {
   return (
     <>
       <Navbar />
-      <main className="mx-auto w-full max-w-3xl px-6 pb-20 pt-28">
+      <main className="mx-auto w-full max-w-4xl px-6 pb-20 pt-28">
         <div className="mb-10">
           <div className="mb-4 font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
             // verify

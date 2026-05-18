@@ -70,7 +70,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   return (
     <>
       <Navbar />
-      <main className="mx-auto w-full max-w-3xl px-6 pb-20 pt-28">
+      <main className="mx-auto w-full max-w-4xl px-6 pb-20 pt-28">
         <article>
           <div className="mb-8">
             <Link

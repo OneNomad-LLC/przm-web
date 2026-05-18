@@ -23,7 +23,7 @@ export default async function BlogIndexPage() {
   return (
     <>
       <Navbar />
-      <main className="mx-auto w-full max-w-3xl px-6 pb-20 pt-28">
+      <main className="mx-auto w-full max-w-4xl px-6 pb-20 pt-28">
         <div className="mb-12">
           <div className="mb-3 font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
             // blog
@@ -40,7 +40,7 @@ export default async function BlogIndexPage() {
 
         {posts.length === 0 ? (
           <p className="font-mono text-sm text-[color:var(--color-text-muted)]">
-            // no posts yet — first one drops with v0.1.
+            // no posts yet. First one drops with v0.1.
           </p>
         ) : (
           <ul className="flex flex-col gap-6">

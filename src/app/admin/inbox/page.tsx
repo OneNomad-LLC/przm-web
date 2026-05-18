@@ -46,7 +46,7 @@ export default async function AdminInboxPage() {
     return (
       <>
         <Navbar />
-        <main className="mx-auto w-full max-w-5xl px-6 pb-20 pt-28">
+        <main className="mx-auto w-full max-w-6xl px-6 pb-20 pt-28">
           <div className="rounded-lg border border-[color:var(--color-memory)]/40 bg-[color:var(--color-memory)]/10 p-6">
             <h1 className="font-mono text-lg font-semibold text-[color:var(--color-memory)]">
               Database not configured

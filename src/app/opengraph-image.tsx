@@ -1,10 +1,15 @@
 import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
-export const alt = 'przm — Vendor-neutral AI reliability benchmarks'
+export const alt = 'przm: vendor-neutral AI reliability benchmarks'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
+// Satori notes (learned the hard way on /social/banner): keep the
+// layout flat. Avoid combining position:absolute, multi-gradient
+// backgroundImage, justifyContent:space-between with deeply nested
+// flex children, or `inset:0` shorthand. They all fail silently and
+// return a 0-byte PNG with HTTP 200.
 export default async function Image() {
   return new ImageResponse(
     (
@@ -15,15 +20,14 @@ export default async function Image() {
           background: '#1d2021',
           color: '#ebdbb2',
           display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: '64px 72px',
+          alignItems: 'center',
+          padding: '0 80px',
           fontFamily: 'monospace',
         }}
       >
-        {/* Top: logo + wordmark */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-          <svg width="64" height="64" viewBox="0 0 32 32">
+        {/* Brand mark + wordmark on the left */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+          <svg width="160" height="160" viewBox="0 0 32 32">
             <defs>
               <radialGradient id="og-top" cx="16" cy="4" r="24" gradientUnits="userSpaceOnUse">
                 <stop offset="0" stopColor="#34C468" stopOpacity="1" />
@@ -48,37 +52,65 @@ export default async function Image() {
               d="M16 4 L28 28 L4 28 Z"
               fill="none"
               stroke="#ebdbb2"
-              strokeOpacity="0.2"
-              strokeWidth="0.5"
+              strokeOpacity="0.25"
+              strokeWidth="0.4"
               strokeLinejoin="round"
             />
           </svg>
-          <div style={{ fontSize: 56, fontWeight: 600, letterSpacing: '-0.02em' }}>
-            przm
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div
+              style={{
+                fontSize: 128,
+                fontWeight: 600,
+                lineHeight: 1,
+                letterSpacing: '-0.04em',
+                color: '#ebdbb2',
+              }}
+            >
+              przm
+            </div>
+            <div
+              style={{
+                marginTop: 18,
+                fontSize: 28,
+                color: '#928374',
+                letterSpacing: '0.01em',
+              }}
+            >
+              vendor-neutral AI reliability benchmarks
+            </div>
+            <div
+              style={{
+                marginTop: 32,
+                fontSize: 22,
+                color: '#a89984',
+                lineHeight: 1.4,
+                maxWidth: 720,
+              }}
+            >
+              Signed receipts. No LLM judge.
+            </div>
+            <div
+              style={{
+                marginTop: 6,
+                fontSize: 22,
+                color: '#a89984',
+                lineHeight: 1.4,
+                maxWidth: 720,
+              }}
+            >
+              Multi-agent convergence. AI memory recall. Apache 2.0.
+            </div>
+            <div
+              style={{
+                marginTop: 28,
+                fontSize: 18,
+                color: '#665c54',
+              }}
+            >
+              przm.sh
+            </div>
           </div>
-        </div>
-
-        {/* Middle: tagline */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ fontSize: 72, fontWeight: 600, lineHeight: 1.1, letterSpacing: '-0.02em' }}>
-            <span style={{ color: '#E84040' }}>AI reliability</span>, measured.
-          </div>
-          <div style={{ fontSize: 28, color: '#928374', lineHeight: 1.4 }}>
-            Multi-axis benchmarks. Deterministic scoring. Ed25519-signed receipts. Apache-2.0.
-          </div>
-        </div>
-
-        {/* Bottom: tags */}
-        <div style={{ display: 'flex', gap: 18, fontSize: 22, color: '#928374' }}>
-          <span style={{ color: '#34C468' }}>●</span>
-          <span>convergence</span>
-          <span>·</span>
-          <span style={{ color: '#E84040' }}>●</span>
-          <span>memory</span>
-          <span>·</span>
-          <span style={{ color: '#FABD2F' }}>●</span>
-          <span>code-review (next)</span>
-          <span style={{ marginLeft: 'auto', color: '#665c54' }}>przm.sh</span>
         </div>
       </div>
     ),
