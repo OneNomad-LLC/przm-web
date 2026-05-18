@@ -121,13 +121,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { receipt } = found
   const pct = (n: number) => (n * 100).toFixed(1) + '%'
   return {
-    title: `${receipt.adapter.name} / ${receipt.adapter.llmModel} — convergence receipt`,
+    title: `${receipt.adapter.name} / ${receipt.adapter.llmModel}. Convergence receipt`,
     description: `Signed przm convergence receipt: ${receipt.adapter.name} on ${receipt.adapter.llmModel} scored ${pct(receipt.scores.correct_final_answer_rate)} correct, ${pct(receipt.scores.collapse_rate)} collapse, ${pct(receipt.scores.sycophancy_ratio)} sycophancy across ${receipt.fixtureSet.n} fixtures.`,
     alternates: { canonical: `/receipts/${id}` },
     openGraph: {
       type: 'article',
-      title: `${receipt.adapter.name} / ${receipt.adapter.llmModel} — convergence receipt`,
-      description: `Signed przm convergence receipt — ${pct(receipt.scores.correct_final_answer_rate)} correct, ${pct(receipt.scores.collapse_rate)} collapse, ${pct(receipt.scores.sycophancy_ratio)} sycophancy.`,
+      title: `${receipt.adapter.name} / ${receipt.adapter.llmModel}. Convergence receipt`,
+      description: `Signed przm convergence receipt: ${pct(receipt.scores.correct_final_answer_rate)} correct, ${pct(receipt.scores.collapse_rate)} collapse, ${pct(receipt.scores.sycophancy_ratio)} sycophancy.`,
       url: `https://przm.sh/receipts/${id}`,
     },
   }

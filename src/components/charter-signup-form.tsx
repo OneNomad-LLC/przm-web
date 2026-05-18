@@ -6,10 +6,10 @@ import { cn } from '@/lib/utils'
 type Tier = 'charter' | 'standard' | 'extended' | 'enterprise'
 
 const TIER_OPTIONS: Array<{ value: Tier; label: string; note: string }> = [
-  { value: 'charter', label: 'Charter — Free', note: 'first 3–5 vendors' },
-  { value: 'standard', label: 'Standard — $999/release', note: '5-business-day turnaround' },
-  { value: 'extended', label: 'Extended — $2,499/release', note: 'includes holdout subset' },
-  { value: 'enterprise', label: 'Enterprise — $9,999/release', note: 'custom fixture set' },
+  { value: 'charter', label: 'Charter, Free', note: 'first 3 to 5 vendors' },
+  { value: 'standard', label: 'Standard, $999/release', note: '5-business-day turnaround' },
+  { value: 'extended', label: 'Extended, $2,499/release', note: 'includes holdout subset' },
+  { value: 'enterprise', label: 'Enterprise, $9,999/release', note: 'custom fixture set' },
 ]
 
 type FormState =

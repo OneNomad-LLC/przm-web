@@ -106,7 +106,7 @@ ${bodyHtml}
         <tr>
           <td align="center" style="font-size:11px;color:${TEXT_MUTED};font-family:${FONT_BODY};line-height:1.5;">
             You're receiving this because you contacted us through <a href="${SITE}" style="color:${TEXT_MUTED};text-decoration:underline;">przm.sh</a>.<br>
-            Reply directly to this email — it routes back to a human.
+            Reply directly to this email. It routes back to a human.
           </td>
         </tr>
       </table>

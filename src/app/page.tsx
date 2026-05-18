@@ -3,7 +3,7 @@ import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 
 export const metadata: Metadata = {
-  title: 'przm — Vendor-neutral AI reliability benchmarks',
+  title: 'przm. Vendor-neutral AI reliability benchmarks',
   description:
     'Signed, reproducible, adversarial benchmarks for AI failure modes that do not have standards yet. Multi-agent convergence. Memory recall. Code review reliability.',
 }

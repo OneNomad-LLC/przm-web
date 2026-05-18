@@ -37,17 +37,17 @@ function offerFor(tier: Tier, company: string): OfferDetail {
       }
     case 'standard':
       return {
-        callout: `<strong style="color:#1a1a1a;">Standard certification — $999/release:</strong> one full benchmark run, signed receipt, public leaderboard entry, private findings brief, 5 business day turnaround.`,
+        callout: `<strong style="color:#1a1a1a;">Standard certification, $999/release:</strong> one full benchmark run, signed receipt, public leaderboard entry, private findings brief, 5 business day turnaround.`,
         textCallout: `Standard certification is $999/release: one full benchmark run, signed receipt, public leaderboard entry, private findings brief, 5 business day turnaround.`,
       }
     case 'extended':
       return {
-        callout: `<strong style="color:#1a1a1a;">Extended certification — $2,499/release:</strong> everything in Standard plus the 20% holdout subset run (so your number reflects generalization, not fixture tuning) and 72-hour priority turnaround.`,
+        callout: `<strong style="color:#1a1a1a;">Extended certification, $2,499/release:</strong> everything in Standard plus the 20% holdout subset run (so your number reflects generalization, not fixture tuning) and 72-hour priority turnaround.`,
         textCallout: `Extended certification is $2,499/release: everything in Standard plus the 20% holdout subset run (so your number reflects generalization, not fixture tuning) and 72-hour priority turnaround.`,
       }
     case 'enterprise':
       return {
-        callout: `<strong style="color:#1a1a1a;">Enterprise certification — $9,999/release:</strong> custom fixture set authored against your domain, private receipt unless you choose to publish, 30-day re-run option after patches.`,
+        callout: `<strong style="color:#1a1a1a;">Enterprise certification, $9,999/release:</strong> custom fixture set authored against your domain, private receipt unless you choose to publish, 30-day re-run option after patches.`,
         textCallout: `Enterprise certification is $9,999/release: custom fixture set authored against your domain, private receipt unless you choose to publish, 30-day re-run option after patches.`,
       }
   }
@@ -68,10 +68,10 @@ export function renderSignupAck({
   const turnaround = TURNAROUND[tier]
   const tierLabel = TIER_LABEL[tier]
   const intro: Record<Tier, string> = {
-    charter: `Got your charter-customer interest from przm.sh — thank you.`,
-    standard: `Got your Standard certification request from przm.sh — thank you.`,
-    extended: `Got your Extended certification request from przm.sh — thank you.`,
-    enterprise: `Got your Enterprise certification inquiry from przm.sh — thank you.`,
+    charter: `Got your charter-customer interest from przm.sh. Thank you.`,
+    standard: `Got your Standard certification request from przm.sh. Thank you.`,
+    extended: `Got your Extended certification request from przm.sh. Thank you.`,
+    enterprise: `Got your Enterprise certification inquiry from przm.sh. Thank you.`,
   }
 
   const subject = `przm ${tierLabel} cert: got it, here's what's next`
@@ -85,7 +85,7 @@ export function renderSignupAck({
     ),
     html.ol([
       `Which release of <strong style="color:#1a1a1a;">${escapeHtmlInline(framework)}</strong> you want certified (commit hash or version tag).`,
-      `Which LLM your framework will run during the bench — we run your adapter with your model; you provide a sample API key so the run is billed to you and you can audit what was called.`,
+      `Which LLM your framework will run during the bench. We run your adapter with your model; you provide a sample API key so the run is billed to you and you can audit what was called.`,
       `What "good" looks like to you.`,
     ]),
     html.callout(offer.callout),

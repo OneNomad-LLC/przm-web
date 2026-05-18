@@ -54,7 +54,7 @@ async function verifyReceiptJson(
   try {
     receipt = JSON.parse(receiptJson)
   } catch {
-    return { status: 'error', reason: 'Invalid JSON — could not parse receipt.' }
+    return { status: 'error', reason: 'Invalid JSON. Could not parse receipt.' }
   }
 
   if (!receipt.signature?.value) {
