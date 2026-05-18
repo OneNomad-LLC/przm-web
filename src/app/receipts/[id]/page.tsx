@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 import { ConvergenceReceiptView } from '@/components/convergence-receipt-view'
+import { MemoryReceiptView } from '@/components/memory-receipt-view'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -67,15 +68,56 @@ const CONVERGENCE_DIR = path.join(
   'convergence',
 )
 
+const MEMORY_DIR = path.join(
+  process.cwd(),
+  'public',
+  'receipts',
+  'memory',
+)
+
+interface MemoryReceiptShape {
+  receiptId: string
+  benchVersion: string
+  ranAt: string
+  adapter: { name: string; version: string }
+  fixture: { id: string; sha256: string; n: number }
+  environment: {
+    node: string
+    platform: string
+    git: { commit: string; dirty: boolean }
+  }
+  scores: {
+    recall_at_5: number
+    recall_at_10: number
+    ndcg_at_10: number
+    latency_p50_ms: number
+    latency_p95_ms: number
+    ingest_throughput_items_per_sec: number
+  }
+  perQuery: Array<{
+    queryId: string
+    retrieved: string[]
+    hit: boolean
+    rank: number | null
+    latencyMs: number
+  }>
+  signature?: {
+    algorithm: 'Ed25519'
+    publicKeyFingerprint: string
+    value: string
+  }
+}
+
+type ReceiptKind = 'convergence' | 'memory'
+
 interface ReceiptEntry {
   filename: string
   receiptId: string
-  adapterName: string
-  llmModel: string
   ranAt: string
+  kind: ReceiptKind
 }
 
-async function listReceipts(): Promise<ReceiptEntry[]> {
+async function listConvergence(): Promise<ReceiptEntry[]> {
   if (!existsSync(CONVERGENCE_DIR)) return []
   const files = (await readdir(CONVERGENCE_DIR)).filter((f) => f.endsWith('.json'))
   const out: ReceiptEntry[] = []
@@ -87,9 +129,8 @@ async function listReceipts(): Promise<ReceiptEntry[]> {
       out.push({
         filename: file,
         receiptId: r.receiptId,
-        adapterName: r.adapter?.name ?? 'unknown',
-        llmModel: r.adapter?.llmModel ?? 'unknown',
         ranAt: r.ranAt ?? '',
+        kind: 'convergence',
       })
     } catch {
       // skip malformed
@@ -98,15 +139,48 @@ async function listReceipts(): Promise<ReceiptEntry[]> {
   return out
 }
 
-async function getReceipt(id: string): Promise<{
-  receipt: ConvergenceReceiptShape
-  filename: string
-} | null> {
+async function listMemory(): Promise<ReceiptEntry[]> {
+  if (!existsSync(MEMORY_DIR)) return []
+  const files = (await readdir(MEMORY_DIR)).filter((f) => f.endsWith('.json'))
+  const out: ReceiptEntry[] = []
+  for (const file of files) {
+    try {
+      const raw = await readFile(path.join(MEMORY_DIR, file), 'utf-8')
+      const r = JSON.parse(raw) as Partial<MemoryReceiptShape>
+      if (!r.receiptId) continue
+      out.push({
+        filename: file,
+        receiptId: r.receiptId,
+        ranAt: r.ranAt ?? '',
+        kind: 'memory',
+      })
+    } catch {
+      // skip malformed
+    }
+  }
+  return out
+}
+
+async function listReceipts(): Promise<ReceiptEntry[]> {
+  const [conv, mem] = await Promise.all([listConvergence(), listMemory()])
+  return [...conv, ...mem]
+}
+
+type LoadedReceipt =
+  | { kind: 'convergence'; receipt: ConvergenceReceiptShape; filename: string }
+  | { kind: 'memory'; receipt: MemoryReceiptShape; filename: string }
+
+async function getReceipt(id: string): Promise<LoadedReceipt | null> {
   const entries = await listReceipts()
   const match = entries.find((e) => e.receiptId === id)
   if (!match) return null
-  const raw = await readFile(path.join(CONVERGENCE_DIR, match.filename), 'utf-8')
-  return { receipt: JSON.parse(raw) as ConvergenceReceiptShape, filename: match.filename }
+  const dir = match.kind === 'memory' ? MEMORY_DIR : CONVERGENCE_DIR
+  const raw = await readFile(path.join(dir, match.filename), 'utf-8')
+  const parsed = JSON.parse(raw)
+  if (match.kind === 'memory') {
+    return { kind: 'memory', receipt: parsed as MemoryReceiptShape, filename: match.filename }
+  }
+  return { kind: 'convergence', receipt: parsed as ConvergenceReceiptShape, filename: match.filename }
 }
 
 export async function generateStaticParams(): Promise<{ id: string }[]> {
@@ -118,16 +192,32 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { id } = await params
   const found = await getReceipt(id)
   if (!found) return { title: 'Receipt not found' }
-  const { receipt } = found
   const pct = (n: number) => (n * 100).toFixed(1) + '%'
+
+  if (found.kind === 'memory') {
+    const r = found.receipt
+    return {
+      title: `${r.adapter.name} / ${r.fixture.id}. Memory recall receipt`,
+      description: `Signed przm memory receipt: ${r.adapter.name} v${r.adapter.version} on ${r.fixture.id} scored ${pct(r.scores.recall_at_10)} recall@10, ${pct(r.scores.ndcg_at_10)} NDCG@10 across ${r.fixture.n.toLocaleString()} items.`,
+      alternates: { canonical: `/receipts/${id}` },
+      openGraph: {
+        type: 'article',
+        title: `${r.adapter.name} / ${r.fixture.id}. Memory recall receipt`,
+        description: `Signed przm memory receipt: ${pct(r.scores.recall_at_10)} recall@10, ${pct(r.scores.ndcg_at_10)} NDCG@10.`,
+        url: `https://przm.sh/receipts/${id}`,
+      },
+    }
+  }
+
+  const r = found.receipt
   return {
-    title: `${receipt.adapter.name} / ${receipt.adapter.llmModel}. Convergence receipt`,
-    description: `Signed przm convergence receipt: ${receipt.adapter.name} on ${receipt.adapter.llmModel} scored ${pct(receipt.scores.correct_final_answer_rate)} correct, ${pct(receipt.scores.collapse_rate)} collapse, ${pct(receipt.scores.sycophancy_ratio)} sycophancy across ${receipt.fixtureSet.n} fixtures.`,
+    title: `${r.adapter.name} / ${r.adapter.llmModel}. Convergence receipt`,
+    description: `Signed przm convergence receipt: ${r.adapter.name} on ${r.adapter.llmModel} scored ${pct(r.scores.correct_final_answer_rate)} correct, ${pct(r.scores.collapse_rate)} collapse, ${pct(r.scores.sycophancy_ratio)} sycophancy across ${r.fixtureSet.n} fixtures.`,
     alternates: { canonical: `/receipts/${id}` },
     openGraph: {
       type: 'article',
-      title: `${receipt.adapter.name} / ${receipt.adapter.llmModel}. Convergence receipt`,
-      description: `Signed przm convergence receipt: ${pct(receipt.scores.correct_final_answer_rate)} correct, ${pct(receipt.scores.collapse_rate)} collapse, ${pct(receipt.scores.sycophancy_ratio)} sycophancy.`,
+      title: `${r.adapter.name} / ${r.adapter.llmModel}. Convergence receipt`,
+      description: `Signed przm convergence receipt: ${pct(r.scores.correct_final_answer_rate)} correct, ${pct(r.scores.collapse_rate)} collapse, ${pct(r.scores.sycophancy_ratio)} sycophancy.`,
       url: `https://przm.sh/receipts/${id}`,
     },
   }
@@ -142,10 +232,17 @@ export default async function ReceiptPage({ params }: PageProps) {
     <>
       <Navbar />
       <main className="mx-auto w-full max-w-6xl px-6 pb-20 pt-28">
-        <ConvergenceReceiptView
-          receipt={found.receipt}
-          rawJsonHref={`/receipts/convergence/${found.filename}`}
-        />
+        {found.kind === 'memory' ? (
+          <MemoryReceiptView
+            receipt={found.receipt}
+            rawJsonHref={`/receipts/memory/${found.filename}`}
+          />
+        ) : (
+          <ConvergenceReceiptView
+            receipt={found.receipt}
+            rawJsonHref={`/receipts/convergence/${found.filename}`}
+          />
+        )}
       </main>
       <Footer />
     </>
