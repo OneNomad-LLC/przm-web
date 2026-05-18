@@ -21,7 +21,7 @@ export function renderAdminReply({
   tier,
   framework,
 }: AdminReplyArgs): { subject: string; html: string; text: string } {
-  const subject = `Re: przm ${tier} cert — ${framework}`
+  const subject = `Re: przm ${tier} cert, ${framework}`
 
   const bodyHtml = [
     html.fromPlainText(body),

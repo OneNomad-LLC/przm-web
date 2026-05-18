@@ -74,7 +74,7 @@ export function renderSignupAck({
     enterprise: `Got your Enterprise certification inquiry from przm.sh — thank you.`,
   }
 
-  const subject = `przm ${tierLabel} cert — got it, here's what's next`
+  const subject = `przm ${tierLabel} cert: got it, here's what's next`
 
   // ── HTML body ─────────────────────────────────────────────────────
   const bodyHtml = [
