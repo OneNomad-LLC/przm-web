@@ -36,8 +36,8 @@ export function Navbar() {
   }, [mobileOpen])
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-[color:var(--color-border-subtle)] bg-[color:var(--color-bg-base)]/80 backdrop-blur-md">
-      <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 border-x border-[color:var(--color-border-subtle)] px-6">
+    <header className="fixed inset-x-0 top-0 z-40 bg-[color:var(--color-bg-base)]/80 backdrop-blur-md">
+      <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 border-x border-b border-[color:var(--color-border-subtle)] px-6">
         {/* Logo */}
         <Link
           href="/"
