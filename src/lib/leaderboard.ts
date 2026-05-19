@@ -56,14 +56,15 @@ export interface ConvergenceLeaderboardSnapshot {
 }
 
 /**
- * Most recent signed run — 2026-05-18T21:52Z. 30 scenarios × 6 configurations + 6-fixture sealed holdout.
+ * Most recent signed run — 2026-05-19T03:42Z (combined) + T04:48Z (holdout). 30 scenarios × 6 configurations + 6-fixture sealed holdout.
  *
  * All entries are Ed25519-signed; receipt JSON lives at
  * /public/receipts/convergence/<filename>.json (served from
  * /receipts/convergence/...). Verifier: /verify.
  *
  * To refresh: rerun the bench with CONVERGENCE_SIGNING_PRIVATE_KEY
- * set, copy results/published/convergence/*.json into
+ * set (FIXTURE_SUBSET=all then FIXTURE_SUBSET=holdout, two passes),
+ * copy results/published/convergence/*.json into
  * przm-web/public/receipts/convergence/, then update this file with
  * the new scores + receiptPaths.
  */
@@ -74,7 +75,7 @@ const PRETTY_RECEIPT_PREFIX = '/receipts'
 
 export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
   benchmark: 'convergence-v0.1-preview',
-  ranAt: '2026-05-18T21:52:53.253Z',
+  ranAt: '2026-05-19T03:42:49.408Z',
   configuration: { nAgents: 3, nRounds: 3 },
   fixtureCount: 30,
   entries: [
@@ -89,24 +90,24 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
           correct_final_answer_rate: 0.967,
           collapse_rate: 0.567,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 1174,
+          tokens_per_correct_answer: 1196,
           position_flips_per_agent_per_round: 0.074,
         },
         fixtureCount: 30,
-        durationSec: 1183,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/fb6f4bfe-d5d1-4678-8fef-b6b1aa952d5a`,
+        durationSec: 429,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/d99595e1-40c8-429d-9390-7e4521f02653`,
       },
       holdout: {
         scores: {
           correct_final_answer_rate: 1.0,
           collapse_rate: 0.667,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 1198,
+          tokens_per_correct_answer: 1201,
           position_flips_per_agent_per_round: 0.074,
         },
         fixtureCount: 6,
-        durationSec: 79,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/b60185ae-f141-4d5b-a31c-3ae32ddb8062`,
+        durationSec: 87,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/ab7c57b5-5745-4445-8b60-770c6af0e785`,
       },
     },
     {
@@ -120,24 +121,24 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
           correct_final_answer_rate: 0.933,
           collapse_rate: 0.533,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 1170,
+          tokens_per_correct_answer: 1180,
           position_flips_per_agent_per_round: 0.059,
         },
         fixtureCount: 30,
-        durationSec: 916,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/c1c9eb41-08ce-431e-8081-12dcf9fffdad`,
+        durationSec: 410,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/6547607d-803b-4a9a-a36b-30cbbd5b2ed9`,
       },
       holdout: {
         scores: {
           correct_final_answer_rate: 0.833,
           collapse_rate: 0.667,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 1193,
+          tokens_per_correct_answer: 1171,
           position_flips_per_agent_per_round: 0.074,
         },
         fixtureCount: 6,
-        durationSec: 68,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/e1d492e7-2d26-4dae-b082-dda10d598261`,
+        durationSec: 73,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/2fcbe87a-407e-48dc-b56f-acdb37a3e06f`,
       },
     },
     {
@@ -149,26 +150,26 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       combined: {
         scores: {
           correct_final_answer_rate: 0.967,
-          collapse_rate: 1.0,
+          collapse_rate: 0.967,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 4820,
-          position_flips_per_agent_per_round: 0.111,
+          tokens_per_correct_answer: 4866,
+          position_flips_per_agent_per_round: 0.107,
         },
         fixtureCount: 30,
-        durationSec: 2247,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/faf3459c-36b5-4d12-853e-ca74d4823124`,
+        durationSec: 2030,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/7ee02407-94f8-4af5-b3bf-78c37c9d5d80`,
       },
       holdout: {
         scores: {
           correct_final_answer_rate: 1.0,
           collapse_rate: 1.0,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 5448,
+          tokens_per_correct_answer: 4703,
           position_flips_per_agent_per_round: 0.111,
         },
         fixtureCount: 6,
-        durationSec: 400,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/3b5818e9-5a70-4965-bd15-6e662a4bf049`,
+        durationSec: 380,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/1fde5083-f99c-4ed1-8cef-62bc706d5219`,
       },
     },
     {
@@ -179,27 +180,27 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       provider: 'azure-openai',
       combined: {
         scores: {
-          correct_final_answer_rate: 0.9,
-          collapse_rate: 0.9,
-          sycophancy_ratio: 0.033,
-          tokens_per_correct_answer: 659,
-          position_flips_per_agent_per_round: 0.115,
+          correct_final_answer_rate: 0.767,
+          collapse_rate: 0.733,
+          sycophancy_ratio: 0.1,
+          tokens_per_correct_answer: 653,
+          position_flips_per_agent_per_round: 0.104,
         },
         fixtureCount: 30,
-        durationSec: 312,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/d3a1704c-0f6c-489b-b48a-fcdd36f98a8f`,
+        durationSec: 305,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/adb5ba4c-294b-495a-aa22-0d5f79cbc79d`,
       },
       holdout: {
         scores: {
           correct_final_answer_rate: 0.667,
           collapse_rate: 0.833,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 694,
+          tokens_per_correct_answer: 683,
           position_flips_per_agent_per_round: 0.093,
         },
         fixtureCount: 6,
-        durationSec: 68,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/21135989-7f9b-4492-a64d-72cd8623ed86`,
+        durationSec: 64,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/23b8c3d1-f009-4202-9e04-9af1221fd68b`,
       },
     },
     {
@@ -210,27 +211,27 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       provider: 'azure-openai',
       combined: {
         scores: {
-          correct_final_answer_rate: 0.833,
-          collapse_rate: 0.833,
+          correct_final_answer_rate: 0.867,
+          collapse_rate: 0.867,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 685,
+          tokens_per_correct_answer: 655,
           position_flips_per_agent_per_round: 0.096,
         },
         fixtureCount: 30,
-        durationSec: 286,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/be4b62a4-e053-4c58-8bc2-7c30a0792a3f`,
+        durationSec: 311,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/36b1f13c-cfa9-4c7c-83b9-b7bb2ba1dfcb`,
       },
       holdout: {
         scores: {
           correct_final_answer_rate: 0.667,
-          collapse_rate: 0.667,
+          collapse_rate: 0.833,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 667,
-          position_flips_per_agent_per_round: 0.074,
+          tokens_per_correct_answer: 700,
+          position_flips_per_agent_per_round: 0.093,
         },
         fixtureCount: 6,
         durationSec: 64,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/c8511ed2-65d9-440a-af01-e0f48ed18c6a`,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/8fd0ed75-ab75-4611-bd8e-4681f972b041`,
       },
     },
     {
@@ -241,27 +242,27 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       provider: 'azure-openai',
       combined: {
         scores: {
-          correct_final_answer_rate: 0.833,
-          collapse_rate: 0.2,
+          correct_final_answer_rate: 0.933,
+          collapse_rate: 0.1,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 935,
-          position_flips_per_agent_per_round: 0.037,
+          tokens_per_correct_answer: 949,
+          position_flips_per_agent_per_round: 0.030,
         },
         fixtureCount: 30,
-        durationSec: 1485,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/307426c5-ddeb-4141-b73e-72e8cad7c273`,
+        durationSec: 453,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/7d7db21e-9706-4906-9498-df9e0c38dfb3`,
       },
       holdout: {
         scores: {
           correct_final_answer_rate: 0.833,
           collapse_rate: 0,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 927,
-          position_flips_per_agent_per_round: 0.019,
+          tokens_per_correct_answer: 1149,
+          position_flips_per_agent_per_round: 0.074,
         },
         fixtureCount: 6,
-        durationSec: 324,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/9e3c8e3d-11c1-4a1c-96e5-1fece3a040c2`,
+        durationSec: 364,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/805c4c56-176f-4536-a753-3d887536f667`,
       },
     },
   ],

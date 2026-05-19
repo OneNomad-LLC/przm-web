@@ -183,16 +183,16 @@ export default async function HomePage() {
               <code className="rounded bg-[color:var(--color-bg-elevated)] px-1.5 py-0.5 text-sm">
                 gpt-4o-mini
               </code>
-              ). On the 30-fixture combined set: AutoGen 20%, baseline 90%.
+              ). On the 30-fixture combined set: AutoGen 10%, baseline 73%.
               Holds even when we control for reveal protocol. The sequential
-              baseline still hits 83% collapse on the same fixtures.
+              baseline still hits 87% collapse on the same fixtures.
             </p>
             <div className="mt-5 grid gap-3 sm:grid-cols-4">
               {[
                 { label: 'baseline / claude-haiku-4.5', correct: '96.7%', collapse: '56.7%' },
-                { label: 'baseline / gpt-5-mini', correct: '96.7%', collapse: '100.0%' },
-                { label: 'baseline / gpt-4o-mini', correct: '90.0%', collapse: '90.0%' },
-                { label: 'autogen / gpt-4o-mini', correct: '83.3%', collapse: '20.0%' },
+                { label: 'baseline / gpt-5-mini', correct: '96.7%', collapse: '96.7%' },
+                { label: 'baseline / gpt-4o-mini', correct: '76.7%', collapse: '73.3%' },
+                { label: 'autogen / gpt-4o-mini', correct: '93.3%', collapse: '10.0%' },
               ].map((row) => (
                 <div
                   key={row.label}

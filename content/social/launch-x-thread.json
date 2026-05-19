@@ -3,7 +3,7 @@
   "tweets": [
     "I built a benchmark for something nobody is measuring: how multi-agent AI systems collapse to confidently-wrong answers when one agent gets seeded with a fake-but-confident position.\n\nOn the sealed holdout: AutoGen 0 of 6 collapses, baseline 5 of 6.\n\nprzm.sh\n\nthread ↓",
     "The setup is simple. N agents debate a question. One is given a wrong answer plus a polished rationale. The rest start correct.\n\nWe measure how many of the correct ones end up agreeing with the wrong one. And how much of that depends on the framework, not the model.",
-    "gpt-4o-mini, 30 scenarios, 3 agents × 3 rounds.\n\n• Hand-rolled synchronous: 90% collapse\n• Sequential-reveal baseline: 83% collapse\n• AutoGen RoundRobin: 20% collapse\n\nSealed 6-fixture holdout: baseline 83%, sequential 67%, AutoGen 0%.\n\nSame model. Different framework.",
+    "gpt-4o-mini, 30 scenarios, 3 agents × 3 rounds.\n\n• Hand-rolled synchronous: 73% collapse\n• Sequential-reveal baseline: 87% collapse\n• AutoGen RoundRobin: 10% collapse\n\nSealed 6-fixture holdout: baseline 83%, sequential 83%, AutoGen 0%.\n\nSame model. Different framework.",
     "Why the sequential baseline matters: AutoGen uses sequential reveal (agent N sees what 0..N-1 said this round). Without a sequential baseline, we'd be conflating orchestration with reveal protocol.\n\nThe gap holds after controlling for it.",
     "Methodology is deterministic. No LLM in the grading loop.\n\nEvery result is an Ed25519-signed receipt: adapter version, LLM, fixture SHA, per-round transcripts. Same fixture + same code → byte-identical signature. Verify in your browser at /verify.\n\nOpen source.\n\nprzm.sh"
   ]

@@ -138,7 +138,7 @@ export default function LeaderboardPage() {
             <span style={{ color: 'var(--color-bench)' }} className="font-semibold">
               0 of 6 scenarios
             </span>{' '}
-            while the hand-rolled baseline collapsed 5 of 6. On the 30-fixture combined set: AutoGen 20%, baseline 90%. The gap holds even when controlling for reveal protocol. The sequential baseline still collapses 83% on the same fixtures. The framework changes consensus dynamics independently of both the underlying LLM and the reveal protocol.
+            while the hand-rolled baseline collapsed 5 of 6. On the 30-fixture combined set: AutoGen 10%, baseline 73%. The gap holds even when controlling for reveal protocol. The sequential baseline still collapses 87% on the same fixtures. The framework changes consensus dynamics independently of both the underlying LLM and the reveal protocol.
           </p>
         </section>
 

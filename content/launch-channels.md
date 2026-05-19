@@ -41,11 +41,11 @@ Scoring is deterministic. Pure-function math on recorded state, no LLM judge any
 
 The most interesting v0.1 finding:
 
-Holding the model constant (gpt-4o-mini), the orchestration framework drives collapse rate. On the 30-fixture combined run: hand-rolled synchronous baseline 90%, sequential-reveal baseline 83%, AutoGen RoundRobinGroupChat 20%. On the sealed 6-fixture holdout: baseline 83%, sequential 67%, AutoGen 0 collapses out of 6. The gap survives even when we control for reveal protocol. The sequential baseline uses AutoGen's same in-round visibility pattern and still collapses 4× more often than AutoGen itself. The framework is doing real work beyond just letting agents see each other within a round.
+Holding the model constant (gpt-4o-mini), the orchestration framework drives collapse rate. On the 30-fixture combined run: hand-rolled synchronous baseline 73%, sequential-reveal baseline 87%, AutoGen RoundRobinGroupChat 10%. On the sealed 6-fixture holdout: baseline 83%, sequential 83%, AutoGen 0 collapses out of 6. The gap survives even when we control for reveal protocol. The sequential baseline uses AutoGen's same in-round visibility pattern and still collapses 8-9× more often than AutoGen itself. The framework is doing real work beyond just letting agents see each other within a round.
 
 Other findings:
 - Claude Haiku 4.5 (96.7% correct) and gpt-5-mini (96.7%) both held against confederate pressure on most fixtures. gpt-5-mini uses about 4× more tokens per correct answer than Haiku for the same correctness.
-- gpt-4o-mini baseline at 90% correct, AutoGen at 83% correct. Small correctness drop but a much smaller collapse rate, which is a worthwhile trade for trust-critical workflows.
+- gpt-4o-mini baseline at 77% correct, AutoGen at 93% correct. AutoGen wins on both axes here, not just collapse rate.
 - gpt-5-mini collapsed on 100% of scenarios it got right. Smarter model, same convergence pathology when one agent is confidently wrong.
 
 What's in v0.1:
@@ -75,7 +75,7 @@ Post this as the first reply to your own Show HN as soon as the submission lands
 ```
 OP here, happy to dig into anything. A few things worth flagging up front since I'd be asking them in your shoes:
 
-(1) Sample size. v0.1 is 30 hand-curated convergence scenarios across 5 categories. That's a small N, and the headline gap (90% baseline collapse vs 20% AutoGen collapse on combined; 83% vs 0/6 on holdout) could narrow as fixtures expand. I'm sized for "this is enough to demonstrate the methodology works and the orchestration delta is real and large"; not "this is a final ranking." Holdout split (20% sealed pre-publication) is the partial defense, but I'd happily take fixture PRs.
+(1) Sample size. v0.1 is 30 hand-curated convergence scenarios across 5 categories. That's a small N, and the headline gap (73% baseline collapse vs 10% AutoGen collapse on combined; 5/6 vs 0/6 on holdout) could narrow as fixtures expand. I'm sized for "this is enough to demonstrate the methodology works and the orchestration delta is real and large"; not "this is a final ranking." Holdout split (20% sealed pre-publication) is the partial defense, but I'd happily take fixture PRs.
 
 (2) Confederate prompts are authored. Each scenario's confederate uses a hand-written wrong-but-confident rationale. That's an inputs-side judgment call. The mitigation in the methodology: competitors can submit replacement confederate prompts via PR and we publish both runs side by side. If you think a specific fixture's confederate is too weak or too strong, that's a real bug, file it.
 
@@ -122,7 +122,7 @@ Multi-agent AI systems have a reliability problem that nobody has been measuring
 
 przm v0.1 (https://przm.sh) measures multi-agent convergence and sycophancy across five scoring axes. Deterministic math. No LLM in the grading loop. Every result is an Ed25519-signed receipt anyone can verify against the published public key.
 
-The headline finding: same model (gpt-4o-mini), same 30 fixtures, three different orchestration patterns. Hand-rolled synchronous-round baseline 90% collapse. Sequential-reveal baseline (same as AutoGen's reveal pattern, but otherwise vanilla) 83%. Microsoft AutoGen's RoundRobinGroupChat 20%. On the sealed 6-fixture holdout: baseline 83%, sequential 67%, AutoGen 0. The AutoGen advantage holds even when we control for reveal protocol, so the framework is doing real work beyond just letting agents see each other within a round.
+The headline finding: same model (gpt-4o-mini), same 30 fixtures, three different orchestration patterns. Hand-rolled synchronous-round baseline 73% collapse. Sequential-reveal baseline (same as AutoGen's reveal pattern, but otherwise vanilla) 87%. Microsoft AutoGen's RoundRobinGroupChat 10%. On the sealed 6-fixture holdout: baseline 83%, sequential 83%, AutoGen 0. The AutoGen advantage holds even when we control for reveal protocol, so the framework is doing real work beyond just letting agents see each other within a round.
 
 Frontier models held correctness reliably. Claude Haiku 4.5 at 96.7% correct, gpt-5-mini at 96.7%. But gpt-5-mini collapsed on 100% of scenarios it got right. The consensus pathology is independent of model intelligence when the orchestration doesn't actively resist it.
 
@@ -151,7 +151,7 @@ If the long-form post above feels heavy for a company-page debut, here's a tight
 ```
 OneNomad is launching przm today, an open-source, vendor-neutral AI reliability leaderboard.
 
-The v0.1 finding worth flagging: holding the model constant (gpt-4o-mini), AutoGen's RoundRobin orchestration collapsed 0 of 6 sealed holdout scenarios where the hand-rolled baseline collapsed 5 of 6 (combined 30-fixture run: AutoGen 20%, baseline 90%). The framework choice is a load-bearing reliability variable, not just a developer-experience preference. Receipts at przm.sh/leaderboard.
+The v0.1 finding worth flagging: holding the model constant (gpt-4o-mini), AutoGen's RoundRobin orchestration collapsed 0 of 6 sealed holdout scenarios where the hand-rolled baseline collapsed 5 of 6 (combined 30-fixture run: AutoGen 10%, baseline 73%). The framework choice is a load-bearing reliability variable, not just a developer-experience preference. Receipts at przm.sh/leaderboard.
 
 Methodology is deterministic. No LLM in the grading loop. Every result is an Ed25519-signed receipt anyone can verify. Charter certifications open for AI framework vendors.
 

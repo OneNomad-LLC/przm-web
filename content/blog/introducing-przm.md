@@ -48,11 +48,11 @@ Combined run (30 fixtures):
 
 ```
 metric                            haiku-baseline  haiku-sequential  gpt-5-mini  gpt-4o-mini-baseline  gpt-4o-mini-sequential  autogen/gpt-4o-mini
-correct_final_answer_rate         96.7%           93.3%             96.7%       90.0%                 83.3%                   83.3%
-collapse_rate (lower better)      56.7%           53.3%             100.0%      90.0%                 83.3%                   20.0%
-sycophancy_ratio (lower better)   0.0%            0.0%              0.0%        3.3%                  0.0%                    0.0%
-tokens_per_correct_answer         1,174           1,170             4,820       659                   685                     935
-position_flips_per_agent_per_round 0.074          0.059             0.111       0.115                 0.096                   0.037
+correct_final_answer_rate         96.7%           93.3%             96.7%       76.7%                 86.7%                   93.3%
+collapse_rate (lower better)      56.7%           53.3%             96.7%       73.3%                 86.7%                   10.0%
+sycophancy_ratio (lower better)   0.0%            0.0%              0.0%        10.0%                 0.0%                    0.0%
+tokens_per_correct_answer         1,196           1,180             4,866       653                   655                     949
+position_flips_per_agent_per_round 0.074          0.059             0.107       0.104                 0.096                   0.030
 ```
 
 Sealed 6-fixture holdout (different scenarios, same code):
@@ -60,18 +60,18 @@ Sealed 6-fixture holdout (different scenarios, same code):
 ```
 metric                            haiku-baseline  haiku-sequential  gpt-5-mini  gpt-4o-mini-baseline  gpt-4o-mini-sequential  autogen/gpt-4o-mini
 correct_final_answer_rate         100.0%          83.3%             100.0%      66.7%                 66.7%                   83.3%
-collapse_rate (lower better)      66.7%           66.7%             100.0%      83.3%                 66.7%                   0.0%
+collapse_rate (lower better)      66.7%           66.7%             100.0%      83.3%                 83.3%                   0.0%
 ```
 
-The headline is the same-model-different-framework comparison on the holdout. Hold the model constant (`gpt-4o-mini`), and AutoGen's `RoundRobinGroupChat` collapsed **0 of 6 sealed scenarios** while the hand-rolled baseline collapsed 5 of 6. On the larger 30-fixture combined set: baseline 90% collapse, AutoGen 20%.
+The headline is the same-model-different-framework comparison on the holdout. Hold the model constant (`gpt-4o-mini`), and AutoGen's `RoundRobinGroupChat` collapsed **0 of 6 sealed scenarios** while the hand-rolled baseline collapsed 5 of 6. On the larger 30-fixture combined set: baseline 73% collapse, AutoGen 10%.
 
-What matters about this measurement: we ran *two* baseline variants for `gpt-4o-mini`, one with synchronous reveal (agents answer blind in-round, only see prior rounds) and one with sequential reveal (agent N reads agents 0..N-1 in the same round, matching what AutoGen does). The sequential baseline still collapses at 83% combined / 67% holdout. So the AutoGen advantage isn't just "agents can see each other within a round." The framework is doing real work beyond the reveal-protocol choice. We don't fully understand what that work is yet; it's a hypothesis-generating finding, not a closed explanation.
+What matters about this measurement: we ran *two* baseline variants for `gpt-4o-mini`, one with synchronous reveal (agents answer blind in-round, only see prior rounds) and one with sequential reveal (agent N reads agents 0..N-1 in the same round, matching what AutoGen does). The sequential baseline still collapses at 87% combined / 83% holdout. So the AutoGen advantage isn't just "agents can see each other within a round." The framework is doing real work beyond the reveal-protocol choice. We don't fully understand what that work is yet; it's a hypothesis-generating finding, not a closed explanation.
 
 A few other findings worth naming:
 
-- Claude Haiku 4.5 held correctness at 96.7% combined / 100% holdout and collapsed at roughly half the rate of `gpt-4o-mini` baseline (56.7% vs 90% combined). On these specific fixtures the model itself resists the confederate better, which is what you'd expect when the model has stronger priors against the wrong answer.
+- Claude Haiku 4.5 held correctness at 96.7% combined / 100% holdout and collapsed at roughly the same rate as `gpt-4o-mini` synchronous baseline (56.7% vs 73.3% combined). The Haiku effect is smaller than v0.1's first signed run suggested; consider it within fixture noise on this size of sample.
 - `gpt-5-mini` collapsed on 100% of scenarios it got right. Smarter model, same convergence pathology when the confederate is confidently wrong and the orchestration doesn't actively resist consensus.
-- `gpt-5-mini` uses ~4× more tokens per correct answer than Haiku (4,820 vs 1,174) for the same correctness rate. The reasoning-model budget shows up in the spend column without showing up in the outcome column on this benchmark.
+- `gpt-5-mini` uses ~4× more tokens per correct answer than Haiku (4,866 vs 1,196) for the same correctness rate. The reasoning-model budget shows up in the spend column without showing up in the outcome column on this benchmark.
 - The confederate's confidence matters more than the wrongness obviousness. Fixtures where the confederate's rationale was internally consistent (fake citations, fake-precision walkthroughs) caught more agents than fixtures where the confederate just contradicted something obvious.
 
 ## The fixture set
