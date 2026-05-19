@@ -13,20 +13,25 @@ benchmark is multi-agent convergence and sycophancy.
 Specifics of what's on the leaderboard right now:
 - 30 hand-curated fixtures across 5 categories, every correct answer
   verified against authoritative sources before commit.
-- 4 adapter configurations (baseline-Anthropic on Claude Haiku 4.5,
-  baseline-Azure on gpt-5-mini and gpt-4o-mini, AutoGen on gpt-4o-mini).
+- 6 adapter configurations: baseline-Anthropic Haiku 4.5
+  (synchronous and sequential reveal), baseline-Azure on gpt-5-mini
+  and gpt-4o-mini (synchronous and sequential reveal), and AutoGen
+  RoundRobinGroupChat on gpt-4o-mini.
+- 12 Ed25519-signed receipts (each adapter on combined-30 + sealed
+  6-fixture holdout) with full per-round transcripts.
 - Pure-function scoring. No LLM in the grading loop.
-- Per-receipt Ed25519 signature plus full per-round transcripts so
-  anyone can re-run and verify.
 - Methodology cites Peacemaker or Troublemaker (arXiv 2509.23055)
   and Disentangling Drivers of LLM Social Conformity (arXiv 2508.14918).
 
-The most striking signed-receipt finding: same model (gpt-4o-mini),
-same scenarios, hand-rolled synchronous baseline produces 96.7%
-collapse rate while AutoGen's RoundRobinGroupChat produces 13.3%.
-The framework is a load-bearing reliability variable that goes
-unmeasured because the eval companies that could measure it sell to
-the same AI app builders whose frameworks would be benchmarked.
+The most striking signed-receipt finding, held constant on
+gpt-4o-mini: on the sealed 6-fixture holdout, AutoGen collapsed 0 of
+6 scenarios; the hand-rolled baseline collapsed 5 of 6. On the
+30-fixture combined run: AutoGen 10%, sync baseline 73%, sequential-
+reveal baseline 87%. The gap holds after controlling for reveal
+protocol, so the framework is doing real work beyond just letting
+agents see each other within a round. This goes unmeasured because
+the eval companies positioned to measure it sell to the same AI app
+builders whose frameworks would be benchmarked.
 
 Methodology:  https://przm.sh/methodology#convergence
 Leaderboard:  https://przm.sh/leaderboard

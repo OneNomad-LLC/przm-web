@@ -8,15 +8,17 @@ don't have a vendor-neutral standard yet.
 
 {{specific_open}}
 
-The v0.1 leaderboard shipped today with four adapter configurations
-already on it (baseline-Anthropic, baseline-Azure on gpt-5-mini and
-gpt-4o-mini, AutoGen on gpt-4o-mini). {{scores_line}}
+The v0.1 leaderboard shipped today with six adapter configurations
+on it: baseline-Anthropic Haiku 4.5 (sync + sequential reveal),
+baseline-Azure gpt-5-mini, gpt-4o-mini (sync + sequential reveal),
+and AutoGen RoundRobin on gpt-4o-mini. {{scores_line}}
 
-The headline finding from the signed run, held constant on gpt-4o-mini:
-hand-rolled synchronous-round baseline came in at 96.7% collapse rate,
-AutoGen RoundRobin came in at 13.3%. Same model, 7.3× difference from
-orchestration alone. The framework choice is a load-bearing
-reliability variable.
+The headline finding, held constant on gpt-4o-mini: on the sealed
+6-fixture holdout, AutoGen collapsed 0 of 6 scenarios; the hand-rolled
+baseline collapsed 5 of 6. On the 30-fixture combined run: AutoGen
+10%, sync baseline 73%, sequential-reveal baseline 87%. The gap holds
+after controlling for reveal protocol, so the framework is doing real
+work beyond just letting agents see each other within a round.
 
 Two asks before {{framework}}'s adapter lands on the leaderboard:
 
