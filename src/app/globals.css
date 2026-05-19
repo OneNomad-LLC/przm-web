@@ -51,9 +51,9 @@
 
   /* Fonts */
   --font-mono:
-    'Cascadia Mono', 'Cascadia Code', 'JetBrains Mono', 'Fira Code', Consolas, 'SF Mono', monospace;
+    var(--font-mono-display), 'Cascadia Mono', 'JetBrains Mono', 'Fira Code', Consolas, monospace;
   --font-body:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif;
+    var(--font-body-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif;
 
   /* Animations */
   --animate-fade-up: fade-up 0.8s ease-out both;

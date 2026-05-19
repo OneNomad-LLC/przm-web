@@ -36,8 +36,8 @@ export function Navbar() {
   }, [mobileOpen])
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-[color:var(--color-border-subtle)] bg-[color:var(--color-bg-base)]/80 backdrop-blur-md">
-      <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-6">
+    <header className="fixed inset-x-0 top-0 z-40 bg-[color:var(--color-bg-base)]/80 backdrop-blur-md">
+      <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 border-x border-b border-[color:var(--color-border-subtle)] px-6">
         {/* Logo */}
         <Link
           href="/"
@@ -97,7 +97,7 @@ export function Navbar() {
           mobileOpen ? 'max-h-[60vh] opacity-100' : 'max-h-0 opacity-0',
         )}
       >
-        <div className="mx-auto max-w-6xl space-y-1 px-6 py-6">
+        <div className="mx-auto max-w-6xl space-y-1 border-x border-[color:var(--color-border-subtle)] px-6 py-6">
           {navLinks.map((l) => (
             <Link
               key={l.href}

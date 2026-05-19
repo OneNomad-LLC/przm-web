@@ -24,7 +24,7 @@ export default function MemoryPage() {
   return (
     <>
       <Navbar />
-      <main className="mx-auto w-full max-w-6xl px-6 pb-20 pt-28">
+      <main className="mx-auto w-full max-w-6xl border-x border-[color:var(--color-border-subtle)] px-6 pb-20 pt-20">
         {/* Hero */}
         <section className="relative mb-16">
           <div
