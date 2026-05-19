@@ -1,6 +1,6 @@
 # przm-web
 
-The website at [przm.sh](https://przm.sh) — multi-axis AI reliability leaderboard.
+The website at [przm.sh](https://przm.sh). Multi-axis AI reliability leaderboard.
 
 This repo owns the user-facing surface: marketing pages, the receipt
 ledger, the verify-a-receipt page, and the canonical methodology
@@ -51,7 +51,7 @@ artifacts. The website is where users actually encounter them.
 spec changes, it changes here (as a docs PR, reviewed for clarity),
 and the bench harness then catches up.
 
-This matches how every working benchmark organization operates — IETF
+This matches how every working benchmark organization operates: IETF
 RFCs, MLPerf, SPEC, ImageNet. The spec is the product. The runner
 implements the spec.
 
