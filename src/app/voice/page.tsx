@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 }
 
 const ACCENT = 'var(--color-voice)'
-const NPM = '@onenomad/persona-mcp'
-const REPO = 'https://github.com/OneNomad-LLC/persona-mcp'
+const NPM = '@onenomad/przm-voice'
+const REPO = 'https://github.com/OneNomad-LLC/przm-voice'
 
 export default function VoicePage() {
   return (
@@ -212,7 +212,7 @@ export default function VoicePage() {
             <InstallBlock
               title="From source"
               code={`git clone ${REPO}.git
-cd persona-mcp
+cd przm-voice
 pnpm install
 pnpm run build`}
               accent={ACCENT}

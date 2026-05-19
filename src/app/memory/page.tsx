@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 }
 
 const ACCENT = 'var(--color-memory)'
-const NPM = '@onenomad/engram-mcp'
-const REPO = 'https://github.com/OneNomad-LLC/engram-mcp'
+const NPM = '@onenomad/przm-memory'
+const REPO = 'https://github.com/OneNomad-LLC/przm-memory'
 
 export default function MemoryPage() {
   return (
@@ -233,7 +233,7 @@ export default function MemoryPage() {
             <InstallBlock
               title="From source"
               code={`git clone ${REPO}.git
-cd engram-mcp
+cd przm-memory
 npm install
 npm run build`}
               accent={ACCENT}
