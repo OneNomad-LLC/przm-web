@@ -82,24 +82,26 @@ export default async function MethodologyPage() {
     <>
       <Navbar />
       <main className="mx-auto w-full max-w-6xl border-x border-[color:var(--color-border-subtle)] pt-14">
-        <div className="mx-auto max-w-4xl">
         {/* Header */}
         <section className="px-6 py-16">
-          <p className="text-[11px] font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            Methodology
-          </p>
-          <h1 className="mt-3 text-4xl font-bold leading-[1.05] tracking-tight text-[color:var(--color-text-primary)] md:text-5xl">
-            How we measure.
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-[color:var(--color-text-secondary)]">
-            Every przm benchmark follows the same four rules: deterministic scoring (no LLM judge
-            in the grading loop), Ed25519-signed receipts, SHA-pinned fixtures, adversarial holdout
-            splits. Per-benchmark specs below document what gets measured and how.
-          </p>
+          <div className="mx-auto max-w-4xl">
+            <p className="text-[11px] font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+              Methodology
+            </p>
+            <h1 className="mt-3 text-4xl font-bold leading-[1.05] tracking-tight text-[color:var(--color-text-primary)] md:text-5xl">
+              How we measure.
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-[color:var(--color-text-secondary)]">
+              Every przm benchmark follows the same four rules: deterministic scoring (no LLM judge
+              in the grading loop), Ed25519-signed receipts, SHA-pinned fixtures, adversarial holdout
+              splits. Per-benchmark specs below document what gets measured and how.
+            </p>
+          </div>
         </section>
 
         {/* Cross-cutting principles — card grid */}
         <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-16">
+          <div className="mx-auto max-w-4xl">
           <div className="mb-8">
             <p className="text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
               Principles
@@ -186,10 +188,12 @@ export default async function MethodologyPage() {
               </div>
             ))}
           </div>
+          </div>
         </section>
 
         {/* TOC */}
         <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-16">
+          <div className="mx-auto max-w-4xl">
           <div className="mb-8">
             <p className="text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
               Benchmarks
@@ -220,6 +224,7 @@ export default async function MethodologyPage() {
               </a>
             ))}
           </div>
+          </div>
         </section>
 
         {/* Each benchmark's full methodology */}
@@ -229,26 +234,29 @@ export default async function MethodologyPage() {
             id={doc.slug}
             className="scroll-mt-24 border-t border-[color:var(--color-border-subtle)] px-6 py-16"
           >
-            <div className="mb-6 flex items-center justify-between">
-              <StatusPill status={doc.status} />
-              <a
-                href={`https://github.com/OneNomad-LLC/przm-web/blob/main/${doc.sourcePath}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-medium text-[color:var(--color-text-muted)] transition-colors hover:text-[color:var(--color-bench)]"
-              >
-                {doc.sourcePath} →
-              </a>
+            <div className="mx-auto max-w-4xl">
+              <div className="mb-6 flex items-center justify-between">
+                <StatusPill status={doc.status} />
+                <a
+                  href={`https://github.com/OneNomad-LLC/przm-web/blob/main/${doc.sourcePath}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-medium text-[color:var(--color-text-muted)] transition-colors hover:text-[color:var(--color-bench)]"
+                >
+                  {doc.sourcePath} →
+                </a>
+              </div>
+              <div
+                className="prose-bench"
+                dangerouslySetInnerHTML={{ __html: doc.html }}
+              />
             </div>
-            <div
-              className="prose-bench"
-              dangerouslySetInnerHTML={{ __html: doc.html }}
-            />
           </section>
         ))}
 
         {/* Footer CTAs */}
         <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-12">
+          <div className="mx-auto max-w-4xl">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-[color:var(--color-text-muted)]">
               Methodology specs live in{' '}
@@ -278,8 +286,8 @@ export default async function MethodologyPage() {
               Verify a receipt →
             </a>
           </div>
+          </div>
         </section>
-        </div>
       </main>
       <Footer />
     </>
