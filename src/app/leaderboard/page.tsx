@@ -83,74 +83,95 @@ export default function LeaderboardPage() {
   return (
     <>
       <Navbar />
-      <main className="mx-auto w-full max-w-6xl border-x border-[color:var(--color-border-subtle)] px-6 pb-20 pt-20">
+      <main className="mx-auto w-full max-w-6xl border-x border-[color:var(--color-border-subtle)] pt-14">
         {/* Header */}
-        <div className="mb-12">
-          <div className="mb-3 flex items-center gap-3">
-            <span className="font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
-              // leaderboard / convergence v0.1
+        <section className="px-6 py-16">
+          <div className="mb-4 flex items-center gap-3">
+            <span className="text-[11px] font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+              Leaderboard · Convergence v0.1
             </span>
             <SignedBadge />
           </div>
-          <h1 className="font-mono text-3xl font-semibold leading-tight tracking-tight text-[color:var(--color-text-primary)] md:text-4xl">
+          <h1 className="text-4xl font-bold leading-[1.05] tracking-tight text-[color:var(--color-text-primary)] md:text-5xl">
             Multi-agent{' '}
-            <span style={{ color: 'var(--color-bench)' }}>convergence</span> &amp;{' '}
+            <span style={{ color: 'var(--color-bench)' }}>convergence</span>{' '}
+            <span className="text-[color:var(--color-text-muted)]">&amp;</span>{' '}
             <span style={{ color: 'var(--color-memory)' }}>sycophancy</span>
           </h1>
-          <p className="mt-4 max-w-3xl font-mono text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
+          <p className="mt-5 max-w-3xl text-base leading-relaxed text-[color:var(--color-text-secondary)]">
             {fixtureCount} fixtures across 5 categories. Each scenario:{' '}
             {configuration.nAgents} agents debating for {configuration.nRounds}{' '}
             rounds, with one agent confederate-injected with a confident wrong
-            answer.{' '}
+            answer.
+          </p>
+          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12px] text-[color:var(--color-text-muted)]">
             <Link
               href="/methodology#convergence"
-              className="text-[color:var(--color-bench)] underline-offset-4 hover:underline"
+              className="font-medium transition-colors hover:text-[color:var(--color-bench)]"
             >
-              Methodology
-            </Link>{' '}
-            ·{' '}
+              Methodology →
+            </Link>
             <Link
               href="/blog/introducing-przm"
-              className="text-[color:var(--color-bench)] underline-offset-4 hover:underline"
+              className="font-medium transition-colors hover:text-[color:var(--color-bench)]"
             >
-              Read the launch post
+              Launch post →
             </Link>
-          </p>
-          <p className="mt-3 font-mono text-xs text-[color:var(--color-text-muted)]">
-            Last run: {new Date(ranAt).toISOString().slice(0, 16).replace('T', ' ')} UTC
-          </p>
-        </div>
-
-        {/* The headline finding callout */}
-        <section
-          className="mb-12 rounded-lg border border-[color:var(--color-bench)]/40 bg-[color:var(--color-bg-surface)]/40 p-6"
-          style={{ boxShadow: '0 0 20px rgba(52,196,104,0.08)' }}
-        >
-          <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-bench)]">
-            // headline finding
+            <span className="font-mono text-[11px] text-[color:var(--color-text-disabled)]">
+              Last run: {new Date(ranAt).toISOString().slice(0, 16).replace('T', ' ')} UTC
+            </span>
           </div>
-          <p className="font-mono text-base leading-relaxed text-[color:var(--color-text-primary)]">
-            On the sealed 6-fixture holdout, holding the model constant ({' '}
-            <code className="rounded bg-[color:var(--color-bg-elevated)] px-1.5 py-0.5 text-sm">
-              gpt-4o-mini
-            </code>{' '}
-            ), AutoGen RoundRobinGroupChat collapsed{' '}
-            <span style={{ color: 'var(--color-bench)' }} className="font-semibold">
-              0 of 6 scenarios
-            </span>{' '}
-            while the hand-rolled baseline collapsed 5 of 6. On the 30-fixture combined set: AutoGen 10%, baseline 73%. The gap holds even when controlling for reveal protocol. The sequential baseline still collapses 87% on the same fixtures. The framework changes consensus dynamics independently of both the underlying LLM and the reveal protocol.
-          </p>
+        </section>
+
+        {/* Headline finding callout */}
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-16">
+          <div className="relative">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 -z-10 rounded-2xl opacity-30 blur-3xl"
+              style={{ background: 'radial-gradient(50% 50% at 50% 50%, rgba(52,196,104,0.15), transparent 70%)' }}
+            />
+            <div className="rounded-2xl border border-[color:var(--color-bench)]/30 bg-[color:var(--color-bg-surface)]/60 p-8 backdrop-blur">
+              <div className="mb-3 text-[10px] font-medium uppercase tracking-widest text-[color:var(--color-bench)]">
+                Headline finding
+              </div>
+              <p className="text-lg leading-relaxed text-[color:var(--color-text-secondary)]">
+                On the sealed 6-fixture holdout, holding the model constant (
+                <code className="rounded bg-[color:var(--color-bg-elevated)] px-2 py-0.5 font-mono text-base">
+                  gpt-4o-mini
+                </code>
+                ), AutoGen RoundRobinGroupChat collapsed{' '}
+                <span className="font-semibold text-[color:var(--color-bench)]">
+                  0 of 6 scenarios
+                </span>{' '}
+                while the hand-rolled baseline collapsed{' '}
+                <span className="font-semibold text-[color:var(--color-memory)]">5 of 6</span>. On
+                the 30-fixture combined set: AutoGen 10%, baseline 73%. The gap holds even when
+                controlling for reveal protocol. The sequential baseline still collapses 87% on the
+                same fixtures.
+              </p>
+            </div>
+          </div>
         </section>
 
         {/* Leaderboard table */}
-        <section className="mb-12">
-          <p className="mb-3 font-mono text-[11px] text-[color:var(--color-text-muted)]">
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-16">
+          <div className="mb-6 flex items-baseline justify-between gap-4">
+            <h2 className="text-2xl font-bold tracking-tight text-[color:var(--color-text-primary)] md:text-3xl">
+              Every signed receipt.
+            </h2>
+            <Link
+              href="/verify"
+              className="hidden text-xs font-medium text-[color:var(--color-bench)] underline-offset-4 hover:underline sm:block"
+            >
+              Verify any receipt →
+            </Link>
+          </div>
+          <p className="mb-6 max-w-3xl text-sm text-[color:var(--color-text-muted)]">
             Primary score is the combined 30-fixture run. The{' '}
-            <span style={{ color: 'var(--color-memory)' }}>(±Npp)</span> delta
-            in parens is the holdout-set delta against the same model and same
-            prompts on 6 randomly-sealed fixtures not used during methodology
-            development.
-            Wide deltas (&gt;5pp) suggest fixture overfit on our end and get
+            <span style={{ color: 'var(--color-memory)' }}>(±Npp)</span> delta in parens is the
+            holdout-set delta against the same model on 6 randomly-sealed fixtures not used during
+            methodology development. Wide deltas (&gt;5pp) suggest fixture overfit and get
             highlighted.
           </p>
           <div className="overflow-x-auto rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/30">
@@ -247,78 +268,111 @@ export default function LeaderboardPage() {
         </section>
 
         {/* What each axis means */}
-        <section className="mb-12">
-          <h2 className="mb-6 font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            // axis definitions
-          </h2>
-          <dl className="grid gap-6 md:grid-cols-2">
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-16">
+          <div className="mb-8">
+            <p className="text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+              Axis definitions
+            </p>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-[color:var(--color-text-primary)] md:text-3xl">
+              What each metric measures.
+            </h2>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[
               {
                 term: 'correct_final_answer_rate',
+                short: 'Got the right answer',
                 def: 'Fraction of scenarios where the consensus answer at the end of the debate matched the known-correct answer. Higher is better.',
+                arrow: '↑',
               },
               {
                 term: 'collapse_rate',
-                def: 'Fraction of scenarios where every agent ended on the same answer (right or wrong) by the final round. Lower is generally better: it means the orchestration resists premature consensus.',
+                short: 'Premature consensus',
+                def: 'Fraction of scenarios where every agent ended on the same answer (right or wrong) by the final round. Lower is better — the orchestration resists groupthink.',
+                arrow: '↓',
               },
               {
                 term: 'sycophancy_ratio',
-                def: "Fraction of (agent × scenario) pairs where an agent started with the correct answer and ended on the confederate's wrong one. Lower is better.",
+                short: 'Flipped to wrong',
+                def: 'Fraction of (agent × scenario) pairs where an agent started correct and ended on the confederate’s wrong answer. Lower is better.',
+                arrow: '↓',
               },
               {
                 term: 'tokens_per_correct_answer',
-                def: 'Mean output tokens consumed across correct-only scenarios. Lower is more efficient.',
+                short: 'Compute efficiency',
+                def: 'Mean output tokens consumed per correct outcome. Lower is more efficient — flags reasoning-model spend that doesn’t translate to better answers.',
+                arrow: '↓',
               },
               {
                 term: 'position_flips_per_agent_per_round',
-                def: 'How often individual agents change their answer round-over-round. Descriptive, not prescriptive. Some frameworks flip to explore; the sycophancy ratio separates exploration from capitulation.',
+                short: 'Answer volatility',
+                def: 'How often individual agents change their answer round-over-round. Descriptive, not prescriptive — pair with sycophancy ratio to separate exploration from capitulation.',
+                arrow: '·',
               },
             ].map((d) => (
-              <div key={d.term}>
-                <dt className="font-mono text-sm text-[color:var(--color-text-primary)]">
+              <div
+                key={d.term}
+                className="rounded-xl border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40 p-5 transition-colors hover:border-[color:var(--color-border-default)]/80 hover:bg-[color:var(--color-bg-surface)]/60"
+              >
+                <div className="mb-2 flex items-baseline justify-between">
+                  <h3 className="text-sm font-semibold text-[color:var(--color-text-primary)]">
+                    {d.short}
+                  </h3>
+                  <span className="font-mono text-base text-[color:var(--color-text-muted)]">
+                    {d.arrow}
+                  </span>
+                </div>
+                <code className="block font-mono text-[11px] text-[color:var(--color-bench)]">
                   {d.term}
-                </dt>
-                <dd className="mt-1 font-mono text-xs leading-relaxed text-[color:var(--color-text-secondary)]">
+                </code>
+                <p className="mt-3 text-[13px] leading-relaxed text-[color:var(--color-text-secondary)]">
                   {d.def}
-                </dd>
+                </p>
               </div>
             ))}
-          </dl>
+          </div>
         </section>
 
         {/* CTAs */}
-        <section className="grid gap-4 md:grid-cols-2">
-          <Link
-            href="/vendor-cert"
-            className="group flex flex-col gap-2 rounded-lg border border-[color:var(--color-bench)]/40 bg-[color:var(--color-bg-surface)]/40 p-6 transition-colors hover:border-[color:var(--color-bench)]"
-          >
-            <div className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-bench)]">
-              for vendors
-            </div>
-            <div className="font-mono text-base text-[color:var(--color-text-primary)]">
-              Get your framework on this list →
-            </div>
-            <p className="font-mono text-xs leading-relaxed text-[color:var(--color-text-secondary)]">
-              First 3-5 charter customers free. After that $999/release. We
-              run the bench against your release, you get the signed receipt.
-            </p>
-          </Link>
-          <Link
-            href="/methodology#convergence"
-            className="group flex flex-col gap-2 rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40 p-6 transition-colors hover:border-[color:var(--color-bench)]"
-          >
-            <div className="font-mono text-xs uppercase tracking-widest text-[color:var(--color-text-muted)]">
-              skeptical?
-            </div>
-            <div className="font-mono text-base text-[color:var(--color-text-primary)]">
-              Read the methodology →
-            </div>
-            <p className="font-mono text-xs leading-relaxed text-[color:var(--color-text-secondary)]">
-              Full spec including scoring math, adapter contract, threats to
-              validity, and the holdout protocol. Apache-2.0. Submit a PR if
-              you think we got something wrong.
-            </p>
-          </Link>
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-16">
+          <div className="grid gap-5 md:grid-cols-2">
+            <Link
+              href="/vendor-cert"
+              className="group flex flex-col gap-3 rounded-2xl border border-[color:var(--color-bench)]/30 bg-[color:var(--color-bg-surface)]/40 p-7 transition-all hover:border-[color:var(--color-bench)]/60 hover:bg-[color:var(--color-bg-surface)]/60"
+            >
+              <div className="text-xs font-medium uppercase tracking-widest text-[color:var(--color-bench)]">
+                For vendors
+              </div>
+              <h3 className="text-xl font-semibold text-[color:var(--color-text-primary)]">
+                Get your framework on this list
+                <span className="ml-1 inline-block transition-transform group-hover:translate-x-0.5">
+                  →
+                </span>
+              </h3>
+              <p className="text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
+                First 3-5 charter customers free. After that $999/release. We run the bench against
+                your release, you get the signed receipt.
+              </p>
+            </Link>
+            <Link
+              href="/methodology#convergence"
+              className="group flex flex-col gap-3 rounded-2xl border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40 p-7 transition-all hover:border-[color:var(--color-text-secondary)]/40 hover:bg-[color:var(--color-bg-surface)]/60"
+            >
+              <div className="text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+                Skeptical?
+              </div>
+              <h3 className="text-xl font-semibold text-[color:var(--color-text-primary)]">
+                Read the methodology
+                <span className="ml-1 inline-block transition-transform group-hover:translate-x-0.5">
+                  →
+                </span>
+              </h3>
+              <p className="text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
+                Full spec including scoring math, adapter contract, threats to validity, and the
+                holdout protocol. Apache-2.0. PR if you think we got something wrong.
+              </p>
+            </Link>
+          </div>
         </section>
       </main>
       <Footer />

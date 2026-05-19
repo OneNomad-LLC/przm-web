@@ -155,22 +155,22 @@ export default function VendorCertPage() {
   return (
     <>
       <Navbar />
-      <main className="mx-auto w-full max-w-6xl border-x border-[color:var(--color-border-subtle)] px-6 pb-20 pt-20">
+      <main className="mx-auto w-full max-w-6xl border-x border-[color:var(--color-border-subtle)] pt-14">
         {/* Hero */}
-        <section className="mb-16">
-          <div className="mb-3 font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            // vendor certification
+        <section className="px-6 py-16">
+          <div className="mb-3 text-[11px] font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+            Vendor certification
           </div>
-          <h1 className="font-mono text-4xl font-semibold leading-tight tracking-tight text-[color:var(--color-text-primary)] md:text-5xl">
+          <h1 className="text-4xl font-bold leading-[1.05] tracking-tight text-[color:var(--color-text-primary)] md:text-5xl">
             Get your framework{' '}
             <span style={{ color: 'var(--color-bench)' }}>independently</span>{' '}
             benchmarked.
           </h1>
-          <p className="mt-5 max-w-2xl font-mono text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-[color:var(--color-text-secondary)]">
             "Our agents are reliable" is something every framework vendor says.
             A przm receipt is the thing that makes it verifiable.
           </p>
-          <p className="mt-4 max-w-2xl font-mono text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-[color:var(--color-text-secondary)]">
             We run the benchmark independently against your release, sign the
             receipt with our Ed25519 key, and publish it on the public
             leaderboard. You get a third-party performance attestation you can
@@ -180,9 +180,9 @@ export default function VendorCertPage() {
         </section>
 
         {/* Pricing tiers */}
-        <section className="mb-20" id="pricing">
-          <h2 className="mb-8 font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            // pricing
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-16" id="pricing">
+          <h2 className="mb-8 text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+            Pricing
           </h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {tiers.map((tier) => (
@@ -226,7 +226,7 @@ export default function VendorCertPage() {
                     </span>
                   ) : null}
                 </div>
-                <p className="mb-5 font-mono text-xs leading-relaxed text-[color:var(--color-text-secondary)]">
+                <p className="mb-5 text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
                   {tier.description}
                 </p>
                 <ul className="mb-6 flex flex-1 flex-col gap-2 font-mono text-xs text-[color:var(--color-text-secondary)]">
@@ -273,9 +273,9 @@ export default function VendorCertPage() {
         </section>
 
         {/* How it works */}
-        <section className="mb-20">
-          <h2 className="mb-8 font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            // how it works
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-16">
+          <h2 className="mb-8 text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+            How it works
           </h2>
           <ol className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[
@@ -320,7 +320,7 @@ export default function VendorCertPage() {
                 <div className="font-mono text-sm text-[color:var(--color-text-primary)]">
                   {step.title}
                 </div>
-                <p className="font-mono text-xs leading-relaxed text-[color:var(--color-text-secondary)]">
+                <p className="text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
                   {step.body}
                 </p>
               </li>
@@ -329,9 +329,9 @@ export default function VendorCertPage() {
         </section>
 
         {/* What it does NOT include */}
-        <section className="mb-20">
-          <h2 className="mb-8 font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            // what it does NOT include
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-16">
+          <h2 className="mb-8 text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+            What it doesn't include
           </h2>
           <div className="grid gap-5 md:grid-cols-2">
             {[
@@ -359,7 +359,7 @@ export default function VendorCertPage() {
                 <div className="mb-2 font-mono text-sm text-[color:var(--color-text-primary)]">
                   {item.title}
                 </div>
-                <p className="font-mono text-xs leading-relaxed text-[color:var(--color-text-secondary)]">
+                <p className="text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
                   {item.body}
                 </p>
               </div>
@@ -368,9 +368,9 @@ export default function VendorCertPage() {
         </section>
 
         {/* FAQ */}
-        <section className="mb-20">
-          <h2 className="mb-8 font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            // questions
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-16">
+          <h2 className="mb-8 text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+            Questions
           </h2>
           <div className="flex flex-col gap-6">
             {[
@@ -395,7 +395,7 @@ export default function VendorCertPage() {
                 <div className="mb-2 font-mono text-sm text-[color:var(--color-text-primary)]">
                   {item.q}
                 </div>
-                <p className="font-mono text-xs leading-relaxed text-[color:var(--color-text-secondary)]">
+                <p className="text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
                   {item.a}
                 </p>
               </div>
@@ -404,7 +404,7 @@ export default function VendorCertPage() {
         </section>
 
         {/* Charter signup form (replaces the static mailto: CTA) */}
-        <section id="claim" className="scroll-mt-24">
+        <section id="claim" className="scroll-mt-24 border-t border-[color:var(--color-border-subtle)] px-6 py-16">
           <CharterSignupForm />
         </section>
 
