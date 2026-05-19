@@ -26,7 +26,7 @@ Give each framework's lead maintainer a chance to see their number before we pub
 | **OpenAI Agents SDK** (successor to Swarm) | Ilan Bigio (DX), James Hills (DX) | GitHub `@ibigio`, `@jhills20` | DM via X, or via openai.com developer support form | github.com/openai/swarm README "Core Contributors" list |
 | **AutoGen** (maintenance mode) | Microsoft team — community managed; aka.ms/autogen-discord | n/a individual | Discord; not high priority since maintenance-mode | github.com/microsoft/autogen |
 
-Verify each before sending — the public-source data above was current as of Jan 2026 cutoff and may have shifted.
+Verify each before sending. The public-source data above was last refreshed early 2026 and roles may have shifted by launch (2026-05-19) and beyond.
 
 ### The email template (CrewAI variant; adapt sender language per recipient)
 

@@ -87,7 +87,7 @@ will not, because:
   it.
 - **Methodology priority.** First-mover on a specific benchmark
   standard owns the citation chain. Late entrants compete in our
-  category as "we also score 87% on przm-bench."
+  category by citing our scores, not the other way around.
 
 A funded memory company (Mem0, Letta) won't enter because publishing
 benchmarks they don't dominate is brand-suicidal for them.

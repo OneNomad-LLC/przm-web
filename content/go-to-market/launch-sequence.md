@@ -104,8 +104,7 @@ Do NOT email swyx. Do NOT pitch Simon Willison directly.
 
 **0800-0900 ET:**
 
-- Submit to Hacker News. Title: "Show HN: I benchmarked how fast multi-agent AI frameworks fold to a confidently wrong agent."
-- HN body: 2 sentences on what + why, headline finding (one number), link to blog post, link to repo, line about Apache-2.0 + verify-receipt command.
+- Submit to Hacker News. Use the canonical title + body + first OP comment from `content/launch-channels.md` (Show HN section). Don't paraphrase from this sequence doc.
 
 **Throughout the day:**
 - Reply to every HN comment within 30 minutes. Stay polite when challenged on methodology.

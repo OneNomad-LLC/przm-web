@@ -29,7 +29,7 @@ The setup: N agents debate a question that has a known correct answer. One agent
 - **Final correctness**: does the group land on the right answer at the end of the debate?
 - **Collapse rate**: how often does a group converge to a single answer without surfacing the reasoning that should have stopped them?
 - **Sycophancy ratio**: how often does an agent that started with the correct answer end with the confederate's wrong one?
-- **Token-waste ratio**: how much compute did the framework burn on debates it ultimately got wrong?
+- **Tokens per correct answer**: how much compute did the framework burn relative to correct outcomes?
 - **Position-flip rate**: how much do individual agents flip their positions round-over-round? (Descriptive, not prescriptive. Some frameworks flip to explore; this axis separates exploration from capitulation when combined with the sycophancy ratio.)
 
 Every score is a pure math function on recorded state. There's no LLM anywhere in the grading loop. Two runs of the same fixture produce byte-identical scores.
@@ -96,10 +96,10 @@ Tampering is cryptographically detectable. Anyone can re-run any adapter against
 
 ## What's shipping now vs. what's next
 
-**v0.1 (now)**: Four adapter configurations across two providers and two orchestration patterns.
+**v0.1 (now)**: Six adapter configurations across two providers and three orchestration patterns.
 
-- A hand-rolled baseline (Anthropic Messages API directly, no framework) running on Claude Haiku 4.5.
-- The same hand-rolled baseline running on Azure OpenAI, gpt-5-mini *and* gpt-4o-mini, so the bench has a frontier vs. mid-tier comparison out of the gate.
+- A hand-rolled baseline (Anthropic Messages API directly, no framework) running on Claude Haiku 4.5, in both synchronous and sequential reveal variants.
+- The same hand-rolled baseline running on Azure OpenAI, gpt-5-mini and gpt-4o-mini, plus a sequential-reveal variant of gpt-4o-mini.
 - Microsoft AutoGen's `RoundRobinGroupChat` running on gpt-4o-mini, holding the model constant against the baseline so any score delta is the framework's signal, not the model's.
 
 That last pair is the load-bearing comparison. Same model, different orchestration. If a framework changes how often agents fold to confederates while the underlying LLM stays fixed, that's a finding nobody else is measuring.
