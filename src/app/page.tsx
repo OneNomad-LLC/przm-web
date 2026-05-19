@@ -13,9 +13,9 @@ export default async function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="mx-auto w-full max-w-6xl border-x border-[color:var(--color-border-subtle)] px-6 pb-0 pt-0">
+      <main className="mx-auto w-full max-w-6xl border-x border-[color:var(--color-border-subtle)] pt-14">
         {/* Hero — Atomist-style polished split layout */}
-        <section className="relative px-2 py-24">
+        <section className="relative px-6 py-20 md:py-24">
           {/* Radial glow backdrop */}
           <div
             aria-hidden="true"
@@ -201,7 +201,7 @@ export default async function HomePage() {
         </section>
 
         {/* Frameworks strip + metrics */}
-        <section className="border-t border-[color:var(--color-border-subtle)] px-2 py-20">
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-20">
           <p className="mb-6 text-center text-[11px] font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
             Six adapter configurations on the v0.1 leaderboard
           </p>
@@ -264,7 +264,7 @@ export default async function HomePage() {
         </section>
 
         {/* Convergence headline finding */}
-        <section className="border-t border-[color:var(--color-border-subtle)] px-2 py-20">
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-20">
           <div className="mb-8 text-center">
             <p className="text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
               Latest finding · Convergence v0.1
@@ -374,7 +374,7 @@ export default async function HomePage() {
         </section>
 
         {/* Memory bench pointer */}
-        <section className="border-t border-[color:var(--color-border-subtle)] px-2 py-16">
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-16">
           <div className="overflow-hidden rounded-2xl border border-[color:var(--color-memory)]/20 bg-[color:var(--color-bg-surface)]/40 p-8">
           <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-center">
             <div>
@@ -403,7 +403,7 @@ export default async function HomePage() {
         </section>
 
         {/* How it works — 3-step */}
-        <section className="border-t border-[color:var(--color-border-subtle)] px-2 py-20">
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-20">
           <div className="mb-12 text-center">
             <p className="text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
               How przm works
@@ -455,7 +455,7 @@ export default async function HomePage() {
         </section>
 
         {/* For vendors — CTA panel */}
-        <section className="border-t border-[color:var(--color-border-subtle)] px-2 py-20">
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-20">
           <div className="relative overflow-hidden rounded-2xl border border-[color:var(--color-bench)]/20 bg-gradient-to-br from-[color:var(--color-bg-surface)]/80 to-[color:var(--color-bg-elevated)]/40 p-10 backdrop-blur">
             <div
               aria-hidden="true"
@@ -488,7 +488,7 @@ export default async function HomePage() {
         </section>
 
         {/* FAQ */}
-        <section className="border-t border-[color:var(--color-border-subtle)] px-2 py-20">
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-20">
           <div className="mb-10 text-center">
             <p className="text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
               FAQ

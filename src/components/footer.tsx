@@ -2,8 +2,8 @@
 
 export function Footer() {
   return (
-    <footer className="border-t border-[color:var(--color-border-subtle)] bg-[color:var(--color-bg-surface)]/30 px-6 py-10">
-      <div className="mx-auto max-w-6xl">
+    <footer className="border-t border-[color:var(--color-border-subtle)] bg-[color:var(--color-bg-surface)]/30 py-10">
+      <div className="mx-auto max-w-6xl border-x border-[color:var(--color-border-subtle)] px-6">
         <div className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[11px] text-[color:var(--color-text-muted)]">
           <span className="text-[color:var(--color-text-disabled)]">przm suite:</span>
           <Link href="/memory" className="hover:underline" style={{ color: 'var(--color-memory)' }}>
