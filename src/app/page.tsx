@@ -13,159 +13,199 @@ export default async function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="mx-auto w-full max-w-6xl px-6 pb-20 pt-28">
-        {/* Hero — split layout (Atomist-style) */}
-        <section className="relative mb-20 grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-center">
-          {/* Terminal grid bg */}
+      <main className="mx-auto w-full max-w-6xl px-6 pb-24 pt-24">
+        {/* Hero — Atomist-style polished split layout */}
+        <section className="relative mb-24">
+          {/* Radial glow backdrop */}
           <div
-            className="pointer-events-none absolute inset-0 -z-10 opacity-[0.025]"
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-x-20 -top-20 -z-10 h-[600px] opacity-60"
             style={{
-              backgroundImage:
-                'linear-gradient(var(--color-text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--color-text-primary) 1px, transparent 1px)',
-              backgroundSize: '32px 32px',
+              background:
+                'radial-gradient(60% 50% at 30% 30%, rgba(52,196,104,0.10), transparent 70%), radial-gradient(50% 50% at 80% 20%, rgba(232,64,64,0.08), transparent 70%)',
             }}
           />
 
-          {/* Left column: copy */}
-          <div>
-            <div className="flex flex-wrap items-center gap-2 font-mono text-[11px]">
-              <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/60 px-3 py-1 text-[color:var(--color-text-secondary)]">
+          <div className="grid gap-12 md:grid-cols-[1.15fr_1fr] md:items-center">
+            {/* Left column: copy */}
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-bench)]/30 bg-[color:var(--color-bench)]/[0.06] px-3 py-1.5 text-[11px] font-medium text-[color:var(--color-bench)]">
                 <span
                   className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-bench)]"
                   style={{ boxShadow: '0 0 8px var(--color-bench)' }}
                 />
-                Ed25519-signed receipts
-              </span>
-              <span className="rounded-full border border-[color:var(--color-bench)]/30 bg-[color:var(--color-bench)]/10 px-3 py-1 text-[color:var(--color-bench)]">
-                Apache 2.0
-              </span>
-              <span className="rounded-full border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/60 px-3 py-1 text-[color:var(--color-text-secondary)]">
-                No LLM judge
-              </span>
-            </div>
-
-            <h1 className="mt-6 font-mono text-4xl font-semibold leading-[1.05] tracking-tight text-[color:var(--color-text-primary)] md:text-6xl">
-              AI{' '}
-              <span className="relative" style={{ color: 'var(--color-memory)' }}>
-                reliability
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute -inset-x-1 inset-y-1 -z-10 rounded-md blur-xl"
-                  style={{ background: 'rgba(232,64,64,0.10)' }}
-                />
-              </span>
-              , measured.
-            </h1>
-
-            <p className="mt-6 max-w-xl font-mono text-base leading-relaxed text-[color:var(--color-text-secondary)]">
-              Vendor-neutral benchmarks for AI failure modes that don't have standards yet.
-              Deterministic scoring,{' '}
-              <span style={{ color: 'var(--color-bench)' }}>no LLM judge anywhere</span>, and every
-              result is an Ed25519-signed receipt that anyone can verify.
-            </p>
-
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a
-                href="/leaderboard"
-                className="inline-flex items-center gap-2 rounded-full px-6 py-3 font-mono text-sm font-semibold text-[color:var(--color-charcoal)] transition-opacity hover:opacity-90"
-                style={{ background: 'var(--color-bench)' }}
-              >
-                See the leaderboard &rarr;
-              </a>
-              <a
-                href="/vendor-cert"
-                className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-bench)]/40 px-6 py-3 font-mono text-sm text-[color:var(--color-bench)] transition-colors hover:border-[color:var(--color-bench)] hover:bg-[color:var(--color-bench)]/10"
-              >
-                Get certified
-              </a>
-            </div>
-
-            <div className="mt-6 flex flex-wrap items-center gap-4 font-mono text-[11px] text-[color:var(--color-text-muted)]">
-              <a
-                href="/methodology"
-                className="underline-offset-4 hover:text-[color:var(--color-bench)] hover:underline"
-              >
-                Methodology
-              </a>
-              <span aria-hidden="true">·</span>
-              <a
-                href="https://github.com/OneNomad-LLC/przm-bench"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline-offset-4 hover:text-[color:var(--color-bench)] hover:underline"
-              >
-                GitHub
-              </a>
-              <span aria-hidden="true">·</span>
-              <a
-                href="/verify"
-                className="underline-offset-4 hover:text-[color:var(--color-bench)] hover:underline"
-              >
-                Verify a receipt
-              </a>
-            </div>
-          </div>
-
-          {/* Right column: leaderboard preview card */}
-          <div
-            className="rounded-xl border border-[color:var(--color-bench)]/30 bg-[color:var(--color-bg-surface)]/60 p-5 shadow-2xl shadow-black/40"
-            style={{ boxShadow: '0 0 40px rgba(52,196,104,0.08)' }}
-          >
-            <div className="mb-4 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest">
-              <span className="flex items-center gap-2 text-[color:var(--color-text-muted)]">
-                <span
-                  className="h-1.5 w-1.5 rounded-full"
-                  style={{
-                    background: 'var(--color-bench)',
-                    boxShadow: '0 0 8px var(--color-bench)',
-                  }}
-                />
-                v0.1 signed run
-              </span>
-              <span className="text-[color:var(--color-text-disabled)]">2026-05-19</span>
-            </div>
-            <div className="font-mono text-xs text-[color:var(--color-text-secondary)]">
-              <div className="mb-2 flex justify-between border-b border-[color:var(--color-border-subtle)] pb-2 text-[10px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
-                <span>adapter / model</span>
-                <span>holdout collapse</span>
+                v0.1 signed receipts live
               </div>
-              {[
-                { label: 'autogen / gpt-4o-mini', value: '0.0%', winner: true },
-                { label: 'baseline-seq / claude-haiku-4.5', value: '66.7%' },
-                { label: 'baseline / claude-haiku-4.5', value: '66.7%' },
-                { label: 'baseline / gpt-4o-mini', value: '83.3%' },
-                { label: 'baseline-seq / gpt-4o-mini', value: '83.3%' },
-                { label: 'baseline / gpt-5-mini', value: '100.0%' },
-              ].map((row) => (
-                <div
-                  key={row.label}
-                  className="flex items-baseline justify-between border-b border-[color:var(--color-border-subtle)]/60 py-2 last:border-b-0"
+
+              <h1 className="mt-6 text-5xl font-bold leading-[1.02] tracking-tight text-[color:var(--color-text-primary)] md:text-7xl">
+                AI{' '}
+                <span
+                  className="bg-clip-text text-transparent"
+                  style={{
+                    backgroundImage:
+                      'linear-gradient(135deg, var(--color-memory), var(--color-voice) 60%, var(--color-knowledge))',
+                  }}
                 >
-                  <span className="truncate text-[color:var(--color-text-primary)]">{row.label}</span>
-                  <span
-                    style={{ color: row.winner ? 'var(--color-bench)' : 'var(--color-text-secondary)' }}
-                    className={row.winner ? 'font-semibold' : ''}
-                  >
-                    {row.value}
+                  reliability,
+                </span>
+                <br />
+                measured.
+              </h1>
+
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-[color:var(--color-text-secondary)]">
+                Vendor-neutral benchmarks for AI failure modes that don&apos;t have standards yet.
+                Deterministic scoring,{' '}
+                <span className="font-semibold text-[color:var(--color-text-primary)]">
+                  no LLM judge anywhere
+                </span>
+                , and every result is an Ed25519-signed receipt anyone can verify.
+              </p>
+
+              <div className="mt-9 flex flex-wrap items-center gap-3">
+                <a
+                  href="/leaderboard"
+                  className="group inline-flex items-center gap-2 rounded-lg px-6 py-3.5 text-sm font-semibold text-[color:var(--color-charcoal)] shadow-lg transition-all hover:shadow-xl hover:brightness-110"
+                  style={{ background: 'var(--color-bench)', boxShadow: '0 8px 24px -8px rgba(52,196,104,0.5)' }}
+                >
+                  See the leaderboard
+                  <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
+                    →
+                  </span>
+                </a>
+                <a
+                  href="/vendor-cert"
+                  className="inline-flex items-center gap-2 rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/60 px-6 py-3.5 text-sm font-semibold text-[color:var(--color-text-primary)] backdrop-blur transition-colors hover:border-[color:var(--color-bench)]/60 hover:bg-[color:var(--color-bg-surface)]"
+                >
+                  Get certified
+                </a>
+              </div>
+
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-[12px] text-[color:var(--color-text-muted)]">
+                <a
+                  href="/methodology"
+                  className="transition-colors hover:text-[color:var(--color-text-primary)]"
+                >
+                  Methodology
+                </a>
+                <a
+                  href="https://github.com/OneNomad-LLC/przm-bench"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-[color:var(--color-text-primary)]"
+                >
+                  GitHub
+                </a>
+                <a
+                  href="/verify"
+                  className="transition-colors hover:text-[color:var(--color-text-primary)]"
+                >
+                  Verify a receipt
+                </a>
+                <span className="rounded-full bg-[color:var(--color-bg-surface)]/60 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest">
+                  Apache 2.0
+                </span>
+              </div>
+            </div>
+
+            {/* Right column: polished leaderboard card */}
+            <div className="relative">
+              <div
+                aria-hidden="true"
+                className="absolute -inset-1 rounded-2xl opacity-30 blur-xl"
+                style={{
+                  background:
+                    'linear-gradient(135deg, var(--color-bench), var(--color-runtime) 50%, var(--color-memory))',
+                }}
+              />
+              <div className="relative rounded-2xl border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/80 p-6 backdrop-blur-xl">
+                <div className="mb-5 flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <span
+                      className="relative flex h-2.5 w-2.5"
+                    >
+                      <span
+                        className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-50"
+                        style={{ background: 'var(--color-bench)' }}
+                      />
+                      <span
+                        className="relative inline-flex h-2.5 w-2.5 rounded-full"
+                        style={{ background: 'var(--color-bench)' }}
+                      />
+                    </span>
+                    <span className="text-xs font-semibold text-[color:var(--color-text-primary)]">
+                      Live · convergence v0.1
+                    </span>
+                  </div>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-text-disabled)]">
+                    holdout · n=6
                   </span>
                 </div>
-              ))}
+
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between border-b border-[color:var(--color-border-subtle)] pb-2 text-[10px] font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+                    <span>Adapter / Model</span>
+                    <span>Collapse ↓</span>
+                  </div>
+                  {[
+                    { label: 'autogen', model: 'gpt-4o-mini', value: '0.0%', winner: true },
+                    { label: 'baseline-seq', model: 'haiku-4.5', value: '66.7%' },
+                    { label: 'baseline', model: 'haiku-4.5', value: '66.7%' },
+                    { label: 'baseline', model: 'gpt-4o-mini', value: '83.3%' },
+                    { label: 'baseline-seq', model: 'gpt-4o-mini', value: '83.3%' },
+                    { label: 'baseline', model: 'gpt-5-mini', value: '100.0%' },
+                  ].map((row) => (
+                    <div
+                      key={row.label + row.model}
+                      className={`flex items-center justify-between rounded-md px-2 py-2 text-sm transition-colors ${
+                        row.winner
+                          ? 'bg-[color:var(--color-bench)]/10'
+                          : 'hover:bg-[color:var(--color-bg-elevated)]/40'
+                      }`}
+                    >
+                      <span className="flex items-baseline gap-2">
+                        <span
+                          className={`font-medium ${
+                            row.winner
+                              ? 'text-[color:var(--color-bench)]'
+                              : 'text-[color:var(--color-text-primary)]'
+                          }`}
+                        >
+                          {row.label}
+                        </span>
+                        <span className="font-mono text-[11px] text-[color:var(--color-text-muted)]">
+                          {row.model}
+                        </span>
+                      </span>
+                      <span
+                        className={`font-mono text-sm tabular-nums ${
+                          row.winner
+                            ? 'font-bold text-[color:var(--color-bench)]'
+                            : 'text-[color:var(--color-text-secondary)]'
+                        }`}
+                      >
+                        {row.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <a
+                  href="/leaderboard"
+                  className="mt-5 block rounded-md border border-[color:var(--color-border-subtle)] bg-[color:var(--color-bg-elevated)]/40 py-2 text-center text-xs font-medium text-[color:var(--color-text-secondary)] transition-colors hover:border-[color:var(--color-bench)]/40 hover:text-[color:var(--color-text-primary)]"
+                >
+                  Full leaderboard →
+                </a>
+              </div>
             </div>
-            <a
-              href="/leaderboard"
-              className="mt-4 block text-center font-mono text-[11px] text-[color:var(--color-text-muted)] underline-offset-4 hover:text-[color:var(--color-bench)] hover:underline"
-            >
-              Full leaderboard &rarr;
-            </a>
           </div>
         </section>
 
-        {/* Frameworks tested — social-proof strip */}
-        <section className="mb-20">
-          <p className="mb-5 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            Adapters on the v0.1 leaderboard
+        {/* Frameworks strip + metrics */}
+        <section className="mb-24">
+          <p className="mb-6 text-center text-[11px] font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+            Six adapter configurations on the v0.1 leaderboard
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 font-mono text-sm">
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-base font-medium">
             {[
               'baseline-Anthropic',
               'baseline-Azure',
@@ -189,124 +229,193 @@ export default async function HomePage() {
                 >
                   {label}
                   {soon ? (
-                    <span className="ml-1 text-[10px] uppercase tracking-widest">v0.2</span>
+                    <span className="ml-1.5 rounded-full bg-[color:var(--color-bg-surface)]/60 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-[color:var(--color-text-disabled)]">
+                      v0.2
+                    </span>
                   ) : null}
                 </span>
               )
             })}
           </div>
+
+          {/* Trusted-by-metrics strip */}
+          <div className="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
+            {[
+              { value: '30', label: 'hand-curated fixtures' },
+              { value: '12', label: 'Ed25519-signed receipts' },
+              { value: '0', label: 'LLM judges anywhere', accent: true },
+              { value: '20%', label: 'sealed holdout' },
+            ].map((m) => (
+              <div key={m.label} className="text-center">
+                <div
+                  className="text-3xl font-bold tabular-nums"
+                  style={{
+                    color: m.accent ? 'var(--color-bench)' : 'var(--color-text-primary)',
+                  }}
+                >
+                  {m.value}
+                </div>
+                <div className="mt-1 text-[11px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
+                  {m.label}
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* Convergence headline finding */}
-        <section className="mt-16">
-          <div className="mb-6 flex items-center justify-between gap-4">
-            <h2 className="font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
-              // Latest finding · convergence v0.1
+        <section className="mt-24">
+          <div className="mb-8 text-center">
+            <p className="text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+              Latest finding · Convergence v0.1
+            </p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-[color:var(--color-text-primary)] md:text-4xl">
+              Same model, different framework,{' '}
+              <span style={{ color: 'var(--color-bench)' }}>10× the reliability gap.</span>
             </h2>
-            <a
-              href="/leaderboard"
-              className="font-mono text-xs text-[color:var(--color-text-muted)] transition-colors hover:text-[color:var(--color-bench)]"
-            >
-              Full leaderboard &rarr;
-            </a>
           </div>
-          <div
-            className="rounded-lg border border-[color:var(--color-bench)]/30 bg-[color:var(--color-bg-surface)]/40 p-6"
-            style={{ boxShadow: '0 0 20px rgba(52,196,104,0.06)' }}
-          >
-            <p className="font-mono text-base leading-relaxed text-[color:var(--color-text-primary)]">
-              On the sealed 6-fixture holdout, AutoGen RoundRobinGroupChat
-              collapsed{' '}
-              <span style={{ color: 'var(--color-bench)' }} className="font-semibold">
-                0 of 6 scenarios
-              </span>{' '}
-              while the hand-rolled baseline collapsed 5 of 6, same model
-              (
-              <code className="rounded bg-[color:var(--color-bg-elevated)] px-1.5 py-0.5 text-sm">
-                gpt-4o-mini
-              </code>
-              ). On the 30-fixture combined set: AutoGen 10%, baseline 73%.
-              Holds even when we control for reveal protocol. The sequential
-              baseline still hits 87% collapse on the same fixtures.
-            </p>
-            <div className="mt-5 grid gap-3 sm:grid-cols-4">
-              {[
-                { label: 'baseline / claude-haiku-4.5', correct: '96.7%', collapse: '56.7%' },
-                { label: 'baseline / gpt-5-mini', correct: '96.7%', collapse: '96.7%' },
-                { label: 'baseline / gpt-4o-mini', correct: '76.7%', collapse: '73.3%' },
-                { label: 'autogen / gpt-4o-mini', correct: '93.3%', collapse: '10.0%' },
-              ].map((row) => (
-                <div
-                  key={row.label}
-                  className="rounded-md border border-[color:var(--color-border-subtle)] bg-[color:var(--color-bg-base)]/40 p-3 font-mono text-[11px]"
+
+          <div className="relative">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 -z-10 rounded-2xl opacity-30 blur-3xl"
+              style={{ background: 'radial-gradient(50% 50% at 50% 50%, rgba(52,196,104,0.15), transparent 70%)' }}
+            />
+            <div className="rounded-2xl border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/60 p-8 backdrop-blur">
+              <p className="text-lg leading-relaxed text-[color:var(--color-text-secondary)]">
+                On the sealed 6-fixture holdout, AutoGen RoundRobinGroupChat collapsed{' '}
+                <span className="font-semibold text-[color:var(--color-bench)]">
+                  0 of 6 scenarios
+                </span>{' '}
+                while the hand-rolled baseline collapsed{' '}
+                <span className="font-semibold text-[color:var(--color-memory)]">5 of 6</span>, same
+                model (
+                <code className="rounded bg-[color:var(--color-bg-elevated)] px-2 py-0.5 font-mono text-sm">
+                  gpt-4o-mini
+                </code>
+                ). The gap holds after controlling for reveal protocol — the sequential baseline
+                still collapses at 87% on the same fixtures.
+              </p>
+
+              <div className="mt-6 grid gap-3 sm:grid-cols-4">
+                {[
+                  { label: 'baseline', model: 'haiku-4.5', correct: '96.7%', collapse: '56.7%' },
+                  { label: 'baseline', model: 'gpt-5-mini', correct: '96.7%', collapse: '96.7%' },
+                  { label: 'baseline', model: 'gpt-4o-mini', correct: '76.7%', collapse: '73.3%' },
+                  {
+                    label: 'autogen',
+                    model: 'gpt-4o-mini',
+                    correct: '93.3%',
+                    collapse: '10.0%',
+                    winner: true,
+                  },
+                ].map((row) => (
+                  <div
+                    key={row.label + row.model}
+                    className={`rounded-xl border p-4 transition-colors ${
+                      row.winner
+                        ? 'border-[color:var(--color-bench)]/40 bg-[color:var(--color-bench)]/[0.06]'
+                        : 'border-[color:var(--color-border-subtle)] bg-[color:var(--color-bg-base)]/40'
+                    }`}
+                  >
+                    <div className="mb-3 flex items-baseline gap-1.5">
+                      <span
+                        className={`text-sm font-semibold ${
+                          row.winner
+                            ? 'text-[color:var(--color-bench)]'
+                            : 'text-[color:var(--color-text-primary)]'
+                        }`}
+                      >
+                        {row.label}
+                      </span>
+                      <span className="font-mono text-[10px] text-[color:var(--color-text-muted)]">
+                        {row.model}
+                      </span>
+                    </div>
+                    <div className="flex items-baseline justify-between text-[11px]">
+                      <span className="uppercase tracking-widest text-[color:var(--color-text-muted)]">
+                        correct
+                      </span>
+                      <span className="font-mono font-medium text-[color:var(--color-text-primary)]">
+                        {row.correct}
+                      </span>
+                    </div>
+                    <div className="mt-1 flex items-baseline justify-between text-[11px]">
+                      <span className="uppercase tracking-widest text-[color:var(--color-text-muted)]">
+                        collapse
+                      </span>
+                      <span
+                        className="font-mono font-semibold"
+                        style={{
+                          color: row.winner ? 'var(--color-bench)' : 'var(--color-memory)',
+                        }}
+                      >
+                        {row.collapse}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 flex items-center justify-between border-t border-[color:var(--color-border-subtle)] pt-4">
+                <p className="text-[11px] text-[color:var(--color-text-muted)]">
+                  Signed run · 30 fixtures · 3 agents × 3 rounds · every row backed by an
+                  Ed25519-signed receipt
+                </p>
+                <a
+                  href="/leaderboard"
+                  className="text-xs font-medium text-[color:var(--color-bench)] transition-opacity hover:opacity-80"
                 >
-                  <div className="mb-1 truncate text-[color:var(--color-text-secondary)]">
-                    {row.label}
-                  </div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-[color:var(--color-text-muted)]">correct</span>
-                    <span className="text-[color:var(--color-text-primary)]">{row.correct}</span>
-                  </div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-[color:var(--color-text-muted)]">collapse</span>
-                    <span style={{ color: 'var(--color-memory)' }}>{row.collapse}</span>
-                  </div>
-                </div>
-              ))}
+                  Full leaderboard →
+                </a>
+              </div>
             </div>
-            <p className="mt-4 font-mono text-[11px] text-[color:var(--color-text-muted)]">
-              Signed run, 2026-05-18 · 30 fixtures · 3 agents &times; 3 rounds · every row backed by an
-              Ed25519-signed receipt (click through to verify)
-            </p>
           </div>
         </section>
 
-        {/* Memory bench — pointer to the second axis */}
-        <section className="mt-16 rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/30 p-6">
-          <div className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            <span
-              className="h-1.5 w-1.5 rounded-full"
-              style={{ background: 'var(--color-memory)' }}
-            />
-            second axis · AI memory recall
-          </div>
-          <p className="font-mono text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
-            The second benchmark axis is{' '}
+        {/* Memory bench pointer */}
+        <section className="mt-12 overflow-hidden rounded-2xl border border-[color:var(--color-memory)]/20 bg-[color:var(--color-bg-surface)]/40 p-8">
+          <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-center">
+            <div>
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[color:var(--color-memory)]/30 bg-[color:var(--color-memory)]/10 px-3 py-1 text-[11px] font-medium text-[color:var(--color-memory)]">
+                <span
+                  className="h-1.5 w-1.5 rounded-full"
+                  style={{ background: 'var(--color-memory)' }}
+                />
+                Second axis · AI memory recall
+              </div>
+              <p className="text-base leading-relaxed text-[color:var(--color-text-secondary)]">
+                Deterministic R@K and NDCG scoring on LongMemEval temporal-inference and LoCoMo.
+                Methodology published, runner + Engram and Mem0 adapters committed. Signed memory
+                receipts publish on the v0.2 cycle alongside Letta, Zep, MemPalace, and HippoRAG
+                adapters.
+              </p>
+            </div>
             <a
               href="/methodology#memory"
-              className="text-[color:var(--color-memory)] underline-offset-4 hover:underline"
+              className="inline-flex w-fit items-center gap-2 rounded-lg border border-[color:var(--color-memory)]/40 bg-[color:var(--color-memory)]/10 px-5 py-2.5 text-sm font-semibold text-[color:var(--color-memory)] transition-colors hover:bg-[color:var(--color-memory)]/20"
             >
-              AI memory recall
+              Memory methodology →
             </a>
-            : deterministic R@K and NDCG scoring on LongMemEval temporal-inference and LoCoMo. The methodology is published. The runner and adapters for Engram and Mem0 are committed in the{' '}
-            <a
-              href="https://github.com/OneNomad-LLC/przm-bench/tree/main/src/adapters"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[color:var(--color-bench)] underline-offset-4 hover:underline"
-            >
-              przm-bench repo
-            </a>
-            . Signed memory receipts publish on the v0.2 cycle alongside Letta, Zep, MemPalace, and HippoRAG adapters. The convergence axis above is the v0.1 wedge; multi-axis follows when each axis ships with its own signed receipt, not before.
-          </p>
+          </div>
         </section>
 
         {/* How it works — 3-step */}
-        <section className="mt-20">
-          <div className="mb-10 text-center">
-            <h2 className="font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
-              // How przm works
-            </h2>
-            <p className="mt-3 font-mono text-2xl leading-tight text-[color:var(--color-text-primary)] md:text-3xl">
-              Three steps from adapter to signed receipt.
+        <section className="mt-24">
+          <div className="mb-12 text-center">
+            <p className="text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+              How przm works
             </p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-[color:var(--color-text-primary)] md:text-4xl">
+              Three steps from adapter to signed receipt.
+            </h2>
           </div>
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-3">
             {[
               {
                 step: '01',
                 title: 'Build the adapter',
-                body: 'Implement the MultiAgentAdapter contract for your framework, or PR the existing reference adapters in przm-bench. ~30 lines of TypeScript.',
+                body: 'Implement the MultiAgentAdapter contract for your framework, or PR the existing reference adapters in przm-bench. About 30 lines of TypeScript.',
                 accent: 'var(--color-bench)',
               },
               {
@@ -318,24 +427,24 @@ export default async function HomePage() {
               {
                 step: '03',
                 title: 'Sign and verify',
-                body: 'Receipts are Ed25519-signed against the public key committed in the repo. Anyone can re-run, verify the signature in their browser, and compare to other adapters.',
+                body: 'Receipts are Ed25519-signed against the public key committed in the repo. Anyone can re-run, verify the signature in their browser, and compare.',
                 accent: 'var(--color-memory)',
               },
             ].map((s) => (
               <div
                 key={s.step}
-                className="rounded-xl border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40 p-6"
+                className="group relative rounded-2xl border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40 p-7 transition-all hover:border-[color:var(--color-border-default)]/80 hover:bg-[color:var(--color-bg-surface)]/60"
               >
                 <div
-                  className="mb-4 inline-flex h-9 w-9 items-center justify-center rounded-full border font-mono text-xs"
-                  style={{ borderColor: s.accent, color: s.accent }}
+                  className="absolute -top-4 left-7 inline-flex h-10 w-10 items-center justify-center rounded-xl font-mono text-sm font-bold text-[color:var(--color-charcoal)]"
+                  style={{ background: s.accent }}
                 >
                   {s.step}
                 </div>
-                <h3 className="font-mono text-base font-semibold text-[color:var(--color-text-primary)]">
+                <h3 className="mt-3 text-lg font-semibold text-[color:var(--color-text-primary)]">
                   {s.title}
                 </h3>
-                <p className="mt-2 font-mono text-[13px] leading-relaxed text-[color:var(--color-text-secondary)]">
+                <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
                   {s.body}
                 </p>
               </div>
@@ -343,34 +452,48 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* For vendors */}
-        <section className="mt-20 rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40 p-8">
-          <h2 className="font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            // For vendors
-          </h2>
-          <p className="mt-4 max-w-3xl font-mono text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
-            If you ship an AI framework, memory system, or code-review product,
-            certify your release against przm. A signed receipt is a third-party
-            performance attestation you can put on your own website. We do not
-            sell the harness; we run the test.{' '}
-            <a
-              href="/vendor-cert"
-              className="text-[color:var(--color-bench)] underline-offset-4 hover:underline"
-            >
-              See certification tiers and start a charter request &rarr;
-            </a>
-          </p>
+        {/* For vendors — CTA panel */}
+        <section className="mt-24">
+          <div className="relative overflow-hidden rounded-2xl border border-[color:var(--color-bench)]/20 bg-gradient-to-br from-[color:var(--color-bg-surface)]/80 to-[color:var(--color-bg-elevated)]/40 p-10 backdrop-blur">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full opacity-20 blur-3xl"
+              style={{ background: 'var(--color-bench)' }}
+            />
+            <div className="relative grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
+              <div className="max-w-2xl">
+                <p className="text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+                  For vendors
+                </p>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight text-[color:var(--color-text-primary)] md:text-4xl">
+                  Certify your release against przm.
+                </h2>
+                <p className="mt-4 text-base leading-relaxed text-[color:var(--color-text-secondary)]">
+                  A signed receipt is a third-party performance attestation you can put on your own
+                  website. We don&apos;t sell the harness — we run the test. First 3-5 framework
+                  vendors get a free charter cert in exchange for case-study rights.
+                </p>
+              </div>
+              <a
+                href="/vendor-cert"
+                className="inline-flex w-fit items-center gap-2 rounded-lg px-6 py-3.5 text-sm font-semibold text-[color:var(--color-charcoal)] shadow-lg transition-all hover:brightness-110"
+                style={{ background: 'var(--color-bench)', boxShadow: '0 8px 24px -8px rgba(52,196,104,0.5)' }}
+              >
+                See certification tiers →
+              </a>
+            </div>
+          </div>
         </section>
 
         {/* FAQ */}
-        <section className="mt-20">
-          <div className="mb-8 text-center">
-            <h2 className="font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
-              // FAQ
-            </h2>
-            <p className="mt-3 font-mono text-2xl leading-tight text-[color:var(--color-text-primary)] md:text-3xl">
-              The questions you'd ask first.
+        <section className="mt-24">
+          <div className="mb-10 text-center">
+            <p className="text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+              FAQ
             </p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-[color:var(--color-text-primary)] md:text-4xl">
+              The questions you&apos;d ask first.
+            </h2>
           </div>
           <FaqAccordion />
         </section>

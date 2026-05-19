@@ -122,20 +122,20 @@ export function FaqAccordion() {
   const [open, setOpen] = useState<number | null>(0)
 
   return (
-    <div className="divide-y divide-[color:var(--color-border-subtle)] overflow-hidden rounded-xl border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40">
+    <div className="divide-y divide-[color:var(--color-border-subtle)] overflow-hidden rounded-2xl border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40 backdrop-blur">
       {FAQS.map((item, i) => {
         const isOpen = open === i
         return (
           <div key={i}>
             <button
               onClick={() => setOpen(isOpen ? null : i)}
-              className="flex w-full items-start justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-[color:var(--color-bg-elevated)]/40"
+              className="flex w-full items-start justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-[color:var(--color-bg-elevated)]/40"
             >
-              <span className="font-mono text-sm text-[color:var(--color-text-primary)]">
+              <span className="text-base font-semibold text-[color:var(--color-text-primary)]">
                 {item.q}
               </span>
               <span
-                className={`mt-1 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full border border-[color:var(--color-border-default)] font-mono text-[10px] text-[color:var(--color-text-muted)] transition-transform ${
+                className={`mt-0.5 inline-flex h-6 w-6 flex-none items-center justify-center rounded-full border border-[color:var(--color-border-default)] text-sm font-light text-[color:var(--color-text-muted)] transition-transform ${
                   isOpen ? 'rotate-45' : ''
                 }`}
                 aria-hidden="true"
@@ -144,7 +144,7 @@ export function FaqAccordion() {
               </span>
             </button>
             {isOpen ? (
-              <div className="px-5 pb-5 font-mono text-[13px] leading-relaxed text-[color:var(--color-text-secondary)]">
+              <div className="px-6 pb-6 text-[15px] leading-relaxed text-[color:var(--color-text-secondary)]">
                 {item.a}
               </div>
             ) : null}
