@@ -1,6 +1,7 @@
 ﻿import type { Metadata } from 'next'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
+import { FaqAccordion } from '@/components/faq-accordion'
 
 export const metadata: Metadata = {
   title: 'przm. Vendor-neutral AI reliability benchmarks',
@@ -13,8 +14,8 @@ export default async function HomePage() {
     <>
       <Navbar />
       <main className="mx-auto w-full max-w-6xl px-6 pb-20 pt-28">
-        {/* Hero */}
-        <section className="relative mb-16">
+        {/* Hero — split layout (Atomist-style) */}
+        <section className="relative mb-20 grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-center">
           {/* Terminal grid bg */}
           <div
             className="pointer-events-none absolute inset-0 -z-10 opacity-[0.025]"
@@ -25,83 +26,93 @@ export default async function HomePage() {
             }}
           />
 
-          <div className="flex flex-wrap items-center gap-2 font-mono text-[11px]">
-            <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/60 px-3 py-1 text-[color:var(--color-text-secondary)]">
-              <span
-                className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-bench)]"
-                style={{ boxShadow: '0 0 8px var(--color-bench)' }}
-              />
-              Ed25519-signed receipts
-            </span>
-            <span className="rounded-full border border-[color:var(--color-bench)]/30 bg-[color:var(--color-bench)]/10 px-3 py-1 text-[color:var(--color-bench)]">
-              Apache 2.0
-            </span>
-            <span className="rounded-full border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/60 px-3 py-1 text-[color:var(--color-text-secondary)]">
-              No LLM judge
-            </span>
-            <span className="rounded-full border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/60 px-3 py-1 text-[color:var(--color-text-secondary)]">
-              Deterministic scoring
-            </span>
+          {/* Left column: copy */}
+          <div>
+            <div className="flex flex-wrap items-center gap-2 font-mono text-[11px]">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/60 px-3 py-1 text-[color:var(--color-text-secondary)]">
+                <span
+                  className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-bench)]"
+                  style={{ boxShadow: '0 0 8px var(--color-bench)' }}
+                />
+                Ed25519-signed receipts
+              </span>
+              <span className="rounded-full border border-[color:var(--color-bench)]/30 bg-[color:var(--color-bench)]/10 px-3 py-1 text-[color:var(--color-bench)]">
+                Apache 2.0
+              </span>
+              <span className="rounded-full border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/60 px-3 py-1 text-[color:var(--color-text-secondary)]">
+                No LLM judge
+              </span>
+            </div>
+
+            <h1 className="mt-6 font-mono text-4xl font-semibold leading-[1.05] tracking-tight text-[color:var(--color-text-primary)] md:text-6xl">
+              AI{' '}
+              <span className="relative" style={{ color: 'var(--color-memory)' }}>
+                reliability
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -inset-x-1 inset-y-1 -z-10 rounded-md blur-xl"
+                  style={{ background: 'rgba(232,64,64,0.10)' }}
+                />
+              </span>
+              , measured.
+            </h1>
+
+            <p className="mt-6 max-w-xl font-mono text-base leading-relaxed text-[color:var(--color-text-secondary)]">
+              Vendor-neutral benchmarks for AI failure modes that don't have standards yet.
+              Deterministic scoring,{' '}
+              <span style={{ color: 'var(--color-bench)' }}>no LLM judge anywhere</span>, and every
+              result is an Ed25519-signed receipt that anyone can verify.
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <a
+                href="/leaderboard"
+                className="inline-flex items-center gap-2 rounded-full px-6 py-3 font-mono text-sm font-semibold text-[color:var(--color-charcoal)] transition-opacity hover:opacity-90"
+                style={{ background: 'var(--color-bench)' }}
+              >
+                See the leaderboard &rarr;
+              </a>
+              <a
+                href="/vendor-cert"
+                className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-bench)]/40 px-6 py-3 font-mono text-sm text-[color:var(--color-bench)] transition-colors hover:border-[color:var(--color-bench)] hover:bg-[color:var(--color-bench)]/10"
+              >
+                Get certified
+              </a>
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center gap-4 font-mono text-[11px] text-[color:var(--color-text-muted)]">
+              <a
+                href="/methodology"
+                className="underline-offset-4 hover:text-[color:var(--color-bench)] hover:underline"
+              >
+                Methodology
+              </a>
+              <span aria-hidden="true">·</span>
+              <a
+                href="https://github.com/OneNomad-LLC/przm-bench"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline-offset-4 hover:text-[color:var(--color-bench)] hover:underline"
+              >
+                GitHub
+              </a>
+              <span aria-hidden="true">·</span>
+              <a
+                href="/verify"
+                className="underline-offset-4 hover:text-[color:var(--color-bench)] hover:underline"
+              >
+                Verify a receipt
+              </a>
+            </div>
           </div>
 
-          <h1 className="mt-6 font-mono text-4xl font-semibold leading-tight tracking-tight text-[color:var(--color-text-primary)] md:text-5xl">
-            AI{' '}
-            <span className="relative" style={{ color: 'var(--color-memory)' }}>
-              reliability
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute -inset-x-1 inset-y-1 -z-10 rounded-md blur-xl"
-                style={{ background: 'rgba(232,64,64,0.10)' }}
-              />
-            </span>
-            , measured.
-            <br />
-            Signed. Reproducible. Adversarial.
-          </h1>
-
-          <p className="mt-5 max-w-2xl font-mono text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
-            We publish vendor-neutral benchmarks for AI failure modes that don't have standards
-            yet. Multi-agent debates that collapse to confidently wrong answers. Memory systems
-            that forget the things you need. Code review tools that miss what they should catch.
-            Deterministic scoring with{' '}
-            <span style={{ color: 'var(--color-bench)' }}>no LLM judge anywhere</span>,
-            and every result is an Ed25519-signed receipt that anyone can verify.
-          </p>
-
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <a
-              href="/leaderboard"
-              className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-mono text-xs font-semibold text-[color:var(--color-charcoal)] transition-opacity hover:opacity-90"
-              style={{ background: 'var(--color-bench)' }}
-            >
-              See the leaderboard &rarr;
-            </a>
-            <a
-              href="/vendor-cert"
-              className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-bench)]/40 px-5 py-2.5 font-mono text-xs text-[color:var(--color-bench)] transition-colors hover:border-[color:var(--color-bench)] hover:bg-[color:var(--color-bench)]/10"
-            >
-              Get your framework certified
-            </a>
-            <a
-              href="/methodology"
-              className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-border-default)] px-5 py-2.5 font-mono text-xs text-[color:var(--color-text-muted)] transition-colors hover:border-[color:var(--color-bench)] hover:text-[color:var(--color-bench)]"
-            >
-              Methodology
-            </a>
-            <a
-              href="https://github.com/OneNomad-LLC/przm-bench"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-border-default)] px-5 py-2.5 font-mono text-xs text-[color:var(--color-text-muted)] transition-colors hover:border-[color:var(--color-bench)] hover:text-[color:var(--color-bench)]"
-            >
-              GitHub
-            </a>
-          </div>
-
-          {/* Benchmark family tracker */}
-          <div className="mt-8 grid max-w-3xl gap-3 md:grid-cols-3">
-            <div className="rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40 p-4 font-mono text-xs">
-              <div className="mb-2 flex items-center gap-2">
+          {/* Right column: leaderboard preview card */}
+          <div
+            className="rounded-xl border border-[color:var(--color-bench)]/30 bg-[color:var(--color-bg-surface)]/60 p-5 shadow-2xl shadow-black/40"
+            style={{ boxShadow: '0 0 40px rgba(52,196,104,0.08)' }}
+          >
+            <div className="mb-4 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest">
+              <span className="flex items-center gap-2 text-[color:var(--color-text-muted)]">
                 <span
                   className="h-1.5 w-1.5 rounded-full"
                   style={{
@@ -109,49 +120,80 @@ export default async function HomePage() {
                     boxShadow: '0 0 8px var(--color-bench)',
                   }}
                 />
-                <span className="uppercase tracking-widest text-[color:var(--color-text-muted)]">
-                  v0.1 &middot; signed
-                </span>
-              </div>
-              <div className="mb-1 text-[color:var(--color-text-primary)]">
-                Multi-agent convergence
-              </div>
-              <div className="text-[color:var(--color-text-secondary)]">
-                baseline &middot; AutoGen <span className="text-[color:var(--color-text-disabled)]">&middot; CrewAI · LangGraph · OpenAI Agents SDK (v0.2)</span>
-              </div>
+                v0.1 signed run
+              </span>
+              <span className="text-[color:var(--color-text-disabled)]">2026-05-19</span>
             </div>
-            <div className="rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40 p-4 font-mono text-xs">
-              <div className="mb-2 flex items-center gap-2">
+            <div className="font-mono text-xs text-[color:var(--color-text-secondary)]">
+              <div className="mb-2 flex justify-between border-b border-[color:var(--color-border-subtle)] pb-2 text-[10px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
+                <span>adapter / model</span>
+                <span>holdout collapse</span>
+              </div>
+              {[
+                { label: 'autogen / gpt-4o-mini', value: '0.0%', winner: true },
+                { label: 'baseline-seq / claude-haiku-4.5', value: '66.7%' },
+                { label: 'baseline / claude-haiku-4.5', value: '66.7%' },
+                { label: 'baseline / gpt-4o-mini', value: '83.3%' },
+                { label: 'baseline-seq / gpt-4o-mini', value: '83.3%' },
+                { label: 'baseline / gpt-5-mini', value: '100.0%' },
+              ].map((row) => (
+                <div
+                  key={row.label}
+                  className="flex items-baseline justify-between border-b border-[color:var(--color-border-subtle)]/60 py-2 last:border-b-0"
+                >
+                  <span className="truncate text-[color:var(--color-text-primary)]">{row.label}</span>
+                  <span
+                    style={{ color: row.winner ? 'var(--color-bench)' : 'var(--color-text-secondary)' }}
+                    className={row.winner ? 'font-semibold' : ''}
+                  >
+                    {row.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <a
+              href="/leaderboard"
+              className="mt-4 block text-center font-mono text-[11px] text-[color:var(--color-text-muted)] underline-offset-4 hover:text-[color:var(--color-bench)] hover:underline"
+            >
+              Full leaderboard &rarr;
+            </a>
+          </div>
+        </section>
+
+        {/* Frameworks tested — social-proof strip */}
+        <section className="mb-20">
+          <p className="mb-5 text-center font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
+            Adapters on the v0.1 leaderboard
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 font-mono text-sm">
+            {[
+              'baseline-Anthropic',
+              'baseline-Azure',
+              'AutoGen',
+              { label: 'CrewAI', soon: true },
+              { label: 'LangGraph', soon: true },
+              { label: 'OpenAI Agents SDK', soon: true },
+              { label: 'AG2', soon: true },
+              { label: 'Agno', soon: true },
+            ].map((item, i) => {
+              const label = typeof item === 'string' ? item : item.label
+              const soon = typeof item === 'object' && item.soon
+              return (
                 <span
-                  className="h-1.5 w-1.5 rounded-full"
-                  style={{ background: 'var(--color-memory)' }}
-                />
-                <span className="uppercase tracking-widest text-[color:var(--color-text-muted)]">
-                  v0.2 &middot; adapters built
+                  key={i}
+                  className={
+                    soon
+                      ? 'text-[color:var(--color-text-disabled)]'
+                      : 'text-[color:var(--color-text-secondary)]'
+                  }
+                >
+                  {label}
+                  {soon ? (
+                    <span className="ml-1 text-[10px] uppercase tracking-widest">v0.2</span>
+                  ) : null}
                 </span>
-              </div>
-              <div className="mb-1 text-[color:var(--color-text-primary)]">AI memory recall</div>
-              <div className="text-[color:var(--color-text-secondary)]">
-                Engram &middot; Mem0 <span className="text-[color:var(--color-text-disabled)]">&middot; Letta · Zep · MemPalace · HippoRAG (v0.2)</span>
-              </div>
-            </div>
-            <div className="rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40 p-4 font-mono text-xs">
-              <div className="mb-2 flex items-center gap-2">
-                <span
-                  className="h-1.5 w-1.5 rounded-full"
-                  style={{ background: 'var(--color-text-disabled)' }}
-                />
-                <span className="uppercase tracking-widest text-[color:var(--color-text-muted)]">
-                  next
-                </span>
-              </div>
-              <div className="mb-1 text-[color:var(--color-text-primary)]">
-                AI code review reliability
-              </div>
-              <div className="text-[color:var(--color-text-secondary)]">
-                Snyk &middot; Semgrep &middot; CodeRabbit &middot; Cursor Security Reviewer
-              </div>
-            </div>
+              )
+            })}
           </div>
         </section>
 
@@ -249,6 +291,58 @@ export default async function HomePage() {
           </p>
         </section>
 
+        {/* How it works — 3-step */}
+        <section className="mt-20">
+          <div className="mb-10 text-center">
+            <h2 className="font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
+              // How przm works
+            </h2>
+            <p className="mt-3 font-mono text-2xl leading-tight text-[color:var(--color-text-primary)] md:text-3xl">
+              Three steps from adapter to signed receipt.
+            </p>
+          </div>
+          <div className="grid gap-5 md:grid-cols-3">
+            {[
+              {
+                step: '01',
+                title: 'Build the adapter',
+                body: 'Implement the MultiAgentAdapter contract for your framework, or PR the existing reference adapters in przm-bench. ~30 lines of TypeScript.',
+                accent: 'var(--color-bench)',
+              },
+              {
+                step: '02',
+                title: 'Run the bench',
+                body: 'Run the harness against the fixture set. Deterministic scoring on recorded state. No LLM in the grading loop. Receipts publish to disk.',
+                accent: 'var(--color-knowledge)',
+              },
+              {
+                step: '03',
+                title: 'Sign and verify',
+                body: 'Receipts are Ed25519-signed against the public key committed in the repo. Anyone can re-run, verify the signature in their browser, and compare to other adapters.',
+                accent: 'var(--color-memory)',
+              },
+            ].map((s) => (
+              <div
+                key={s.step}
+                className="rounded-xl border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40 p-6"
+              >
+                <div
+                  className="mb-4 inline-flex h-9 w-9 items-center justify-center rounded-full border font-mono text-xs"
+                  style={{ borderColor: s.accent, color: s.accent }}
+                >
+                  {s.step}
+                </div>
+                <h3 className="font-mono text-base font-semibold text-[color:var(--color-text-primary)]">
+                  {s.title}
+                </h3>
+                <p className="mt-2 font-mono text-[13px] leading-relaxed text-[color:var(--color-text-secondary)]">
+                  {s.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* For vendors */}
         <section className="mt-20 rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/40 p-8">
           <h2 className="font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
@@ -266,6 +360,19 @@ export default async function HomePage() {
               See certification tiers and start a charter request &rarr;
             </a>
           </p>
+        </section>
+
+        {/* FAQ */}
+        <section className="mt-20">
+          <div className="mb-8 text-center">
+            <h2 className="font-mono text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)]">
+              // FAQ
+            </h2>
+            <p className="mt-3 font-mono text-2xl leading-tight text-[color:var(--color-text-primary)] md:text-3xl">
+              The questions you'd ask first.
+            </p>
+          </div>
+          <FaqAccordion />
         </section>
       </main>
       <Footer />
