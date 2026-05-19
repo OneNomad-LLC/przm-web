@@ -70,7 +70,8 @@ export default async function BlogPostPage({ params }: PageProps) {
   return (
     <>
       <Navbar />
-      <main className="mx-auto w-full max-w-4xl px-6 pb-20 pt-28">
+      <main className="mx-auto w-full max-w-6xl border-x border-[color:var(--color-border-subtle)] pb-20 pt-20">
+        <div className="mx-auto max-w-4xl px-6">
         <article>
           <div className="mb-8">
             <Link
@@ -98,6 +99,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        </div>
       </main>
       <Footer />
     </>

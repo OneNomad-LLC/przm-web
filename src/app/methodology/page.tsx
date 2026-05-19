@@ -81,7 +81,8 @@ export default async function MethodologyPage() {
   return (
     <>
       <Navbar />
-      <main className="mx-auto w-full max-w-4xl px-6 pb-20 pt-28">
+      <main className="mx-auto w-full max-w-6xl border-x border-[color:var(--color-border-subtle)] pb-20 pt-20">
+        <div className="mx-auto max-w-4xl px-6">
         {/* Header */}
         <div className="mb-12">
           <div className="mb-3 font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
@@ -224,6 +225,7 @@ export default async function MethodologyPage() {
           >
             Verify a receipt &rarr;
           </a>
+        </div>
         </div>
       </main>
       <Footer />
