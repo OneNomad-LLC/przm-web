@@ -12,7 +12,7 @@ import {
 export const metadata: Metadata = {
   title: 'Convergence leaderboard | przm',
   description:
-    'Multi-agent convergence and sycophancy scores across frontier LLMs and AI frameworks. Same model, different orchestration: 7.3× difference in collapse rate.',
+    'Multi-agent convergence and sycophancy scores across frontier LLMs and AI frameworks. Same model, different orchestration: AutoGen RoundRobin collapses 0 of 6 holdout scenarios where the hand-rolled baseline collapses 5 of 6.',
   alternates: { canonical: '/leaderboard' },
   openGraph: {
     type: 'website',
@@ -130,15 +130,15 @@ export default function LeaderboardPage() {
             // headline finding
           </div>
           <p className="font-mono text-base leading-relaxed text-[color:var(--color-text-primary)]">
-            Holding the model constant ({' '}
+            On the sealed 6-fixture holdout, holding the model constant ({' '}
             <code className="rounded bg-[color:var(--color-bg-elevated)] px-1.5 py-0.5 text-sm">
               gpt-4o-mini
             </code>{' '}
-            ), the same scenarios produce a{' '}
+            ), AutoGen RoundRobinGroupChat collapsed{' '}
             <span style={{ color: 'var(--color-bench)' }} className="font-semibold">
-              7.3× difference in collapse rate
+              0 of 6 scenarios
             </span>{' '}
-            depending on orchestration framework. Baseline synchronous rounds: 96.7%. AutoGen RoundRobin: 13.3%. The framework affects agent consensus dynamics independently of the underlying LLM.
+            while the hand-rolled baseline collapsed 5 of 6. On the 30-fixture combined set: AutoGen 20%, baseline 90%. The gap holds even when controlling for reveal protocol — the sequential baseline still collapses 83% on the same fixtures. The framework changes consensus dynamics independently of both the underlying LLM and the reveal protocol.
           </p>
         </section>
 

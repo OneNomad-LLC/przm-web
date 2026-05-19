@@ -173,22 +173,26 @@ export default async function HomePage() {
             style={{ boxShadow: '0 0 20px rgba(52,196,104,0.06)' }}
           >
             <p className="font-mono text-base leading-relaxed text-[color:var(--color-text-primary)]">
-              Holding the model constant (
+              On the sealed 6-fixture holdout, AutoGen RoundRobinGroupChat
+              collapsed{' '}
+              <span style={{ color: 'var(--color-bench)' }} className="font-semibold">
+                0 of 6 scenarios
+              </span>{' '}
+              while the hand-rolled baseline collapsed 5 of 6, same model
+              (
               <code className="rounded bg-[color:var(--color-bg-elevated)] px-1.5 py-0.5 text-sm">
                 gpt-4o-mini
               </code>
-              ), the same scenarios produce a{' '}
-              <span style={{ color: 'var(--color-bench)' }} className="font-semibold">
-                7.3&times; difference in collapse rate
-              </span>{' '}
-              depending on orchestration framework. Hand-rolled synchronous rounds: 96.7%. AutoGen RoundRobin: 13.3%.
+              ). On the 30-fixture combined set: AutoGen 20%, baseline 90%.
+              Holds even when we control for reveal protocol — the sequential
+              baseline still hits 83% collapse on the same fixtures.
             </p>
             <div className="mt-5 grid gap-3 sm:grid-cols-4">
               {[
-                { label: 'baseline / claude-haiku-4.5', correct: '93.3%', collapse: '100.0%' },
+                { label: 'baseline / claude-haiku-4.5', correct: '96.7%', collapse: '56.7%' },
                 { label: 'baseline / gpt-5-mini', correct: '96.7%', collapse: '100.0%' },
-                { label: 'baseline / gpt-4o-mini', correct: '83.3%', collapse: '96.7%' },
-                { label: 'autogen / gpt-4o-mini', correct: '83.3%', collapse: '13.3%' },
+                { label: 'baseline / gpt-4o-mini', correct: '90.0%', collapse: '90.0%' },
+                { label: 'autogen / gpt-4o-mini', correct: '83.3%', collapse: '20.0%' },
               ].map((row) => (
                 <div
                   key={row.label}
@@ -209,7 +213,7 @@ export default async function HomePage() {
               ))}
             </div>
             <p className="mt-4 font-mono text-[11px] text-[color:var(--color-text-muted)]">
-              Signed run, 2026-05-17 · 30 fixtures · 3 agents &times; 3 rounds · every row backed by an
+              Signed run, 2026-05-18 · 30 fixtures · 3 agents &times; 3 rounds · every row backed by an
               Ed25519-signed receipt (click through to verify)
             </p>
           </div>

@@ -1,6 +1,6 @@
 /**
- * Convergence leaderboard data — typed source-of-truth for the
- * /leaderboard page and the homepage teaser.
+ * Leaderboard data: typed source-of-truth for the /leaderboard page
+ * and the homepage teasers across all benchmark axes.
  *
  * v0.1: hand-curated from the most recent bench run while we wire up
  * the bench-to-web data pipe (sign + commit signed receipts → render).
@@ -74,7 +74,7 @@ const PRETTY_RECEIPT_PREFIX = '/receipts'
 
 export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
   benchmark: 'convergence-v0.1-preview',
-  ranAt: '2026-05-17T19:32:06.087Z',
+  ranAt: '2026-05-18T21:52:53.253Z',
   configuration: { nAgents: 3, nRounds: 3 },
   fixtureCount: 30,
   entries: [
@@ -86,27 +86,58 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       provider: 'anthropic',
       combined: {
         scores: {
-          correct_final_answer_rate: 0.933,
-          collapse_rate: 1.0,
-          sycophancy_ratio: 0.033,
-          tokens_per_correct_answer: 1173,
-          position_flips_per_agent_per_round: 0.093,
+          correct_final_answer_rate: 0.967,
+          collapse_rate: 0.567,
+          sycophancy_ratio: 0,
+          tokens_per_correct_answer: 1174,
+          position_flips_per_agent_per_round: 0.074,
         },
         fixtureCount: 30,
-        durationSec: 393,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/5930d4db-c01d-40bb-ba6d-cc04cfea0360`,
+        durationSec: 1183,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/fb6f4bfe-d5d1-4678-8fef-b6b1aa952d5a`,
       },
       holdout: {
         scores: {
           correct_final_answer_rate: 1.0,
-          collapse_rate: 1.0,
+          collapse_rate: 0.667,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 1185,
+          tokens_per_correct_answer: 1198,
           position_flips_per_agent_per_round: 0.074,
         },
         fixtureCount: 6,
         durationSec: 79,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/e33a06d6-3ad7-4dde-be0a-23f613000ff3`,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/b60185ae-f141-4d5b-a31c-3ae32ddb8062`,
+      },
+    },
+    {
+      id: 'baseline-anthropic-sequential-claude-haiku-4-5',
+      displayName: 'baseline-sequential / claude-haiku-4.5',
+      orchestration: 'baseline',
+      llmModel: 'claude-haiku-4-5',
+      provider: 'anthropic',
+      combined: {
+        scores: {
+          correct_final_answer_rate: 0.933,
+          collapse_rate: 0.533,
+          sycophancy_ratio: 0,
+          tokens_per_correct_answer: 1170,
+          position_flips_per_agent_per_round: 0.059,
+        },
+        fixtureCount: 30,
+        durationSec: 916,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/c1c9eb41-08ce-431e-8081-12dcf9fffdad`,
+      },
+      holdout: {
+        scores: {
+          correct_final_answer_rate: 0.833,
+          collapse_rate: 0.667,
+          sycophancy_ratio: 0,
+          tokens_per_correct_answer: 1193,
+          position_flips_per_agent_per_round: 0.074,
+        },
+        fixtureCount: 6,
+        durationSec: 68,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/e1d492e7-2d26-4dae-b082-dda10d598261`,
       },
     },
     {
@@ -120,24 +151,24 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
           correct_final_answer_rate: 0.967,
           collapse_rate: 1.0,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 4987,
+          tokens_per_correct_answer: 4820,
           position_flips_per_agent_per_round: 0.111,
         },
         fixtureCount: 30,
-        durationSec: 2004,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/51a602ec-f23e-4bba-96ae-771e1cd212aa`,
+        durationSec: 2247,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/faf3459c-36b5-4d12-853e-ca74d4823124`,
       },
       holdout: {
         scores: {
           correct_final_answer_rate: 1.0,
           collapse_rate: 1.0,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 4766,
+          tokens_per_correct_answer: 5448,
           position_flips_per_agent_per_round: 0.111,
         },
         fixtureCount: 6,
-        durationSec: 409,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/e081746c-418d-4bc0-95d5-50a15b7be9c1`,
+        durationSec: 400,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/3b5818e9-5a70-4965-bd15-6e662a4bf049`,
       },
     },
     {
@@ -148,27 +179,58 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       provider: 'azure-openai',
       combined: {
         scores: {
-          correct_final_answer_rate: 0.833,
-          collapse_rate: 0.967,
-          sycophancy_ratio: 0,
+          correct_final_answer_rate: 0.9,
+          collapse_rate: 0.9,
+          sycophancy_ratio: 0.033,
           tokens_per_correct_answer: 659,
-          position_flips_per_agent_per_round: 0.122,
+          position_flips_per_agent_per_round: 0.115,
         },
         fixtureCount: 30,
-        durationSec: 265,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/c9bfb562-e221-4884-9b69-a842dbd9ade2`,
+        durationSec: 312,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/d3a1704c-0f6c-489b-b48a-fcdd36f98a8f`,
       },
       holdout: {
+        scores: {
+          correct_final_answer_rate: 0.667,
+          collapse_rate: 0.833,
+          sycophancy_ratio: 0,
+          tokens_per_correct_answer: 694,
+          position_flips_per_agent_per_round: 0.093,
+        },
+        fixtureCount: 6,
+        durationSec: 68,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/21135989-7f9b-4492-a64d-72cd8623ed86`,
+      },
+    },
+    {
+      id: 'baseline-azure-sequential-gpt-4o-mini',
+      displayName: 'baseline-sequential / gpt-4o-mini',
+      orchestration: 'baseline',
+      llmModel: 'gpt-4o-mini',
+      provider: 'azure-openai',
+      combined: {
         scores: {
           correct_final_answer_rate: 0.833,
           collapse_rate: 0.833,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 735,
-          position_flips_per_agent_per_round: 0.093,
+          tokens_per_correct_answer: 685,
+          position_flips_per_agent_per_round: 0.096,
+        },
+        fixtureCount: 30,
+        durationSec: 286,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/be4b62a4-e053-4c58-8bc2-7c30a0792a3f`,
+      },
+      holdout: {
+        scores: {
+          correct_final_answer_rate: 0.667,
+          collapse_rate: 0.667,
+          sycophancy_ratio: 0,
+          tokens_per_correct_answer: 667,
+          position_flips_per_agent_per_round: 0.074,
         },
         fixtureCount: 6,
-        durationSec: 58,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/27c02406-fdb0-43d8-b3b1-59bce127afd8`,
+        durationSec: 64,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/c8511ed2-65d9-440a-af01-e0f48ed18c6a`,
       },
     },
     {
@@ -180,26 +242,26 @@ export const CURRENT_SNAPSHOT: ConvergenceLeaderboardSnapshot = {
       combined: {
         scores: {
           correct_final_answer_rate: 0.833,
-          collapse_rate: 0.133,
+          collapse_rate: 0.2,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 875,
-          position_flips_per_agent_per_round: 0.041,
+          tokens_per_correct_answer: 935,
+          position_flips_per_agent_per_round: 0.037,
         },
         fixtureCount: 30,
-        durationSec: 407,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/2547fd35-a2fb-4551-a0fc-9e460117365d`,
+        durationSec: 1485,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/307426c5-ddeb-4141-b73e-72e8cad7c273`,
       },
       holdout: {
         scores: {
-          correct_final_answer_rate: 0.667,
+          correct_final_answer_rate: 0.833,
           collapse_rate: 0,
           sycophancy_ratio: 0,
-          tokens_per_correct_answer: 908,
-          position_flips_per_agent_per_round: 0.018,
+          tokens_per_correct_answer: 927,
+          position_flips_per_agent_per_round: 0.019,
         },
         fixtureCount: 6,
-        durationSec: 84,
-        receiptPath: `${PRETTY_RECEIPT_PREFIX}/9893d90c-922a-4527-93c2-db54e094fb76`,
+        durationSec: 324,
+        receiptPath: `${PRETTY_RECEIPT_PREFIX}/9e3c8e3d-11c1-4a1c-96e5-1fece3a040c2`,
       },
     },
   ],
@@ -241,4 +303,65 @@ export function holdoutDelta(
     sycophancy:
       entry.holdout.scores.sycophancy_ratio - primary.scores.sycophancy_ratio,
   }
+}
+
+// ─── Memory axis ──────────────────────────────────────────────────────────
+
+export interface MemoryScores {
+  recall_at_5: number
+  recall_at_10: number
+  ndcg_at_10: number
+  latency_p50_ms: number
+  latency_p95_ms: number
+  ingest_throughput_items_per_sec: number
+}
+
+export interface MemorySubsetReceipt {
+  scores: MemoryScores
+  /** Number of haystack items ingested. */
+  itemCount: number
+  /** Number of evaluation queries. */
+  queryCount: number
+  durationSec: number
+  receiptPath: string
+}
+
+export interface MemoryLeaderboardEntry {
+  id: string
+  /** Display name, e.g. "engram / LongMemEval temporal-inference". */
+  displayName: string
+  /** Underlying product / library family. */
+  framework: 'engram' | 'mem0' | 'letta' | 'zep' | 'mempalace' | 'hipporag'
+  /** Library version under test. */
+  version: string
+  /** Real LongMemEval temporal-inference subset (the citable number). */
+  seen?: MemorySubsetReceipt
+  /** Sealed 20% holdout. */
+  holdout?: MemorySubsetReceipt
+  /** Optional: independent blind re-implementation receipt for
+   *  conflict-of-interest defense when OneNomad's own product
+   *  (Engram) appears on a OneNomad-published leaderboard. */
+  blindCompanion?: MemorySubsetReceipt
+}
+
+export interface MemoryLeaderboardSnapshot {
+  benchmark: 'longmemeval-temporal-inference-v0.1'
+  ranAt: string
+  entries: MemoryLeaderboardEntry[]
+}
+
+/** Populated when the memory bench publishes its first signed
+ *  receipts. Until then this is an empty entries array and the
+ *  /leaderboard page falls back to a "memory results publish on the
+ *  v0.2 cycle" placeholder. */
+export const MEMORY_SNAPSHOT: MemoryLeaderboardSnapshot = {
+  benchmark: 'longmemeval-temporal-inference-v0.1',
+  ranAt: '',
+  entries: [],
+}
+
+export function primaryMemorySubset(
+  entry: MemoryLeaderboardEntry,
+): MemorySubsetReceipt | undefined {
+  return entry.seen ?? entry.holdout
 }

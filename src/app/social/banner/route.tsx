@@ -103,7 +103,7 @@ export async function GET() {
               letterSpacing: '-0.02em',
             }}
           >
-            7.3×
+            0 of 6
           </div>
           <div
             style={{
@@ -116,8 +116,8 @@ export async function GET() {
               lineHeight: 1.35,
             }}
           >
-            <span>same model, different framework</span>
-            <span>difference in collapse rate</span>
+            <span>holdout scenarios where AutoGen</span>
+            <span>collapsed. Baseline: 5 of 6.</span>
           </div>
         </div>
       </div>
