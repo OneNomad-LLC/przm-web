@@ -80,73 +80,86 @@ export default async function VerifyPage() {
   return (
     <>
       <Navbar />
-      <main className="mx-auto w-full max-w-6xl border-x border-[color:var(--color-border-subtle)] pb-20 pt-20">
-        <div className="mx-auto max-w-4xl px-6">
-        <div className="mb-10">
-          <div className="mb-4 font-mono text-[11px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            // verify
+      <main className="mx-auto w-full max-w-6xl border-x border-[color:var(--color-border-subtle)] pt-14">
+        {/* Header */}
+        <section className="px-6 py-16">
+          <div className="mx-auto max-w-4xl">
+            <p className="text-[11px] font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+              Verify
+            </p>
+            <h1 className="mt-3 text-4xl font-bold leading-[1.05] tracking-tight text-[color:var(--color-text-primary)] md:text-5xl">
+              Verify a receipt.
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-[color:var(--color-text-secondary)]">
+              Paste any signed receipt JSON below. Verification runs entirely in your browser via
+              SubtleCrypto — no data leaves your machine. The form auto-detects which benchmark
+              the receipt belongs to (convergence, memory, etc.) and verifies against the right
+              public key.
+            </p>
           </div>
-          <h1 className="font-mono text-3xl font-semibold text-[color:var(--color-text-primary)]">
-            Verify a receipt
-          </h1>
-          <p className="mt-4 font-mono text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
-            Paste any signed receipt JSON below. Verification runs entirely in
-            your browser using SubtleCrypto. No data leaves your machine. The
-            form auto-detects which benchmark the receipt belongs to
-            (convergence, memory, etc.) and verifies against the right public
-            key.
-          </p>
-        </div>
+        </section>
 
-        <VerifyForm keys={keys} />
+        {/* Verifier form */}
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-16">
+          <div className="mx-auto max-w-4xl">
+            <VerifyForm keys={keys} />
+          </div>
+        </section>
 
         {/* Published keys */}
-        <div className="mt-12 rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)] p-5">
-          <p className="mb-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            Public verification keys
-          </p>
-          {keys.length === 0 ? (
-            <p className="font-mono text-xs text-[color:var(--color-text-disabled)]">
-              No public keys loaded.
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-12">
+          <div className="mx-auto max-w-4xl">
+            <p className="mb-4 text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+              Public verification keys
             </p>
-          ) : (
-            <ul className="space-y-3">
-              {keys.map((k) => (
-                <li
-                  key={k.id}
-                  className="border-l-2 border-[color:var(--color-bench)] pl-3"
-                >
-                  <div className="font-mono text-xs text-[color:var(--color-text-primary)]">
-                    {k.id}
-                    <span className="ml-2 text-[color:var(--color-text-muted)]">
-                      ({k.benchmark})
-                    </span>
-                  </div>
-                  <div className="mt-1 font-mono text-[10px] text-[color:var(--color-text-disabled)]">
-                    {k.fingerprint}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+            <div className="rounded-xl border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/60 p-5">
+              {keys.length === 0 ? (
+                <p className="text-sm text-[color:var(--color-text-disabled)]">
+                  No public keys loaded.
+                </p>
+              ) : (
+                <ul className="space-y-3">
+                  {keys.map((k) => (
+                    <li
+                      key={k.id}
+                      className="border-l-2 border-[color:var(--color-bench)] pl-3"
+                    >
+                      <div className="text-sm font-semibold text-[color:var(--color-text-primary)]">
+                        {k.id}
+                        <span className="ml-2 font-mono text-xs font-normal text-[color:var(--color-text-muted)]">
+                          ({k.benchmark})
+                        </span>
+                      </div>
+                      <div className="mt-1 font-mono text-[10px] text-[color:var(--color-text-disabled)]">
+                        {k.fingerprint}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        </section>
 
         {/* CLI equivalent */}
-        <div className="mt-6 rounded-lg border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)] p-5">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            CLI equivalent
-          </p>
-          <pre className="mt-2 font-mono text-xs text-[color:var(--color-text-secondary)]">
-            <code>{`npx @onenomad/przm-bench verify <receipt-file>.json`}</code>
-          </pre>
-          <p className="mt-3 font-mono text-xs text-[color:var(--color-text-disabled)]">
-            Programmatically:{' '}
-            <code className="text-[color:var(--color-bench)]">
-              import {'{ verifyReceipt, loadPublicKey }'} from &apos;@onenomad/przm-bench&apos;
-            </code>
-          </p>
-        </div>
-        </div>
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-12">
+          <div className="mx-auto max-w-4xl">
+            <p className="mb-4 text-xs font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+              CLI equivalent
+            </p>
+            <div className="rounded-xl border border-[color:var(--color-border-default)] bg-[color:var(--color-bg-surface)]/60 p-5">
+              <pre className="overflow-x-auto font-mono text-sm text-[color:var(--color-text-secondary)]">
+                <code>{`npx @onenomad/przm-bench verify <receipt-file>.json`}</code>
+              </pre>
+              <p className="mt-3 text-sm text-[color:var(--color-text-disabled)]">
+                Programmatically:{' '}
+                <code className="font-mono text-[color:var(--color-bench)]">
+                  import {'{ verifyReceipt, loadPublicKey }'} from &apos;@onenomad/przm-bench&apos;
+                </code>
+              </p>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </>

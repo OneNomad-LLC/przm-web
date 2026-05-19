@@ -70,36 +70,41 @@ export default async function BlogPostPage({ params }: PageProps) {
   return (
     <>
       <Navbar />
-      <main className="mx-auto w-full max-w-6xl border-x border-[color:var(--color-border-subtle)] pb-20 pt-20">
-        <div className="mx-auto max-w-4xl px-6">
-        <article>
-          <div className="mb-8">
+      <main className="mx-auto w-full max-w-6xl border-x border-[color:var(--color-border-subtle)] pt-14">
+        {/* Post header */}
+        <section className="px-6 pb-10 pt-16">
+          <div className="mx-auto max-w-4xl">
             <Link
               href="/blog"
-              className="font-mono text-xs text-[color:var(--color-text-muted)] transition-colors hover:text-[color:var(--color-bench)]"
+              className="text-xs font-medium text-[color:var(--color-text-muted)] transition-colors hover:text-[color:var(--color-bench)]"
             >
-              ← all posts
+              ← All posts
             </Link>
+            <div className="mt-8 text-[11px] font-medium uppercase tracking-widest text-[color:var(--color-text-muted)]">
+              {formatDate(post.publishedAt)}
+              {post.author ? ` · ${post.author}` : ''}
+            </div>
+            <h1 className="mt-3 text-4xl font-bold leading-[1.05] tracking-tight text-[color:var(--color-text-primary)] md:text-5xl">
+              {post.title}
+            </h1>
           </div>
-          <div className="mb-3 font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-text-muted)]">
-            {formatDate(post.publishedAt)}
-            {post.author ? ` · ${post.author}` : ''}
+        </section>
+
+        {/* Post body */}
+        <section className="border-t border-[color:var(--color-border-subtle)] px-6 py-16">
+          <div className="mx-auto max-w-4xl">
+            <article>
+              <div
+                className="prose-bench"
+                dangerouslySetInnerHTML={{ __html: post.htmlBody }}
+              />
+            </article>
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
           </div>
-          <h1 className="mb-6 font-mono text-3xl font-semibold leading-tight tracking-tight text-[color:var(--color-text-primary)] md:text-4xl">
-            {post.title}
-          </h1>
-
-          <div
-            className="prose-bench"
-            dangerouslySetInnerHTML={{ __html: post.htmlBody }}
-          />
-        </article>
-
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        </div>
+        </section>
       </main>
       <Footer />
     </>
