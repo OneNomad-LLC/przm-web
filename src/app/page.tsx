@@ -184,7 +184,7 @@ export default async function HomePage() {
                 gpt-4o-mini
               </code>
               ). On the 30-fixture combined set: AutoGen 20%, baseline 90%.
-              Holds even when we control for reveal protocol — the sequential
+              Holds even when we control for reveal protocol. The sequential
               baseline still hits 83% collapse on the same fixtures.
             </p>
             <div className="mt-5 grid gap-3 sm:grid-cols-4">

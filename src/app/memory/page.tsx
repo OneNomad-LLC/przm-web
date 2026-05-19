@@ -195,7 +195,7 @@ export default function MemoryPage() {
             />
             <FeatureCard
               title="Cognitive layers"
-              body="Episodic, semantic, procedural — same model as human memory. Each layer has its own decay rate so a one-off fact and a learned habit age differently."
+              body="Episodic, semantic, procedural: same model as human memory. Each layer has its own decay rate so a one-off fact and a learned habit age differently."
               accent={ACCENT}
             />
             <FeatureCard

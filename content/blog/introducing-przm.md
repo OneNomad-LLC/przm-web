@@ -2,7 +2,7 @@
 title: "Introducing przm: a vendor-neutral AI reliability leaderboard"
 slug: introducing-przm
 description: "przm publishes signed, deterministic, adversarial benchmarks for AI failure modes that have no vendor-neutral standard yet. First up: multi-agent convergence."
-publishedAt: "2026-05-17"
+publishedAt: "2026-05-19"
 author: "Matt Stvartak"
 ---
 

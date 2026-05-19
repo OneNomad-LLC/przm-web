@@ -95,8 +95,8 @@ export default function VoicePage() {
             Every AI you talk to starts with the same personality. Same "I'd be
             happy to help!" opener. Same trailing summaries. przm Voice changes
             that. It watches how you interact and builds a personality from{' '}
-            <span style={{ color: ACCENT }}>real signals</span> — corrections,
-            approvals, frustration, praise — feeding a behavioral profile that
+            <span style={{ color: ACCENT }}>real signals</span> like
+            corrections, approvals, frustration, praise. They feed a behavioral profile that
             shapes how the agent talks to you. No API key, no cloud, two
             runtime dependencies. Personality grows out of the relationship
             instead of being hardcoded in a prompt.
@@ -164,7 +164,7 @@ export default function VoicePage() {
             />
             <FeatureCard
               title="Evolution proposals"
-              body="Every 12 signals, the engine generates concrete soul-file edits with rationale, confidence score, and signal evidence. Nothing auto-applies — you review and accept or reject."
+              body="Every 12 signals, the engine generates concrete soul-file edits with rationale, confidence score, and signal evidence. Nothing auto-applies; you review and accept or reject."
               accent={ACCENT}
             />
             <FeatureCard

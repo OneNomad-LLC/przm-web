@@ -56,7 +56,7 @@ export interface ConvergenceLeaderboardSnapshot {
 }
 
 /**
- * Most recent signed run — 2026-05-17T17:47Z. 30 scenarios × 4 configurations.
+ * Most recent signed run — 2026-05-18T21:52Z. 30 scenarios × 6 configurations + 6-fixture sealed holdout.
  *
  * All entries are Ed25519-signed; receipt JSON lives at
  * /public/receipts/convergence/<filename>.json (served from

@@ -1,7 +1,7 @@
 # Launch Channel Drafts
 
 > NOT FOR POSTING. Review and approve each section before use.
-> Numbers below are from the signed v0.1 receipts (2026-05-17).
+> Numbers below are from the signed v0.1 receipts (2026-05-18).
 > Per the launch sequence, HN drops on Tuesday of week 2, not week 1.
 
 ---
