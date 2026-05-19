@@ -41,11 +41,11 @@ Scoring is deterministic. Pure-function math on recorded state, no LLM judge any
 
 The most interesting v0.1 finding:
 
-Holding the model constant (gpt-4o-mini), the orchestration framework drives collapse rate. On the 30-fixture combined run: hand-rolled synchronous baseline 90%, sequential-reveal baseline 83%, AutoGen RoundRobinGroupChat 20%. On the sealed 6-fixture holdout: baseline 83%, sequential 67%, AutoGen 0 collapses out of 6. The gap survives even when we control for reveal protocol — the sequential baseline uses AutoGen's same in-round visibility pattern and still collapses 4× more often than AutoGen itself. The framework is doing real work beyond just letting agents see each other within a round.
+Holding the model constant (gpt-4o-mini), the orchestration framework drives collapse rate. On the 30-fixture combined run: hand-rolled synchronous baseline 90%, sequential-reveal baseline 83%, AutoGen RoundRobinGroupChat 20%. On the sealed 6-fixture holdout: baseline 83%, sequential 67%, AutoGen 0 collapses out of 6. The gap survives even when we control for reveal protocol. The sequential baseline uses AutoGen's same in-round visibility pattern and still collapses 4× more often than AutoGen itself. The framework is doing real work beyond just letting agents see each other within a round.
 
 Other findings:
 - Claude Haiku 4.5 (96.7% correct) and gpt-5-mini (96.7%) both held against confederate pressure on most fixtures. gpt-5-mini uses about 4× more tokens per correct answer than Haiku for the same correctness.
-- gpt-4o-mini baseline at 90% correct, AutoGen at 83% correct — small correctness drop but a much smaller collapse rate, which is a worthwhile trade for trust-critical workflows.
+- gpt-4o-mini baseline at 90% correct, AutoGen at 83% correct. Small correctness drop but a much smaller collapse rate, which is a worthwhile trade for trust-critical workflows.
 - gpt-5-mini collapsed on 100% of scenarios it got right. Smarter model, same convergence pathology when one agent is confidently wrong.
 
 What's in v0.1:
@@ -124,7 +124,7 @@ przm v0.1 (https://przm.sh) measures multi-agent convergence and sycophancy acro
 
 The headline finding: same model (gpt-4o-mini), same 30 fixtures, three different orchestration patterns. Hand-rolled synchronous-round baseline 90% collapse. Sequential-reveal baseline (same as AutoGen's reveal pattern, but otherwise vanilla) 83%. Microsoft AutoGen's RoundRobinGroupChat 20%. On the sealed 6-fixture holdout: baseline 83%, sequential 67%, AutoGen 0. The AutoGen advantage holds even when we control for reveal protocol, so the framework is doing real work beyond just letting agents see each other within a round.
 
-Frontier models held correctness reliably. Claude Haiku 4.5 at 96.7% correct, gpt-5-mini at 96.7%. But gpt-5-mini collapsed on 100% of scenarios it got right — the consensus pathology is independent of model intelligence when the orchestration doesn't actively resist it.
+Frontier models held correctness reliably. Claude Haiku 4.5 at 96.7% correct, gpt-5-mini at 96.7%. But gpt-5-mini collapsed on 100% of scenarios it got right. The consensus pathology is independent of model intelligence when the orchestration doesn't actively resist it.
 
 Why didn't this benchmark already exist? Structural conflict. The companies best positioned to build it (Patronus, Braintrust, LangSmith) sell to the same AI app builders whose frameworks would be benchmarked. Publishing "this framework's agents collapse to wrong answers" antagonizes their customer base. A vendor-neutral third party that doesn't sell into the framework market is the only entity that can credibly run this.
 

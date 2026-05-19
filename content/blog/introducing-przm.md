@@ -65,7 +65,7 @@ collapse_rate (lower better)      66.7%           66.7%             100.0%      
 
 The headline is the same-model-different-framework comparison on the holdout. Hold the model constant (`gpt-4o-mini`), and AutoGen's `RoundRobinGroupChat` collapsed **0 of 6 sealed scenarios** while the hand-rolled baseline collapsed 5 of 6. On the larger 30-fixture combined set: baseline 90% collapse, AutoGen 20%.
 
-What matters about this measurement: we ran *two* baseline variants for `gpt-4o-mini`, one with synchronous reveal (agents answer blind in-round, only see prior rounds) and one with sequential reveal (agent N reads agents 0..N-1 in the same round, matching what AutoGen does). The sequential baseline still collapses at 83% combined / 67% holdout. So the AutoGen advantage isn't just "agents can see each other within a round" — the framework is doing real work beyond the reveal-protocol choice. We don't fully understand what that work is yet; it's a hypothesis-generating finding, not a closed explanation.
+What matters about this measurement: we ran *two* baseline variants for `gpt-4o-mini`, one with synchronous reveal (agents answer blind in-round, only see prior rounds) and one with sequential reveal (agent N reads agents 0..N-1 in the same round, matching what AutoGen does). The sequential baseline still collapses at 83% combined / 67% holdout. So the AutoGen advantage isn't just "agents can see each other within a round." The framework is doing real work beyond the reveal-protocol choice. We don't fully understand what that work is yet; it's a hypothesis-generating finding, not a closed explanation.
 
 A few other findings worth naming:
 
