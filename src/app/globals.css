@@ -35,19 +35,19 @@
   --color-charcoal: #1d2021;
 
   /* ── przm module colors (WCAG AA on --color-bg-base) ─────────────────
-     Physics-accurate ROY G BIV spectrum. Used functionally:
-       memory  = red     — Engram / przm Memory
-       voice   = orange  — Persona / przm Voice
-       knowledge = yellow  — Cortex / przm Knowledge
-       bench   = green   — przm Bench (verification, receipts)
-       runtime = blue    — Pyre Desktop / przm Runtime
-     Indigo (#6655DD) + Violet (#9955CC) reserved.
+     Used functionally (wave-3 mapping):
+       memory    = red    — Engram / przm Memory
+       voice     = orange — Persona / przm Voice
+       knowledge = green  — Cortex (the platform's primary paid product)
+       bench    = blue   — przm Bench (verification, receipts)
+       runtime  = yellow — reserved (no product surface yet)
+     Indigo (#6655DD) + Violet (#9955CC) reserved for future products.
   ─────────────────────────────────────────────────────────────────── */
   --color-memory:    #E84040;   /* red    — WCAG AA contrast 5.2:1 on bg-base */
   --color-voice:     #F59520;   /* orange — WCAG AA contrast 6.1:1 */
-  --color-knowledge: #E8C830;   /* yellow — WCAG AA contrast 8.4:1 */
-  --color-bench:     #34C468;   /* green  — WCAG AA contrast 5.8:1 */
-  --color-runtime:   #3B9EFF;   /* blue   — WCAG AA contrast 4.8:1 */
+  --color-knowledge: #34C468;   /* green  — WCAG AA contrast 5.8:1 */
+  --color-bench:     #3B9EFF;   /* blue   — WCAG AA contrast 4.8:1 */
+  --color-runtime:   #E8C830;   /* yellow — WCAG AA contrast 8.4:1 (reserved; not in use yet) */
 
   /* Fonts */
   --font-mono:
@@ -126,8 +126,8 @@
 .prose-bench code {
   font-family: var(--font-mono);
   font-size: 0.88em;
-  background: rgba(52, 196, 104, 0.08);
-  border: 1px solid rgba(52, 196, 104, 0.18);
+  background: rgba(59, 158, 255, 0.08);
+  border: 1px solid rgba(59, 158, 255, 0.18);
   border-radius: 0.25rem;
   padding: 0.05em 0.35em;
   color: var(--color-bench);
@@ -151,7 +151,7 @@
 .prose-bench a {
   color: var(--color-bench);
   text-decoration: underline;
-  text-decoration-color: rgba(52, 196, 104, 0.4);
+  text-decoration-color: rgba(59, 158, 255, 0.4);
   text-underline-offset: 3px;
 }
 .prose-bench a:hover { text-decoration-color: var(--color-bench); }

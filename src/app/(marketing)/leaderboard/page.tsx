@@ -111,12 +111,6 @@ export default function LeaderboardPage() {
             >
               Methodology →
             </Link>
-            <Link
-              href="/blog/introducing-przm"
-              className="font-medium transition-colors hover:text-[color:var(--color-bench)]"
-            >
-              Launch post →
-            </Link>
             <span className="font-mono text-[11px] text-[color:var(--color-text-disabled)]">
               Last run: {new Date(ranAt).toISOString().slice(0, 16).replace('T', ' ')} UTC
             </span>
@@ -129,7 +123,7 @@ export default function LeaderboardPage() {
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 -z-10 rounded-2xl opacity-30 blur-3xl"
-              style={{ background: 'radial-gradient(50% 50% at 50% 50%, rgba(52,196,104,0.15), transparent 70%)' }}
+              style={{ background: 'radial-gradient(50% 50% at 50% 50%, rgba(59,158,255,0.15), transparent 70%)' }}
             />
             <div className="rounded-2xl border border-[color:var(--color-bench)]/30 bg-[color:var(--color-bg-surface)]/60 p-8 backdrop-blur">
               <div className="mb-3 text-[10px] font-medium uppercase tracking-widest text-[color:var(--color-bench)]">

@@ -16,7 +16,7 @@
  * shell is only for the HTML alternative.
  */
 
-const ACCENT = '#34C468' // bench green
+const ACCENT = '#34C468' // knowledge green (Cortex / primary brand accent)
 const TEXT = '#1a1a1a'
 const TEXT_SECONDARY = '#525252'
 const TEXT_MUTED = '#888888'
@@ -72,7 +72,7 @@ ${preheaderHtml}
                   </a>
                 </td>
                 <td align="right" style="vertical-align:middle;font-family:${FONT_MONO};font-size:11px;color:${TEXT_MUTED};letter-spacing:0.02em;">
-                  AI RELIABILITY BENCHMARKS
+                  THE DATA PLANE FOR AI AGENTS
                 </td>
               </tr>
             </table>
@@ -90,11 +90,11 @@ ${bodyHtml}
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
               <tr>
                 <td>
-                  <strong style="color:${TEXT_SECONDARY};font-weight:600;">przm</strong>, vendor-neutral AI reliability benchmarks.<br>
+                  <strong style="color:${TEXT_SECONDARY};font-weight:600;">przm</strong> — memory, knowledge, and voice for AI agents.<br>
                   <a href="${SITE}" style="color:${ACCENT};text-decoration:none;">przm.sh</a> &nbsp;·&nbsp;
-                  <a href="${SITE}/methodology" style="color:${ACCENT};text-decoration:none;">methodology</a> &nbsp;·&nbsp;
-                  <a href="${SITE}/leaderboard" style="color:${ACCENT};text-decoration:none;">leaderboard</a>
-                  <div style="margin-top:10px;color:${TEXT_MUTED};font-size:11px;">made with 🩷 by <a href="https://onenomad.dev" style="color:${TEXT_MUTED};text-decoration:underline;">onenomad</a></div>
+                  <a href="${SITE}/security" style="color:${ACCENT};text-decoration:none;">security</a> &nbsp;·&nbsp;
+                  <a href="${SITE}/bench" style="color:${ACCENT};text-decoration:none;">bench</a>
+                  <div style="margin-top:10px;color:${TEXT_MUTED};font-size:11px;">built by <a href="https://onenomad.dev" style="color:${TEXT_MUTED};text-decoration:underline;">onenomad</a></div>
                 </td>
               </tr>
             </table>

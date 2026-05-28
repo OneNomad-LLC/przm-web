@@ -7,7 +7,7 @@ import { listPosts } from '@/lib/blog'
 export const metadata: Metadata = {
   title: 'Blog | przm',
   description:
-    'Findings, methodology updates, and launch notes from the przm AI reliability leaderboard.',
+    'Product updates, benchmark findings, methodology notes, and platform launches from the przm team.',
   alternates: { canonical: '/blog' },
 }
 

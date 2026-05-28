@@ -23,7 +23,7 @@ const BORDER_COLOR: Record<ScoreAccent, string> = {
   orange: 'rgba(254,128,25,0.4)',
   green:  'rgba(184,187,38,0.4)',
   red:    'rgba(251,73,52,0.4)',
-  bench:  'rgba(52,196,104,0.4)',
+  bench:  'rgba(59,158,255,0.4)',
   memory: 'rgba(232,64,64,0.4)',
 }
 

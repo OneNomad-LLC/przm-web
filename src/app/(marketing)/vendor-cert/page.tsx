@@ -76,17 +76,17 @@ interface Tier {
 
 const tiers: Tier[] = [
   {
-    badge: '5 charter slots open',
+    badge: 'Charter slots — first 3–5 vendors',
     name: 'Charter',
     price: '$0',
     priceNote: 'first 3–5 vendors only',
     description:
-      'Free signed receipt for the launch leaderboard, in exchange for case-study rights and a public quote.',
+      'Free signed receipt + leaderboard placement, in exchange for case-study rights and a public quote.',
     highlight: true,
     features: [
       'One full benchmark run on your release',
       'Ed25519-signed receipt with per-scenario transcripts',
-      'Logo placement on the v0.1 launch leaderboard',
+      'Logo placement on the public leaderboard',
       'Charter-customer badge for your website / README',
       'Private findings brief before publication',
       'You provide: company name, 1-2 sentence quote, sample API key',
@@ -195,7 +195,7 @@ export default function VendorCertPage() {
                 }
                 style={
                   tier.highlight
-                    ? { boxShadow: '0 0 24px rgba(52,196,104,0.10)' }
+                    ? { boxShadow: '0 0 24px rgba(59,158,255,0.10)' }
                     : undefined
                 }
               >

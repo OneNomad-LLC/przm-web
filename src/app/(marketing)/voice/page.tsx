@@ -266,7 +266,7 @@ pnpm run build`}
             </Link>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-border-default)] px-4 py-2 font-mono text-xs text-[color:var(--color-text-muted)] transition-colors hover:border-[color:var(--color-bench)] hover:text-[color:var(--color-bench)]"
+              className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-border-default)] px-4 py-2 font-mono text-xs text-[color:var(--color-text-muted)] transition-colors hover:border-[color:var(--color-knowledge)] hover:text-[color:var(--color-knowledge)]"
             >
               Back to przm
             </Link>
@@ -276,15 +276,23 @@ pnpm run build`}
         {/* Prism breadcrumb */}
         <section className="border-t border-[color:var(--color-border-subtle)] pt-8 font-mono text-xs text-[color:var(--color-text-muted)]">
           Part of the przm suite:{' '}
+          <a
+            href="https://github.com/OneNomad-LLC/cortex#readme"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+            style={{ color: 'var(--color-knowledge)' }}
+          >
+            Cortex
+          </a>
+          <span className="mx-2 text-[color:var(--color-text-disabled)]">·</span>
           <Link href="/memory" className="hover:underline" style={{ color: 'var(--color-memory)' }}>
             Memory
           </Link>
           <span className="mx-2 text-[color:var(--color-text-disabled)]">·</span>
           <span style={{ color: ACCENT }}>Voice</span>
           <span className="mx-2 text-[color:var(--color-text-disabled)]">·</span>
-          <span className="text-[color:var(--color-text-disabled)]">Knowledge</span>
-          <span className="mx-2 text-[color:var(--color-text-disabled)]">·</span>
-          <Link href="/" className="hover:underline" style={{ color: 'var(--color-bench)' }}>
+          <Link href="/bench" className="hover:underline" style={{ color: 'var(--color-bench)' }}>
             Bench
           </Link>
           <span className="mx-2 text-[color:var(--color-text-disabled)]">·</span>

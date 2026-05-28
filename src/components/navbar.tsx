@@ -8,11 +8,12 @@ import { Logo } from '@/components/logo'
 import { cn } from '@/lib/utils'
 
 const navLinks = [
-  { href: '/leaderboard', label: 'Leaderboard' },
-  { href: '/methodology', label: 'Methodology' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/vendor-cert', label: 'Certify' },
-  { href: '/verify', label: 'Verify' },
+  { href: 'https://github.com/OneNomad-LLC/cortex#readme', label: 'Cortex', external: true },
+  { href: '/memory', label: 'Memory' },
+  { href: '/voice', label: 'Voice' },
+  { href: '/bench', label: 'Bench' },
+  { href: '/security', label: 'Security' },
+  { href: '/app/billing/upgrade', label: 'Pricing' },
 ]
 
 function isActive(pathname: string, href: string): boolean {
@@ -46,35 +47,45 @@ export function Navbar() {
         >
           <Logo size={18} />
           <span className="text-[color:var(--color-text-primary)]">przm</span>
-          <span className="text-[color:var(--color-text-disabled)]">/</span>
-          <span className="text-[color:var(--color-bench)] text-xs">bench</span>
         </Link>
 
         {/* Desktop nav */}
-        <ul className="hidden items-center gap-6 font-mono text-xs uppercase tracking-widest text-[color:var(--color-text-muted)] sm:flex">
-          {navLinks.map((l) => (
-            <li key={l.href}>
-              <Link
-                href={l.href}
-                aria-current={isActive(pathname, l.href) ? 'page' : undefined}
-                className={cn(
-                  'transition-colors hover:text-[color:var(--color-bench)]',
-                  isActive(pathname, l.href) && 'text-[color:var(--color-bench)]',
-                )}
-              >
-                {l.label}
-              </Link>
-            </li>
-          ))}
+        <ul className="hidden items-center gap-5 font-mono text-xs uppercase tracking-widest text-[color:var(--color-text-muted)] sm:flex">
+          {navLinks.map((l) =>
+            l.external ? (
+              <li key={l.href}>
+                <a
+                  href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-[color:var(--color-knowledge)]"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ) : (
+              <li key={l.href}>
+                <Link
+                  href={l.href}
+                  aria-current={isActive(pathname, l.href) ? 'page' : undefined}
+                  className={cn(
+                    'transition-colors hover:text-[color:var(--color-knowledge)]',
+                    isActive(pathname, l.href) && 'text-[color:var(--color-knowledge)]',
+                  )}
+                >
+                  {l.label}
+                </Link>
+              </li>
+            ),
+          )}
           <li>
-            <a
-              href="https://github.com/OneNomad-LLC/przm-bench"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-[color:var(--color-bench)]"
+            <Link
+              href="/auth/signup"
+              className="inline-flex items-center gap-1.5 rounded-md px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-[color:var(--color-charcoal)] transition-all hover:brightness-110"
+              style={{ background: 'var(--color-knowledge)' }}
             >
-              GitHub
-            </a>
+              Start free
+            </Link>
           </li>
         </ul>
 
@@ -84,7 +95,7 @@ export function Navbar() {
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((v) => !v)}
-          className="grid h-9 w-9 place-items-center rounded-full border border-[color:var(--color-border-default)] text-[color:var(--color-text-muted)] transition-colors hover:border-[color:var(--color-bench)] hover:text-[color:var(--color-bench)] sm:hidden"
+          className="grid h-9 w-9 place-items-center rounded-full border border-[color:var(--color-border-default)] text-[color:var(--color-text-muted)] transition-colors hover:border-[color:var(--color-knowledge)] hover:text-[color:var(--color-knowledge)] sm:hidden"
         >
           {mobileOpen ? <X size={16} /> : <Menu size={16} />}
         </button>
@@ -98,29 +109,42 @@ export function Navbar() {
         )}
       >
         <div className="mx-auto max-w-6xl space-y-1 border-x border-[color:var(--color-border-subtle)] px-6 py-6">
-          {navLinks.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                'block py-2 font-mono text-sm uppercase tracking-widest transition-colors',
-                isActive(pathname, l.href)
-                  ? 'text-[color:var(--color-bench)]'
-                  : 'text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-bench)]',
-              )}
-            >
-              {l.label}
-            </Link>
-          ))}
-          <a
-            href="https://github.com/OneNomad-LLC/przm-bench"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block py-2 font-mono text-sm uppercase tracking-widest text-[color:var(--color-text-secondary)] transition-colors hover:text-[color:var(--color-bench)]"
+          {navLinks.map((l) =>
+            l.external ? (
+              <a
+                key={l.href}
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileOpen(false)}
+                className="block py-2 font-mono text-sm uppercase tracking-widest text-[color:var(--color-text-secondary)] transition-colors hover:text-[color:var(--color-knowledge)]"
+              >
+                {l.label}
+              </a>
+            ) : (
+              <Link
+                key={l.href}
+                href={l.href}
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  'block py-2 font-mono text-sm uppercase tracking-widest transition-colors',
+                  isActive(pathname, l.href)
+                    ? 'text-[color:var(--color-knowledge)]'
+                    : 'text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-knowledge)]',
+                )}
+              >
+                {l.label}
+              </Link>
+            ),
+          )}
+          <Link
+            href="/auth/signup"
+            onClick={() => setMobileOpen(false)}
+            className="mt-2 inline-flex items-center gap-1.5 rounded-md px-3 py-2 font-mono text-sm font-semibold uppercase tracking-widest text-[color:var(--color-charcoal)] transition-all hover:brightness-110"
+            style={{ background: 'var(--color-knowledge)' }}
           >
-            GitHub
-          </a>
+            Start free
+          </Link>
         </div>
       </div>
     </header>
