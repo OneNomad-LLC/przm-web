@@ -7,6 +7,7 @@
  */
 
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { requireUser } from '@/lib/session'
 
 export const dynamic = 'force-dynamic'
@@ -15,30 +16,26 @@ export const metadata: Metadata = {
   title: 'Dashboard | przm',
 }
 
-const PLACEHOLDER_CARDS = [
+const SECTION_CARDS = [
   {
     title: 'Members',
     description: 'Manage your organization members and seat assignments.',
-    href: '#',
-    tag: 'Task #05',
+    href: '/app/members',
   },
   {
     title: 'Projects',
     description: 'View your benchmarked projects and their signed receipts.',
-    href: '#',
-    tag: 'Task #05',
+    href: '/app/projects',
   },
   {
     title: 'Queries',
     description: 'Browse MCP query logs and reliability metrics.',
-    href: '#',
-    tag: 'Task #05',
+    href: '/app/queries',
   },
   {
     title: 'Audit log',
     description: 'Full audit trail for your organization.',
-    href: '#',
-    tag: 'Task #05',
+    href: '/app/audit',
   },
 ]
 
@@ -66,38 +63,28 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-      {/* Placeholder section cards */}
+      {/* Section cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {PLACEHOLDER_CARDS.map((card) => (
-          <div
+        {SECTION_CARDS.map((card) => (
+          <Link
             key={card.title}
-            className="rounded-xl border p-5"
+            href={card.href}
+            className="rounded-xl border p-5 transition-colors"
             style={{
               borderColor: 'var(--color-border-default)',
               background: 'var(--color-bg-surface)',
             }}
           >
-            <div className="mb-3 flex items-baseline justify-between">
-              <h2
-                className="text-sm font-semibold"
-                style={{ color: 'var(--color-text-primary)' }}
-              >
-                {card.title}
-              </h2>
-              <span
-                className="rounded-full px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest"
-                style={{
-                  background: 'var(--color-bg-elevated)',
-                  color: 'var(--color-text-disabled)',
-                }}
-              >
-                {card.tag}
-              </span>
-            </div>
+            <h2
+              className="mb-2 text-sm font-semibold"
+              style={{ color: 'var(--color-text-primary)' }}
+            >
+              {card.title}
+            </h2>
             <p className="text-xs leading-relaxed" style={{ color: 'var(--color-text-muted)' }}>
               {card.description}
             </p>
-          </div>
+          </Link>
         ))}
       </div>
 

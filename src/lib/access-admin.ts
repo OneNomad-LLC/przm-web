@@ -27,8 +27,71 @@ export interface AccessOrg {
   name: string
   slug: string
   plan: string
-  seatCount: number
+  seatCount: number | null
   createdAt: string
+}
+
+export interface AccessTenant {
+  id: string
+  orgId: string
+  slug: string
+  name: string
+  deploymentMode: 'cloud' | 'self_hosted'
+  createdAt: string
+}
+
+export interface AccessOrgWithTenants extends AccessOrg {
+  tenants: {
+    cloud: AccessTenant[]
+    self_hosted: AccessTenant[]
+  }
+}
+
+export interface AccessMember {
+  id: string
+  userId: string
+  tenantId: string
+  role: string
+  active: boolean
+  createdAt: string
+}
+
+export interface AccessMemberWithUser extends AccessMember {
+  user?: {
+    id: string
+    email: string | null
+    name: string | null
+  }
+}
+
+export interface AccessProject {
+  id: string
+  tenantId: string
+  slug: string
+  name: string
+  createdAt: string
+}
+
+export interface AccessSeatSummary {
+  organizationId: string
+  seatsUsed: number
+  seatCount: number | null
+}
+
+export interface AccessAuditEvent {
+  id: string
+  organizationId: string
+  tenantId: string | null
+  userId: string | null
+  action: string
+  target: string | null
+  metadata: Record<string, unknown> | null
+  createdAt: string
+}
+
+export interface AccessAuditPage {
+  events: AccessAuditEvent[]
+  nextCursor: string | null
 }
 
 export interface AccessUser {
@@ -114,11 +177,117 @@ const orgs = {
   },
 
   /**
-   * Get a single organization by ID.
+   * Get a single organization by ID (with tenants by deployment mode).
    * GET /admin/orgs/:id
    */
-  get(id: string): Promise<AccessOrg> {
-    return apiFetch<AccessOrg>(`/admin/orgs/${id}`)
+  get(id: string): Promise<AccessOrgWithTenants> {
+    return apiFetch<AccessOrgWithTenants>(`/admin/orgs/${id}`)
+  },
+
+  /**
+   * Get active seat count for an org.
+   * GET /admin/orgs/:id/seats
+   */
+  seats(id: string): Promise<AccessSeatSummary> {
+    return apiFetch<AccessSeatSummary>(`/admin/orgs/${id}/seats`)
+  },
+
+  /**
+   * Toggle a user's active-seat status within an org.
+   * PATCH /admin/orgs/:id/seats/:userId
+   */
+  setSeatActive(
+    orgId: string,
+    userId: string,
+    active: boolean,
+  ): Promise<{ organizationId: string; userId: string; active: boolean; membershipsUpdated: number }> {
+    return apiFetch(
+      `/admin/orgs/${orgId}/seats/${userId}`,
+      { method: 'PATCH', body: JSON.stringify({ active }) },
+    )
+  },
+
+  /**
+   * Paginated audit log for an org.
+   * GET /admin/orgs/:id/audit
+   */
+  audit(
+    id: string,
+    params?: { since?: string; cursor?: string; limit?: number },
+  ): Promise<AccessAuditPage> {
+    const qs = new URLSearchParams()
+    if (params?.since) qs.set('since', params.since)
+    if (params?.cursor) qs.set('cursor', params.cursor)
+    if (params?.limit !== undefined) qs.set('limit', String(params.limit))
+    const suffix = qs.toString() ? `?${qs.toString()}` : ''
+    return apiFetch<AccessAuditPage>(`/admin/orgs/${id}/audit${suffix}`)
+  },
+}
+
+const members = {
+  /**
+   * List members for a tenant.
+   * GET /admin/tenants/:tenantId/members
+   */
+  list(tenantId: string): Promise<{ members: AccessMemberWithUser[] }> {
+    return apiFetch<{ members: AccessMemberWithUser[] }>(
+      `/admin/tenants/${tenantId}/members`,
+    )
+  },
+
+  /**
+   * Add a member to a tenant by email or userId.
+   * POST /admin/tenants/:tenantId/members
+   */
+  add(
+    tenantId: string,
+    payload: { email?: string; userId?: string; role: string },
+  ): Promise<AccessMember> {
+    return apiFetch<AccessMember>(`/admin/tenants/${tenantId}/members`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    })
+  },
+
+  /**
+   * Update a member's role.
+   * PATCH /admin/tenants/:tenantId/members/:userId
+   */
+  setRole(
+    tenantId: string,
+    userId: string,
+    role: string,
+  ): Promise<AccessMember> {
+    return apiFetch<AccessMember>(
+      `/admin/tenants/${tenantId}/members/${userId}`,
+      { method: 'PATCH', body: JSON.stringify({ role }) },
+    )
+  },
+}
+
+const projects = {
+  /**
+   * List projects for a tenant.
+   * GET /admin/tenants/:tenantId/projects
+   */
+  list(tenantId: string): Promise<{ projects: AccessProject[] }> {
+    return apiFetch<{ projects: AccessProject[] }>(
+      `/admin/tenants/${tenantId}/projects`,
+    )
+  },
+
+  /**
+   * Create a project under a tenant.
+   * POST /admin/tenants/:tenantId/projects
+   */
+  create(
+    tenantId: string,
+    payload: { slug: string; name: string },
+  ): Promise<AccessProject> {
+    return apiFetch<AccessProject>(`/admin/tenants/${tenantId}/projects`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    })
   },
 }
 
@@ -185,4 +354,4 @@ const invitations = {
  * The single export. All methods are server-side only; each call
  * throws `AccessApiError` on non-2xx responses.
  */
-export const accessAdmin = { orgs, users, invitations }
+export const accessAdmin = { orgs, members, projects, users, invitations }
