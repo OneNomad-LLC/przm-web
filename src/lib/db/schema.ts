@@ -35,6 +35,13 @@ export const user = pgTable('user', {
    * Allows server-side gating without a round-trip to the access API.
    */
   accessOrgId: uuid('access_org_id'),
+  // ── better-auth admin plugin fields ────────────────────────────────
+  // Required by the admin plugin's queries; do not rename. The plugin
+  // reads/writes these to gate /admin/* surfaces and to ban/impersonate.
+  role: text('role'),
+  banned: boolean('banned').default(false),
+  banReason: text('ban_reason'),
+  banExpires: timestamp('ban_expires'),
   // ── Timestamps ─────────────────────────────────────────────────────
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
@@ -51,6 +58,8 @@ export const session = pgTable('session', {
   userId: text('user_id')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),
+  // better-auth admin plugin: set when an admin impersonates this user.
+  impersonatedBy: text('impersonated_by'),
 })
 
 export const account = pgTable('account', {

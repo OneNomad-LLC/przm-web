@@ -8,6 +8,13 @@
       "when": 1779981886606,
       "tag": "0000_slow_exiles",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1779992621970,
+      "tag": "0001_curvy_jasper_sitwell",
+      "breakpoints": true
     }
   ]
 }
