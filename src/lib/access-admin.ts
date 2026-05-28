@@ -339,9 +339,91 @@ const orgsBilling = {
  * runtime. See Task #11 (Stripe bridge orgs.updatePlan / .updateBillingStatus
  * regression for an example of how this drift happens).
  */
+// ── Deployments ───────────────────────────────────────────────────────
+
+export type DeploymentStatus = 'pending' | 'live' | 'degraded' | 'down'
+
+export interface AccessDeployment {
+  id: string
+  orgId: string | null
+  label: string
+  region: string | null
+  endpointUrl: string
+  status: DeploymentStatus
+  notes: string | null
+  createdAt: string
+  updatedAt: string
+}
+
+export interface CreateDeploymentInput {
+  orgId?: string
+  label: string
+  region?: string
+  endpointUrl: string
+  status?: DeploymentStatus
+  notes?: string
+}
+
+export interface UpdateDeploymentInput {
+  label?: string
+  endpointUrl?: string
+  status?: DeploymentStatus
+  notes?: string
+  region?: string
+}
+
+export interface HealthProbeResult {
+  probe: {
+    reachable: boolean
+    statusCode: number | null
+    body: unknown
+    error: string | null
+  }
+  status: DeploymentStatus
+}
+
+const deployments = {
+  /** POST /admin/deployments */
+  create(input: CreateDeploymentInput): Promise<AccessDeployment> {
+    return apiFetch<AccessDeployment>('/admin/deployments', {
+      method: 'POST',
+      body: JSON.stringify(input),
+    })
+  },
+
+  /** GET /admin/deployments → { deployments: [...] } */
+  async list(): Promise<AccessDeployment[]> {
+    const res = await apiFetch<{ deployments: AccessDeployment[] }>(
+      '/admin/deployments',
+    )
+    return res.deployments
+  },
+
+  /** GET /admin/deployments/:id */
+  get(id: string): Promise<AccessDeployment> {
+    return apiFetch<AccessDeployment>(`/admin/deployments/${id}`)
+  },
+
+  /** PATCH /admin/deployments/:id */
+  patch(id: string, input: UpdateDeploymentInput): Promise<AccessDeployment> {
+    return apiFetch<AccessDeployment>(`/admin/deployments/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(input),
+    })
+  },
+
+  /** POST /admin/deployments/:id/health — on-demand single probe */
+  ping(id: string): Promise<HealthProbeResult> {
+    return apiFetch<HealthProbeResult>(`/admin/deployments/${id}/health`, {
+      method: 'POST',
+    })
+  },
+}
+
 export const accessAdmin = {
   orgs: { ...orgs, ...orgsBilling },
   members,
   projects,
   tenants,
+  deployments,
 }

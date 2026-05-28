@@ -19,6 +19,7 @@ interface NavItem {
 const NAV: NavItem[] = [
   { href: '/admin/ops', label: 'Dashboard' },
   { href: '/admin/ops/orgs', label: 'Orgs' },
+  { href: '/admin/ops/deployments', label: 'Deployments' },
   { href: '/admin/ops/licenses', label: 'Licenses' },
   { href: '/admin/ops/audit', label: 'Audit' },
 ]
