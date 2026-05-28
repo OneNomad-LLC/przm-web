@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean, uuid } from 'drizzle-orm/pg-core'
+import { pgTable, text, timestamp, boolean, uuid, integer } from 'drizzle-orm/pg-core'
 
 /**
  * better-auth schema + przm-web bridge fields.
@@ -80,7 +80,43 @@ export const verification = pgTable('verification', {
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 })
 
+/**
+ * Stripe webhook idempotency log.
+ *
+ * Every processed Stripe event is recorded here by its Stripe event ID.
+ * Before processing, the webhook handler checks for an existing row —
+ * if found, it returns 200 immediately without re-applying the action.
+ * This makes all webhook handlers idempotent in the face of Stripe retries.
+ */
+export const stripeWebhookEvent = pgTable('stripe_webhook_event', {
+  /** Stripe event ID (evt_…). Used as the primary key and dedup key. */
+  id: text('id').primaryKey(),
+  type: text('type').notNull(),
+  processedAt: timestamp('processed_at').notNull().defaultNow(),
+})
+
+/**
+ * Per-org billing state tracked on the web side.
+ *
+ * Augments przm-access's org record with Stripe-specific state that
+ * doesn't belong in the access service (e.g. payment failure counts
+ * used for the 3-strikes drop-to-free rule).
+ *
+ * orgId is the przm-access organization UUID — matches user.accessOrgId.
+ */
+export const stripeBillingState = pgTable('stripe_billing_state', {
+  orgId: uuid('org_id').primaryKey(),
+  /** How many consecutive payment failures have occurred. Resets on successful payment. */
+  failedPaymentCount: integer('failed_payment_count').notNull().default(0),
+  pastDue: boolean('past_due').notNull().default(false),
+  /** Stripe subscription ID for the active subscription, if any. */
+  stripeSubscriptionId: text('stripe_subscription_id'),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+})
+
 export type User = typeof user.$inferSelect
 export type NewUser = typeof user.$inferInsert
 export type Session = typeof session.$inferSelect
 export type Account = typeof account.$inferSelect
+export type StripeWebhookEvent = typeof stripeWebhookEvent.$inferSelect
+export type StripeBillingState = typeof stripeBillingState.$inferSelect
