@@ -354,4 +354,63 @@ const invitations = {
  * The single export. All methods are server-side only; each call
  * throws `AccessApiError` on non-2xx responses.
  */
-export const accessAdmin = { orgs, members, projects, users, invitations }
+// ── Billing-related types ─────────────────────────────────────────────
+
+export interface AccessOrgPlan {
+  plan: string
+  seatCount: number
+  stripeSubscriptionId: string | null
+  updatedAt: string
+}
+
+export interface AccessOrgBillingStatus {
+  pastDue: boolean
+  updatedAt: string
+}
+
+// ── Extend orgs namespace with billing endpoints ──────────────────────
+
+const orgsBilling = {
+  /**
+   * Set the org's plan + seat count after a Stripe subscription event.
+   * POST /admin/orgs/:id/plan (subscription.created)
+   * PATCH /admin/orgs/:id/plan (subscription.updated / deleted)
+   */
+  updatePlan(
+    orgId: string,
+    payload: {
+      plan: string
+      seatCount: number
+      stripeSubscriptionId: string | null
+      reason?: string
+    },
+    method: 'POST' | 'PATCH' = 'PATCH',
+  ): Promise<AccessOrgPlan> {
+    return apiFetch<AccessOrgPlan>(`/admin/orgs/${orgId}/plan`, {
+      method,
+      body: JSON.stringify(payload),
+    })
+  },
+
+  /**
+   * Update past_due / payment failure status.
+   * PATCH /admin/orgs/:id/billing_status
+   */
+  updateBillingStatus(
+    orgId: string,
+    payload: { pastDue: boolean },
+  ): Promise<AccessOrgBillingStatus> {
+    return apiFetch<AccessOrgBillingStatus>(`/admin/orgs/${orgId}/billing_status`, {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    })
+  },
+}
+
+export const accessAdmin = {
+  orgs: { ...orgs, ...orgsBilling },
+  members,
+  projects,
+  users,
+  invitations,
+}
