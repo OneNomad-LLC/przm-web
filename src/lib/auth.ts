@@ -53,6 +53,11 @@ export const auth = betterAuth({
   plugins: [
     nextCookies(),
     magicLink({
+      // 10-minute TTL. Matches the user-facing "expires in 10 minutes"
+      // copy on /auth/login confirmation and in the magic-link email.
+      // Default is 5 minutes; explicit setting prevents drift if the
+      // default changes upstream.
+      expiresIn: 60 * 10,
       sendMagicLink: async ({ email, url }) => {
         // Defensive try/catch: if Resend rejects (bad key, unverified
         // domain, network blip) we don't want the auth flow to crash.

@@ -13,8 +13,10 @@ export function InviteForm() {
     <form
       ref={formRef}
       action={async (fd) => {
-        await dispatch(fd)
-        if (!error) formRef.current?.reset()
+        const result = await dispatch(fd)
+        // useActionState returns the next state; `result` is the new `error`
+        // value, not the stale closure capture. Reset only on null (success).
+        if (result == null) formRef.current?.reset()
       }}
       className="flex flex-col gap-3 sm:flex-row sm:items-end"
     >
@@ -76,7 +78,7 @@ export function InviteForm() {
           background: 'color-mix(in srgb, var(--color-bench) 8%, transparent)',
         }}
       >
-        {isPending ? 'Inviting…' : 'Invite'}
+        {isPending ? 'Adding…' : 'Add member'}
       </button>
 
       {error ? (

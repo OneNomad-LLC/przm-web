@@ -52,35 +52,29 @@ export default async function QueriesPage() {
           background: 'var(--color-bg-surface)',
         }}
       >
-        <div
-          className="mb-3 font-mono text-[10px] uppercase tracking-widest"
-          style={{ color: 'var(--color-text-disabled)' }}
-        >
-          Pending cortex hook
-        </div>
         <h2
           className="text-lg font-semibold"
           style={{ color: 'var(--color-text-primary)' }}
         >
-          No queries logged yet.
+          No queries yet.
         </h2>
         <p
           className="mx-auto mt-3 max-w-md text-sm leading-relaxed"
           style={{ color: 'var(--color-text-secondary)' }}
         >
-          MCP{' '}
+          Every{' '}
           <code
             className="rounded px-1 py-0.5 font-mono text-xs"
             style={{
               background: 'var(--color-bg-raised)',
-              color: 'var(--color-bench)',
+              color: 'var(--color-knowledge)',
             }}
           >
             kb_search
           </code>{' '}
-          calls will appear here once the cortex query-log hook is wired.
-          The cortex-side route is live; the MCP write hook is the remaining
-          piece.
+          call your team&apos;s agents make against Cortex will appear here once
+          your agents are connected. Connect Claude Code, Claude Desktop, or
+          any MCP-aware agent to start populating this view.
         </p>
       </div>
     </div>

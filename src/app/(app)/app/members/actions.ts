@@ -43,9 +43,9 @@ export async function inviteMember(
     await accessAdmin.members.add(ctx.tenantId, { email, role: validRole })
   } catch (err) {
     if (err instanceof AccessApiError) {
-      if (err.status === 404) return 'User not found in przm-access. They must sign up first.'
+      if (err.status === 404) return 'No przm account found for that email. Ask them to sign up at przm.sh/auth/signup first.'
       if (err.status === 409) return 'This user is already a member.'
-      return `Failed to invite: ${err.body}`
+      return `Failed to add member: ${err.body}`
     }
     return err instanceof Error ? err.message : 'Unknown error'
   }

@@ -120,7 +120,7 @@ export default async function BillingPage() {
                   className="mt-1 text-xl font-semibold"
                   style={{ color: 'var(--color-text-primary)' }}
                 >
-                  Active subscription
+                  {formatPlanName(ctx.plan)}
                 </p>
                 {ctx.seatCount !== null ? (
                   <p className="mt-1 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
@@ -220,4 +220,27 @@ export default async function BillingPage() {
       </div>
     </div>
   )
+}
+
+/** Display name for a przm-access plan slug. Falls back to the raw slug.
+ *
+ * The `team` slug is the historical internal name; UI surfaces it as "Team"
+ * everywhere (PLAN_DISPLAY, /app/billing/upgrade) so it stays consistent.
+ * "Crew" was a marketing-only label considered but not adopted in the SKU
+ * names; if we ever rename the slug, do it server-side and update everywhere.
+ */
+function formatPlanName(plan: string): string {
+  const map: Record<string, string> = {
+    free: 'Free',
+    solo: 'Solo',
+    team: 'Team',
+    business: 'Business',
+    business_pilot: 'Business Pilot',
+    pilot: 'Business Pilot',
+    self_hosted_departmental: 'Self-Hosted Departmental',
+    self_hosted_division: 'Self-Hosted Division',
+    self_hosted_enterprise: 'Self-Hosted Enterprise',
+    enterprise: 'Enterprise',
+  }
+  return map[plan] ?? plan
 }

@@ -19,22 +19,22 @@ export const metadata: Metadata = {
 const SECTION_CARDS = [
   {
     title: 'Members',
-    description: 'Manage your organization members and seat assignments.',
+    description: 'Add teammates, manage roles, and toggle active-seat assignments.',
     href: '/app/members',
   },
   {
     title: 'Projects',
-    description: 'View your benchmarked projects and their signed receipts.',
+    description: 'Scope your Cortex knowledge by project — control who sees what.',
     href: '/app/projects',
   },
   {
     title: 'Queries',
-    description: 'Browse MCP query logs and reliability metrics.',
+    description: 'See every MCP query your agents run against Cortex.',
     href: '/app/queries',
   },
   {
     title: 'Audit log',
-    description: 'Full audit trail for your organization.',
+    description: 'Read-only event feed of every admin action in your organization.',
     href: '/app/audit',
   },
 ]
@@ -56,10 +56,11 @@ export default async function DashboardPage() {
           className="mt-2 text-3xl font-bold tracking-tight"
           style={{ color: 'var(--color-text-primary)' }}
         >
-          Welcome back.
+          Your przm workspace.
         </h1>
         <p className="mt-1 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-          Signed in as <span className="font-mono">{user.email}</span>
+          Signed in as <span className="font-mono">{user.email}</span>. Manage Cortex
+          access, your team&apos;s seats, and billing below.
         </p>
       </div>
 

@@ -102,7 +102,9 @@ export default async function AuditPage({ searchParams }: AuditPageProps) {
           Audit log.
         </h1>
         <p className="mt-1 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-          Read-only event feed for your organization. Tenant-scoped via RLS.
+          Read-only event feed for your organization. Every admin action — invites,
+          role changes, seat toggles, project creations — is recorded here and
+          available for SIEM export.
         </p>
       </div>
 
@@ -163,7 +165,7 @@ export default async function AuditPage({ searchParams }: AuditPageProps) {
                 color: 'var(--color-text-secondary)',
               }}
             >
-              ← First page
+              ← Newest
             </Link>
           ) : (
             <span />

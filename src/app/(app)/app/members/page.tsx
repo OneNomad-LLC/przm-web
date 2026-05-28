@@ -94,11 +94,28 @@ export default async function MembersPage() {
         }}
       >
         <h2
-          className="mb-4 text-sm font-semibold"
+          className="text-sm font-semibold"
           style={{ color: 'var(--color-text-primary)' }}
         >
-          Invite a member
+          Add a member
         </h2>
+        <p
+          className="mb-4 mt-1 text-xs"
+          style={{ color: 'var(--color-text-muted)' }}
+        >
+          The person must already have a przm account. Need to bring someone new
+          on? Share{' '}
+          <a
+            href="https://przm.sh/auth/signup"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline-offset-2 hover:underline"
+            style={{ color: 'var(--color-bench)' }}
+          >
+            przm.sh/auth/signup
+          </a>{' '}
+          and add them here once they&apos;ve signed up.
+        </p>
         <InviteForm />
       </div>
 
@@ -115,7 +132,7 @@ export default async function MembersPage() {
             className="text-sm font-semibold"
             style={{ color: 'var(--color-text-primary)' }}
           >
-            Tenant members ({members.length})
+            Team members ({members.length})
           </h2>
         </div>
 
@@ -128,7 +145,7 @@ export default async function MembersPage() {
             className="px-5 pb-5 text-sm"
             style={{ color: 'var(--color-text-muted)' }}
           >
-            No members yet. Invite someone above.
+            No members yet. Add someone by email above — they&apos;ll need a przm account first.
           </p>
         ) : (
           <div className="overflow-x-auto">

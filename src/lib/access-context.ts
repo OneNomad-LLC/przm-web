@@ -27,6 +27,8 @@ export interface AccessContext {
   tenantId: string
   accessUserId: string
   seatCount: number | null
+  /** Plan slug from przm-access — e.g. `solo`, `team`, `business`, `business_pilot`. */
+  plan: string
 }
 
 /**
@@ -75,5 +77,6 @@ export async function getAccessContext(
     tenantId: primaryTenant.id,
     accessUserId,
     seatCount: org.seatCount,
+    plan: org.plan,
   }
 }

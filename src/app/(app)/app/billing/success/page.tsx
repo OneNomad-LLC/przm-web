@@ -104,8 +104,8 @@ export default async function BillingSuccessPage({ searchParams }: SuccessPagePr
               style={{ color: 'var(--color-text-secondary)' }}
             >
               {isOneTime
-                ? 'Your 90-day Business Pilot starts now. Seat entitlements update within seconds via our webhook pipeline.'
-                : 'Seat entitlements update within seconds via our webhook pipeline. You can manage your plan, seats, and invoices from the billing page.'}
+                ? 'Your 90-day Business Pilot starts now. Your seat entitlements will be active within a few seconds.'
+                : 'Your seat entitlements will be active within a few seconds. You can manage your plan, seats, and invoices from the billing page.'}
             </p>
             <div className="mt-6 flex justify-center gap-3">
               <Link
@@ -133,11 +133,15 @@ export default async function BillingSuccessPage({ searchParams }: SuccessPagePr
           </>
         ) : (
           <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
-            Waiting for payment confirmation. If this persists, check your{' '}
+            Waiting for payment confirmation. If this takes more than a minute, check your{' '}
             <Link href="/app/billing" style={{ color: 'var(--color-bench)' }}>
               billing page
             </Link>{' '}
-            or contact support.
+            or email{' '}
+            <a href="mailto:support@przm.sh" style={{ color: 'var(--color-bench)' }}>
+              support@przm.sh
+            </a>
+            .
           </p>
         )}
       </div>
