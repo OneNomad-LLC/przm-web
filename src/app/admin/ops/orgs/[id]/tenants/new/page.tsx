@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { requireOperator } from '@/lib/operator'
-import { accessAdmin, type License } from '@/lib/access-admin'
 import { ProvisionTenantForm } from './form'
 
 export const metadata: Metadata = {
@@ -15,15 +14,6 @@ interface PageProps {
 export default async function NewTenantPage({ params }: PageProps) {
   await requireOperator()
   const { id } = await params
-
-  // Load existing licenses for this org so the form can offer them.
-  let licenses: License[] = []
-  try {
-    const res = await accessAdmin.licenses.list({ orgId: id })
-    licenses = res.licenses
-  } catch {
-    // Endpoint not live yet — form degrades gracefully (no license dropdown).
-  }
 
   return (
     <div>
@@ -52,7 +42,7 @@ export default async function NewTenantPage({ params }: PageProps) {
           background: 'var(--color-bg-surface)',
         }}
       >
-        <ProvisionTenantForm orgId={id} licenses={licenses} />
+        <ProvisionTenantForm orgId={id} />
       </div>
     </div>
   )

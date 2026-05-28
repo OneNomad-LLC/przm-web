@@ -9,7 +9,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { requireOperator } from '@/lib/operator'
-import { accessAdmin, type AccessOrg, type AccessAuditEvent } from '@/lib/access-admin'
+import { accessAdmin, type AccessOrg } from '@/lib/access-admin'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,16 +17,13 @@ export const metadata: Metadata = {
   title: 'Operator Dashboard | przm',
 }
 
-// Plan-to-MRR lookup (simple monthly estimate per seat).
-// Adjust when pricing is confirmed.
+// Plan-to-MRR lookup (server VALID_PLANS only). Annual pricing converted to
+// monthly equivalent where the SKU is annual-only.
 const PLAN_SEAT_PRICE: Record<string, number> = {
+  free: 0,
   solo: 19,
-  team: 15,
-  business: 12,
-  business_pilot: 0,
-  'self_hosted_departmental': 25,
-  division: 20,
-  enterprise: 0,
+  team: 25,
+  business: 59,
 }
 
 function estimateMrr(orgs: AccessOrg[]): number {
@@ -35,14 +32,6 @@ function estimateMrr(orgs: AccessOrg[]): number {
     const seats = org.seatCount ?? 1
     return sum + pricePerSeat * seats
   }, 0)
-}
-
-function actionColor(action: string): string {
-  if (action.includes('delete') || action.includes('remove')) return 'var(--color-red)'
-  if (action.includes('create') || action.includes('invite')) return 'var(--color-bench)'
-  if (action.includes('update') || action.includes('change') || action.includes('patch'))
-    return 'var(--color-gold)'
-  return 'var(--color-text-secondary)'
 }
 
 export default async function OpsDashboardPage() {
@@ -54,15 +43,6 @@ export default async function OpsDashboardPage() {
     orgs = await accessAdmin.orgs.list()
   } catch (err) {
     orgsError = err instanceof Error ? err.message : 'Unknown error'
-  }
-
-  let latestAudit: AccessAuditEvent[] = []
-  let auditError: string | null = null
-  try {
-    const res = await accessAdmin.audit.list({ limit: 5 })
-    latestAudit = res.events
-  } catch (err) {
-    auditError = err instanceof Error ? err.message : 'Unknown error'
   }
 
   // Derive counts from org list (tenant breakdown requires per-org fetch; skip for dashboard perf).
@@ -138,9 +118,8 @@ export default async function OpsDashboardPage() {
         ))}
       </div>
 
-      {/* Two-column lower section */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Latest signups */}
+      {/* Latest signups */}
+      <div>
         <section>
           <div className="mb-3 flex items-center justify-between">
             <h2
@@ -208,70 +187,6 @@ export default async function OpsDashboardPage() {
                         {org.plan}
                       </span>
                     </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </section>
-
-        {/* Latest audit events */}
-        <section>
-          <div className="mb-3 flex items-center justify-between">
-            <h2
-              className="text-[11px] font-medium uppercase tracking-widest"
-              style={{ color: 'var(--color-text-muted)' }}
-            >
-              Recent system events
-            </h2>
-            <Link
-              href="/admin/ops/audit"
-              className="text-xs"
-              style={{ color: 'var(--color-knowledge)' }}
-            >
-              View all
-            </Link>
-          </div>
-          <div
-            className="rounded-xl border"
-            style={{
-              borderColor: 'var(--color-border-default)',
-              background: 'var(--color-bg-surface)',
-            }}
-          >
-            {auditError ? (
-              <p className="p-5 text-sm" style={{ color: 'var(--color-red)' }}>
-                {auditError}
-              </p>
-            ) : latestAudit.length === 0 ? (
-              <p
-                className="p-8 text-center text-sm"
-                style={{ color: 'var(--color-text-muted)' }}
-              >
-                No events.
-              </p>
-            ) : (
-              <ul className="divide-y" style={{ borderColor: 'var(--color-border-subtle)' }}>
-                {latestAudit.map((ev) => (
-                  <li
-                    key={ev.id}
-                    className="flex items-center justify-between px-5 py-3"
-                  >
-                    <span
-                      className="rounded px-2 py-0.5 font-mono text-xs"
-                      style={{
-                        background: 'var(--color-bg-raised)',
-                        color: actionColor(ev.action),
-                      }}
-                    >
-                      {ev.action}
-                    </span>
-                    <span
-                      className="font-mono text-[11px]"
-                      style={{ color: 'var(--color-text-disabled)' }}
-                    >
-                      {new Date(ev.createdAt).toLocaleString()}
-                    </span>
                   </li>
                 ))}
               </ul>

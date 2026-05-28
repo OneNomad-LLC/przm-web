@@ -1,25 +1,22 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
 import { provisionTenantAction, type ProvisionTenantState } from './actions'
-import type { License } from '@/lib/access-admin'
 
 const DEPLOYMENT_MODES = [
-  { value: 'cloud:us-east', label: 'Cloud — US East' },
-  { value: 'cloud:eu', label: 'Cloud — EU' },
+  { value: 'cloud', label: 'Cloud (shared cortex)' },
   { value: 'self_hosted', label: 'Self-hosted' },
-  { value: 'air_gap', label: 'Air-gap' },
 ]
 
 const INITIAL: ProvisionTenantState = { error: null }
 
 interface ProvisionTenantFormProps {
   orgId: string
-  licenses: License[]
 }
 
-export function ProvisionTenantForm({ orgId, licenses }: ProvisionTenantFormProps) {
+export function ProvisionTenantForm({ orgId }: ProvisionTenantFormProps) {
   const [state, action, pending] = useActionState(provisionTenantAction, INITIAL)
+  const [mode, setMode] = useState<string>('cloud')
 
   return (
     <form action={action} className="space-y-5">
@@ -92,9 +89,9 @@ export function ProvisionTenantForm({ orgId, licenses }: ProvisionTenantFormProp
           Deployment mode
         </p>
         <div className="grid gap-3 sm:grid-cols-2">
-          {DEPLOYMENT_MODES.map((mode) => (
+          {DEPLOYMENT_MODES.map((m) => (
             <label
-              key={mode.value}
+              key={m.value}
               className="flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-3 transition-colors"
               style={{
                 borderColor: 'var(--color-border-default)',
@@ -104,48 +101,51 @@ export function ProvisionTenantForm({ orgId, licenses }: ProvisionTenantFormProp
               <input
                 type="radio"
                 name="deploymentMode"
-                value={mode.value}
-                defaultChecked={mode.value === 'cloud:us-east'}
+                value={m.value}
+                checked={mode === m.value}
+                onChange={(e) => setMode(e.target.value)}
                 className="accent-[var(--color-knowledge)]"
               />
               <span
                 className="text-sm"
                 style={{ color: 'var(--color-text-primary)' }}
               >
-                {mode.label}
+                {m.label}
               </span>
             </label>
           ))}
         </div>
       </div>
 
-      {licenses.length > 0 ? (
+      {mode === 'self_hosted' ? (
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="licenseId"
             className="text-[11px] font-medium uppercase tracking-widest"
             style={{ color: 'var(--color-text-muted)' }}
           >
-            License (required for self-hosted / air-gap)
+            License ID (required)
           </label>
-          <select
+          <input
             id="licenseId"
             name="licenseId"
-            className="rounded-md border bg-transparent px-3 py-2 text-sm outline-none"
+            type="text"
+            placeholder="JWT jti from scripts/issue-license.ts"
+            className="rounded-md border bg-transparent px-3 py-2 font-mono text-xs outline-none"
             style={{
               borderColor: 'var(--color-border-default)',
               color: 'var(--color-text-primary)',
-              background: 'var(--color-bg-surface)',
             }}
-          >
-            <option value="">— none —</option>
-            {licenses.map((lic) => (
-              <option key={lic.id} value={lic.id}>
-                {lic.customerName} ({lic.mode}, {lic.status}, exp{' '}
-                {new Date(lic.expiresAt).toLocaleDateString()})
-              </option>
-            ))}
-          </select>
+          />
+          <p className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>
+            Issue a license first via the CLI in the przm-access repo:
+            <code
+              className="ml-1 rounded px-1 py-0.5 font-mono text-[10px]"
+              style={{ background: 'var(--color-bg-raised)' }}
+            >
+              pnpm tsx scripts/issue-license.ts
+            </code>
+          </p>
         </div>
       ) : null}
 

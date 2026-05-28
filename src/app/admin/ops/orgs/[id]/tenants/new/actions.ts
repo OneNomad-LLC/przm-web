@@ -8,7 +8,7 @@ export interface ProvisionTenantState {
   error: string | null
 }
 
-const DEPLOYMENT_MODES = ['cloud:us-east', 'cloud:eu', 'self_hosted', 'air_gap'] as const
+const DEPLOYMENT_MODES = ['cloud', 'self_hosted'] as const
 type DeploymentMode = (typeof DEPLOYMENT_MODES)[number]
 
 function isDeploymentMode(v: unknown): v is DeploymentMode {
@@ -30,12 +30,17 @@ export async function provisionTenantAction(
   if (!slug) return { error: 'Slug is required.' }
   if (!name) return { error: 'Name is required.' }
   if (!isDeploymentMode(deploymentMode)) return { error: 'Invalid deployment mode.' }
-  if ((deploymentMode === 'self_hosted' || deploymentMode === 'air_gap') && !licenseId) {
-    return { error: 'A license is required for self-hosted and air-gap deployments.' }
+  if (deploymentMode === 'self_hosted' && !licenseId) {
+    return { error: 'A license ID is required for self-hosted tenants. Issue one via the scripts/issue-license.ts CLI first.' }
   }
 
   try {
-    await accessAdmin.tenants.create(orgId, { slug, name, deploymentMode, licenseId })
+    await accessAdmin.tenants.create(orgId, {
+      slug,
+      name,
+      deploymentMode,
+      ...(licenseId ? { licenseId } : {}),
+    })
     redirect(`/admin/ops/orgs/${orgId}`)
   } catch (err) {
     return { error: err instanceof Error ? err.message : 'Unknown error' }

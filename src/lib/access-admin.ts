@@ -1,24 +1,18 @@
 /**
  * Typed HTTP client for the przm-access admin API.
  *
- * SERVER-SIDE ONLY. Never import from a client component.
- * The operator key is a secret; it must never reach the browser.
+ * Every method here is server-only and authenticated by the operator's
+ * `PRZM_ACCESS_ADMIN_KEY`. Treating this module as a thin contract
+ * mirror of the access service: each method maps 1:1 to a real route in
+ * `apps/service/src/http/admin/*`. If a method is here, the endpoint
+ * exists; otherwise it should not be here.
  *
- * Usage:
- *   import { accessAdmin } from '@/lib/access-admin'
- *   const org = await accessAdmin.orgs.get(orgId)
- *
- * This is a STUB. Integration logic ships in Task #09 (Stripe
- * integration) and Task #05 (Admin dashboard). The shapes defined
- * here are authoritative for Task #10's scaffolding; downstream
- * tasks fill in the method bodies.
- *
- * Auth: Bearer token in the Authorization header.
- * Base URL: PRZM_ACCESS_BASE_URL env var (e.g. https://access.przm.sh).
- * Key: PRZM_ACCESS_ADMIN_KEY env var.
+ *   const orgs = await accessAdmin.orgs.list()
+ *   const org  = await accessAdmin.orgs.get(orgId)
  */
-
 import 'server-only'
+
+import type { Role } from '@onenomad/przm-access'
 
 // ── Domain types (mirroring przm-access public contract) ─────────────
 
@@ -36,7 +30,7 @@ export interface AccessTenant {
   orgId: string
   slug: string
   name: string
-  deploymentMode: 'cloud' | 'self_hosted' | 'air_gap'
+  deploymentMode: 'cloud' | 'self_hosted'
   createdAt: string
 }
 
@@ -44,7 +38,6 @@ export interface AccessOrgWithTenants extends AccessOrg {
   tenants: {
     cloud: AccessTenant[]
     self_hosted: AccessTenant[]
-    air_gap: AccessTenant[]
   }
 }
 
@@ -52,7 +45,7 @@ export interface AccessMember {
   id: string
   userId: string
   tenantId: string
-  role: string
+  role: Role
   active: boolean
   createdAt: string
 }
@@ -95,72 +88,26 @@ export interface AccessAuditPage {
   nextCursor: string | null
 }
 
-export interface AccessUser {
-  id: string
-  email: string
-  name: string | null
-  orgId: string
-  role: 'owner' | 'admin' | 'member' | 'operator'
-  createdAt: string
-}
-
-// ── Operator-scoped types ─────────────────────────────────────────────
-
-export interface License {
-  id: string
-  orgId: string
-  customerName: string
-  mode: 'annual' | 'perpetual'
-  seatCap: number
-  tenantCap: number
-  issuedAt: string
-  expiresAt: string
-  status: 'active' | 'expired' | 'revoked'
-}
-
-export interface IssueLicenseInput {
-  orgId: string
-  mode: 'annual' | 'perpetual'
-  expiresAfterDays: number
-  seatCap: number
-  tenantCap: number
-  customerName: string
-}
-
-export interface IssueLicenseResult {
-  id: string
-  jwt: string
-  exp: string
-}
+/**
+ * Plans accepted by przm-access's create-org endpoint.
+ * Source of truth: VALID_PLANS in apps/service/src/http/admin/orgs-router.ts.
+ */
+export type AccessOrgPlanSlug = 'free' | 'solo' | 'team' | 'business'
 
 export interface ProvisionTenantInput {
-  orgId: string
   slug: string
   name: string
-  deploymentMode: 'cloud:us-east' | 'cloud:eu' | 'self_hosted' | 'air_gap'
+  ssoConnectionId?: string
+  deploymentMode?: 'cloud' | 'self_hosted'
   licenseId?: string
 }
 
 export interface CreateOrgInput {
   slug: string
   name: string
-  plan: string
-  primaryOwnerEmail: string
-}
-
-export interface AccessInvitation {
-  id: string
-  orgId: string
-  email: string
-  role: 'owner' | 'admin' | 'member'
-  expiresAt: string
-  token: string
-}
-
-export interface InvitationAcceptResult {
-  userId: string
-  orgId: string
-  membershipId: string
+  stripeCustomerId?: string
+  plan?: AccessOrgPlanSlug
+  seatCount?: number
 }
 
 // ── Client factory ────────────────────────────────────────────────────
@@ -213,34 +160,30 @@ export class AccessApiError extends Error {
 // ── Namespaced resource clients ───────────────────────────────────────
 
 const orgs = {
-  /**
-   * List all organizations.
-   * GET /admin/orgs
-   */
+  /** POST /admin/orgs */
+  create(input: CreateOrgInput): Promise<AccessOrg> {
+    return apiFetch<AccessOrg>('/admin/orgs', {
+      method: 'POST',
+      body: JSON.stringify(input),
+    })
+  },
+
+  /** GET /admin/orgs */
   list(): Promise<AccessOrg[]> {
     return apiFetch<AccessOrg[]>('/admin/orgs')
   },
 
-  /**
-   * Get a single organization by ID (with tenants by deployment mode).
-   * GET /admin/orgs/:id
-   */
+  /** GET /admin/orgs/:id */
   get(id: string): Promise<AccessOrgWithTenants> {
     return apiFetch<AccessOrgWithTenants>(`/admin/orgs/${id}`)
   },
 
-  /**
-   * Get active seat count for an org.
-   * GET /admin/orgs/:id/seats
-   */
+  /** GET /admin/orgs/:id/seats */
   seats(id: string): Promise<AccessSeatSummary> {
     return apiFetch<AccessSeatSummary>(`/admin/orgs/${id}/seats`)
   },
 
-  /**
-   * Toggle a user's active-seat status within an org.
-   * PATCH /admin/orgs/:id/seats/:userId
-   */
+  /** PATCH /admin/orgs/:id/seats/:userId */
   setSeatActive(
     orgId: string,
     userId: string,
@@ -252,10 +195,7 @@ const orgs = {
     )
   },
 
-  /**
-   * Paginated audit log for an org.
-   * GET /admin/orgs/:id/audit
-   */
+  /** GET /admin/orgs/:id/audit */
   audit(
     id: string,
     params?: { since?: string; cursor?: string; limit?: number },
@@ -267,26 +207,31 @@ const orgs = {
     const suffix = qs.toString() ? `?${qs.toString()}` : ''
     return apiFetch<AccessAuditPage>(`/admin/orgs/${id}/audit${suffix}`)
   },
+
+  /** POST /admin/orgs/:id/users — create an app_user under the org */
+  createUser(
+    orgId: string,
+    payload: { email?: string; name?: string; ssoSubject?: string },
+  ): Promise<{ id: string; email: string | null; name: string | null }> {
+    return apiFetch(`/admin/orgs/${orgId}/users`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    })
+  },
 }
 
 const members = {
-  /**
-   * List members for a tenant.
-   * GET /admin/tenants/:tenantId/members
-   */
+  /** GET /admin/tenants/:tenantId/members */
   list(tenantId: string): Promise<{ members: AccessMemberWithUser[] }> {
     return apiFetch<{ members: AccessMemberWithUser[] }>(
       `/admin/tenants/${tenantId}/members`,
     )
   },
 
-  /**
-   * Add a member to a tenant by email or userId.
-   * POST /admin/tenants/:tenantId/members
-   */
+  /** POST /admin/tenants/:tenantId/members */
   add(
     tenantId: string,
-    payload: { email?: string; userId?: string; role: string },
+    payload: { email?: string; userId?: string; role: Role },
   ): Promise<AccessMember> {
     return apiFetch<AccessMember>(`/admin/tenants/${tenantId}/members`, {
       method: 'POST',
@@ -294,14 +239,11 @@ const members = {
     })
   },
 
-  /**
-   * Update a member's role.
-   * PATCH /admin/tenants/:tenantId/members/:userId
-   */
+  /** PATCH /admin/tenants/:tenantId/members/:userId */
   setRole(
     tenantId: string,
     userId: string,
-    role: string,
+    role: Role,
   ): Promise<AccessMember> {
     return apiFetch<AccessMember>(
       `/admin/tenants/${tenantId}/members/${userId}`,
@@ -311,20 +253,14 @@ const members = {
 }
 
 const projects = {
-  /**
-   * List projects for a tenant.
-   * GET /admin/tenants/:tenantId/projects
-   */
+  /** GET /admin/tenants/:tenantId/projects */
   list(tenantId: string): Promise<{ projects: AccessProject[] }> {
     return apiFetch<{ projects: AccessProject[] }>(
       `/admin/tenants/${tenantId}/projects`,
     )
   },
 
-  /**
-   * Create a project under a tenant.
-   * POST /admin/tenants/:tenantId/projects
-   */
+  /** POST /admin/tenants/:tenantId/projects */
   create(
     tenantId: string,
     payload: { slug: string; name: string },
@@ -336,143 +272,9 @@ const projects = {
   },
 }
 
-const users = {
-  /**
-   * List all users in an organization.
-   * GET /admin/orgs/:orgId/users
-   */
-  listForOrg(orgId: string): Promise<AccessUser[]> {
-    return apiFetch<AccessUser[]>(`/admin/orgs/${orgId}/users`)
-  },
-
-  /**
-   * Get a single user by their przm-access ID.
-   * GET /admin/users/:id
-   */
-  get(id: string): Promise<AccessUser> {
-    return apiFetch<AccessUser>(`/admin/users/${id}`)
-  },
-
-  /**
-   * Set a user's global role (owner | admin | member | operator).
-   * PATCH /admin/users/:id/role
-   */
-  setRole(userId: string, role: AccessUser['role']): Promise<AccessUser> {
-    return apiFetch<AccessUser>(`/admin/users/${userId}/role`, {
-      method: 'PATCH',
-      body: JSON.stringify({ role }),
-    })
-  },
-}
-
-const invitations = {
-  /**
-   * Create an invitation for a user to join an org.
-   * POST /admin/orgs/:orgId/invitations
-   */
-  create(
-    orgId: string,
-    payload: { email: string; role: 'owner' | 'admin' | 'member' },
-  ): Promise<AccessInvitation> {
-    return apiFetch<AccessInvitation>(`/admin/orgs/${orgId}/invitations`, {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    })
-  },
-
-  /**
-   * Validate an invitation token and return the invitation details.
-   * GET /admin/invitations/:token
-   */
-  get(token: string): Promise<AccessInvitation> {
-    return apiFetch<AccessInvitation>(`/admin/invitations/${token}`)
-  },
-
-  /**
-   * Accept an invitation after the user has signed in via better-auth.
-   * POST /admin/invitations/:token/accept
-   *
-   * The webUserId is the better-auth user.id — stored as accessUserId
-   * on the local users table once przm-access confirms membership.
-   */
-  accept(
-    token: string,
-    payload: { webUserId: string },
-  ): Promise<InvitationAcceptResult> {
-    return apiFetch<InvitationAcceptResult>(`/admin/invitations/${token}/accept`, {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    })
-  },
-}
-
-// ── Operator-level namespaces ─────────────────────────────────────────
-
-const licenses = {
-  /**
-   * Issue a new license for an org.
-   * POST /admin/licenses
-   */
-  issue(input: IssueLicenseInput): Promise<IssueLicenseResult> {
-    return apiFetch<IssueLicenseResult>('/admin/licenses', {
-      method: 'POST',
-      body: JSON.stringify(input),
-    })
-  },
-
-  /**
-   * List licenses, optionally filtered by status and/or org.
-   * GET /admin/licenses
-   */
-  list(filter?: { status?: 'active' | 'expired' | 'all'; orgId?: string }): Promise<{ licenses: License[] }> {
-    const qs = new URLSearchParams()
-    if (filter?.status) qs.set('status', filter.status)
-    if (filter?.orgId) qs.set('orgId', filter.orgId)
-    return apiFetch<{ licenses: License[] }>(`/admin/licenses${qs.size ? `?${qs}` : ''}`)
-  },
-}
-
-const audit = {
-  /**
-   * Cross-org audit log. orgId is OPTIONAL — omit for system-wide view.
-   * GET /admin/audit
-   */
-  list(filter?: {
-    since?: string
-    cursor?: string
-    limit?: number
-    action?: string
-    orgId?: string
-  }): Promise<AccessAuditPage> {
-    const qs = new URLSearchParams()
-    if (filter?.since) qs.set('since', filter.since)
-    if (filter?.cursor) qs.set('cursor', filter.cursor)
-    if (filter?.limit !== undefined) qs.set('limit', String(filter.limit))
-    if (filter?.action) qs.set('action', filter.action)
-    if (filter?.orgId) qs.set('orgId', filter.orgId)
-    return apiFetch<AccessAuditPage>(`/admin/audit${qs.size ? `?${qs}` : ''}`)
-  },
-}
-
-const orgsOperator = {
-  /**
-   * Create a new organization.
-   * POST /admin/orgs
-   */
-  create(input: CreateOrgInput): Promise<AccessOrg> {
-    return apiFetch<AccessOrg>('/admin/orgs', {
-      method: 'POST',
-      body: JSON.stringify(input),
-    })
-  },
-}
-
 const tenants = {
-  /**
-   * Provision a new tenant under an org.
-   * POST /admin/orgs/:orgId/tenants
-   */
-  create(orgId: string, input: Omit<ProvisionTenantInput, 'orgId'>): Promise<AccessTenant> {
+  /** POST /admin/orgs/:orgId/tenants */
+  create(orgId: string, input: ProvisionTenantInput): Promise<AccessTenant> {
     return apiFetch<AccessTenant>(`/admin/orgs/${orgId}/tenants`, {
       method: 'POST',
       body: JSON.stringify(input),
@@ -480,11 +282,11 @@ const tenants = {
   },
 }
 
-/**
- * The single export. All methods are server-side only; each call
- * throws `AccessApiError` on non-2xx responses.
- */
-// ── Billing-related types ─────────────────────────────────────────────
+// ── Stripe bridge surface (Task #11: server endpoints missing) ────────
+// The endpoints below DO NOT EXIST on przm-access. Every call from
+// `src/lib/billing/bridge.ts` 404s silently. Kept here so the bridge
+// still compiles; Task #11 fixes by adding /admin/orgs/:id/plan and
+// /admin/orgs/:id/billing_status to apps/service/src/http/admin/orgs-router.ts.
 
 export interface AccessOrgPlan {
   plan: string
@@ -498,14 +300,8 @@ export interface AccessOrgBillingStatus {
   updatedAt: string
 }
 
-// ── Extend orgs namespace with billing endpoints ──────────────────────
-
 const orgsBilling = {
-  /**
-   * Set the org's plan + seat count after a Stripe subscription event.
-   * POST /admin/orgs/:id/plan (subscription.created)
-   * PATCH /admin/orgs/:id/plan (subscription.updated / deleted)
-   */
+  /** @deprecated Task #11 — endpoint does not exist server-side; call 404s. */
   updatePlan(
     orgId: string,
     payload: {
@@ -522,10 +318,7 @@ const orgsBilling = {
     })
   },
 
-  /**
-   * Update past_due / payment failure status.
-   * PATCH /admin/orgs/:id/billing_status
-   */
+  /** @deprecated Task #11 — endpoint does not exist server-side; call 404s. */
   updateBillingStatus(
     orgId: string,
     payload: { pastDue: boolean },
@@ -537,13 +330,18 @@ const orgsBilling = {
   },
 }
 
+/**
+ * The single export. All methods are server-side only; each call
+ * throws `AccessApiError` on non-2xx responses.
+ *
+ * Each method points to a real route in przm-access. Adding a method
+ * here that has no server endpoint is a bug — the call will 404 at
+ * runtime. See Task #11 (Stripe bridge orgs.updatePlan / .updateBillingStatus
+ * regression for an example of how this drift happens).
+ */
 export const accessAdmin = {
-  orgs: { ...orgs, ...orgsBilling, ...orgsOperator },
+  orgs: { ...orgs, ...orgsBilling },
   members,
   projects,
-  users,
-  invitations,
-  licenses,
-  audit,
   tenants,
 }

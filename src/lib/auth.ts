@@ -4,6 +4,7 @@ import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { nextCookies } from 'better-auth/next-js'
 import { magicLink } from 'better-auth/plugins'
+import { admin } from 'better-auth/plugins/admin'
 import { db } from '@/lib/db/index'
 import { sendMagicLink } from '@/lib/email/magic-link'
 
@@ -52,6 +53,12 @@ export const auth = betterAuth({
   },
   plugins: [
     nextCookies(),
+    // RBAC for the operator console. Only role='admin' (Matt) can
+    // reach /admin/ops/*. Set in the DB manually; not granted by sign-up.
+    admin({
+      defaultRole: 'user',
+      adminRoles: ['admin'],
+    }),
     magicLink({
       // 10-minute TTL. Matches the user-facing "expires in 10 minutes"
       // copy on /auth/login confirmation and in the magic-link email.

@@ -1,9 +1,9 @@
 /**
  * Org detail — /admin/ops/orgs/[id]
  *
- * Shows full org info: tenants by deployment mode, members, billing
- * state, licenses, recent audit. Errors per-section so a missing
- * backend endpoint doesn't blank the whole page.
+ * Tenants by deployment mode, members, recent audit. Each section
+ * fetches independently so a single failed endpoint doesn't blank
+ * the whole page.
  */
 
 import type { Metadata } from 'next'
@@ -11,13 +11,9 @@ import Link from 'next/link'
 import { requireOperator } from '@/lib/operator'
 import {
   accessAdmin,
-  type AccessOrgWithTenants,
   type AccessTenant,
   type AccessMemberWithUser,
-  type AccessSeatSummary,
   type AccessAuditEvent,
-  type License,
-  AccessApiError,
 } from '@/lib/access-admin'
 
 export const dynamic = 'force-dynamic'
@@ -41,11 +37,9 @@ function actionColor(action: string): string {
 function TenantGroup({
   label,
   tenants,
-  orgId,
 }: {
   label: string
   tenants: AccessTenant[]
-  orgId: string
 }) {
   if (tenants.length === 0) return null
   return (
@@ -97,14 +91,11 @@ export default async function OrgDetailPage({ params }: PageProps) {
   await requireOperator()
   const { id } = await params
 
-  // Fire all fetches concurrently; handle each independently.
-  const [orgRes, seatsRes, membersRes, auditRes, licensesRes] = await Promise.allSettled([
+  // Fire org + seats + audit concurrently; members needs a tenant id from the org.
+  const [orgRes, seatsRes, auditRes] = await Promise.allSettled([
     accessAdmin.orgs.get(id),
     accessAdmin.orgs.seats(id),
-    // Members: we need a tenant id, which we get from the org. Defer this.
-    Promise.resolve(null),
     accessAdmin.orgs.audit(id, { limit: 20 }),
-    accessAdmin.licenses.list({ orgId: id }),
   ])
 
   const org = orgRes.status === 'fulfilled' ? orgRes.value : null
@@ -118,7 +109,8 @@ export default async function OrgDetailPage({ params }: PageProps) {
   let members: AccessMemberWithUser[] = []
   let membersError: string | null = null
   if (org) {
-    const primaryTenantId = org.tenants.cloud[0]?.id ?? org.tenants.self_hosted[0]?.id ?? org.tenants.air_gap[0]?.id
+    const primaryTenantId =
+      org.tenants.cloud[0]?.id ?? org.tenants.self_hosted[0]?.id
     if (primaryTenantId) {
       try {
         const res = await accessAdmin.members.list(primaryTenantId)
@@ -134,17 +126,6 @@ export default async function OrgDetailPage({ params }: PageProps) {
   const auditError =
     auditRes.status === 'rejected'
       ? (auditRes.reason instanceof Error ? auditRes.reason.message : String(auditRes.reason))
-      : null
-
-  const licenses: License[] =
-    licensesRes.status === 'fulfilled' ? licensesRes.value.licenses : []
-  const licensesError =
-    licensesRes.status === 'rejected'
-      ? (licensesRes.reason instanceof AccessApiError && licensesRes.reason.status === 404
-          ? null // endpoint not yet live — show empty silently
-          : licensesRes.reason instanceof Error
-            ? licensesRes.reason.message
-            : String(licensesRes.reason))
       : null
 
   if (orgError) {
@@ -175,7 +156,6 @@ export default async function OrgDetailPage({ params }: PageProps) {
 
   const cloudTenants = org.tenants.cloud ?? []
   const selfHostedTenants = org.tenants.self_hosted ?? []
-  const airGapTenants = org.tenants.air_gap ?? []
 
   return (
     <div>
@@ -237,16 +217,6 @@ export default async function OrgDetailPage({ params }: PageProps) {
           >
             + New tenant
           </Link>
-          <Link
-            href={`/admin/ops/orgs/${id}/license/new`}
-            className="rounded-md border px-3 py-1.5 text-sm font-medium transition-colors"
-            style={{
-              borderColor: 'var(--color-bench)',
-              color: 'var(--color-bench)',
-            }}
-          >
-            + New license
-          </Link>
         </div>
       </div>
 
@@ -265,15 +235,14 @@ export default async function OrgDetailPage({ params }: PageProps) {
           >
             Tenants
           </h2>
-          {cloudTenants.length === 0 && selfHostedTenants.length === 0 && airGapTenants.length === 0 ? (
+          {cloudTenants.length === 0 && selfHostedTenants.length === 0 ? (
             <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
               No tenants provisioned yet.
             </p>
           ) : (
             <>
-              <TenantGroup label="Cloud" tenants={cloudTenants} orgId={id} />
-              <TenantGroup label="Self-hosted" tenants={selfHostedTenants} orgId={id} />
-              <TenantGroup label="Air-gap" tenants={airGapTenants} orgId={id} />
+              <TenantGroup label="Cloud" tenants={cloudTenants} />
+              <TenantGroup label="Self-hosted" tenants={selfHostedTenants} />
             </>
           )}
         </section>
@@ -361,93 +330,6 @@ export default async function OrgDetailPage({ params }: PageProps) {
                 </tbody>
               </table>
             </div>
-          )}
-        </section>
-
-        {/* Licenses */}
-        <section
-          className="rounded-xl border p-5"
-          style={{
-            borderColor: 'var(--color-border-default)',
-            background: 'var(--color-bg-surface)',
-          }}
-        >
-          <div className="mb-4 flex items-center justify-between">
-            <h2
-              className="text-sm font-semibold"
-              style={{ color: 'var(--color-text-primary)' }}
-            >
-              Licenses
-            </h2>
-            <Link
-              href={`/admin/ops/orgs/${id}/license/new`}
-              className="text-xs"
-              style={{ color: 'var(--color-bench)' }}
-            >
-              Issue license
-            </Link>
-          </div>
-          {licensesError ? (
-            <p className="text-sm" style={{ color: 'var(--color-red)' }}>
-              {licensesError}
-            </p>
-          ) : licenses.length === 0 ? (
-            <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
-              No licenses issued.
-            </p>
-          ) : (
-            <ul className="space-y-2">
-              {licenses.map((lic) => (
-                <li
-                  key={lic.id}
-                  className="flex flex-wrap items-center justify-between gap-2 rounded-lg border px-4 py-2.5"
-                  style={{
-                    borderColor: 'var(--color-border-subtle)',
-                    background: 'var(--color-bg-raised)',
-                  }}
-                >
-                  <div>
-                    <span
-                      className="font-mono text-xs"
-                      style={{ color: 'var(--color-text-primary)' }}
-                    >
-                      {lic.customerName}
-                    </span>
-                    <span
-                      className="ml-3 font-mono text-[10px] uppercase tracking-widest"
-                      style={{ color: 'var(--color-text-muted)' }}
-                    >
-                      {lic.mode}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span
-                      className="rounded px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-widest"
-                      style={{
-                        background:
-                          lic.status === 'active'
-                            ? 'color-mix(in srgb, var(--color-knowledge) 15%, transparent)'
-                            : 'var(--color-bg-raised)',
-                        color:
-                          lic.status === 'active'
-                            ? 'var(--color-knowledge)'
-                            : lic.status === 'revoked'
-                              ? 'var(--color-red)'
-                              : 'var(--color-text-disabled)',
-                      }}
-                    >
-                      {lic.status}
-                    </span>
-                    <span
-                      className="text-xs"
-                      style={{ color: 'var(--color-text-disabled)' }}
-                    >
-                      exp {new Date(lic.expiresAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                </li>
-              ))}
-            </ul>
           )}
         </section>
 

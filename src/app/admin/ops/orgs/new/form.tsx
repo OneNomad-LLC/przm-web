@@ -4,13 +4,10 @@ import { useActionState } from 'react'
 import { createOrgAction, type CreateOrgState } from './actions'
 
 const PLANS = [
+  { value: 'free', label: 'Free' },
   { value: 'solo', label: 'Solo' },
   { value: 'team', label: 'Team' },
   { value: 'business', label: 'Business' },
-  { value: 'business_pilot', label: 'Business Pilot' },
-  { value: 'self_hosted_departmental', label: 'Self-Hosted Departmental' },
-  { value: 'division', label: 'Division' },
-  { value: 'enterprise', label: 'Enterprise' },
 ]
 
 const INITIAL: CreateOrgState = { error: null }
@@ -107,18 +104,18 @@ export function CreateOrgForm() {
 
         <div className="flex flex-col gap-1.5">
           <label
-            htmlFor="primaryOwnerEmail"
+            htmlFor="seatCount"
             className="text-[11px] font-medium uppercase tracking-widest"
             style={{ color: 'var(--color-text-muted)' }}
           >
-            Primary seat owner email
+            Seat count (optional)
           </label>
           <input
-            id="primaryOwnerEmail"
-            name="primaryOwnerEmail"
-            type="email"
-            required
-            placeholder="owner@example.com"
+            id="seatCount"
+            name="seatCount"
+            type="number"
+            min={1}
+            placeholder="1"
             className="rounded-md border bg-transparent px-3 py-2 text-sm outline-none"
             style={{
               borderColor: 'var(--color-border-default)',

@@ -1,14 +1,13 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { isRole, type Role } from '@onenomad/przm-access'
 import { accessAdmin, AccessApiError } from '@/lib/access-admin'
 import { getAccessContext } from '@/lib/access-context'
 import { requireUser } from '@/lib/session'
 
-const VALID_ROLES = new Set(['viewer', 'editor', 'admin', 'owner'])
-
-function validateRole(role: unknown): string {
-  if (typeof role !== 'string' || !VALID_ROLES.has(role)) {
+function validateRole(role: unknown): Role {
+  if (!isRole(role)) {
     throw new Error('Invalid role')
   }
   return role
@@ -32,7 +31,7 @@ export async function inviteMember(
   if (typeof email !== 'string' || !email.includes('@'))
     return 'A valid email is required.'
 
-  let validRole: string
+  let validRole: Role
   try {
     validRole = validateRole(role)
   } catch {
@@ -64,8 +63,8 @@ export async function setMemberRole(
 ): Promise<{ error?: string }> {
   await requireUser()
   try {
-    validateRole(role)
-    await accessAdmin.members.setRole(tenantId, userId, role)
+    const validRole = validateRole(role)
+    await accessAdmin.members.setRole(tenantId, userId, validRole)
   } catch (err) {
     return {
       error:
