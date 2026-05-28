@@ -14,25 +14,38 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
     "@vercel/analytics": "^2.0.1",
+    "better-auth": "^1.0.0",
+    "drizzle-orm": "^0.45.2",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.511.0",
     "marked": "^15.0.12",
     "next": "15.5.18",
+    "pg": "^8.13.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "resend": "^6.12.3",
-    "svix": "^1.93.0"
+    "resend": "^4.0.0",
+    "server-only": "^0.0.1",
+    "stripe": "^17.0.0",
+    "svix": "^1.93.0",
+    "zod": "^3.23.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.7",
     "@types/node": "^22.0.0",
+    "@types/pg": "^8.11.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "dotenv": "^16.4.0",
+    "drizzle-kit": "^0.31.4",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.7",
     "typescript": "^5.7.0"
