@@ -36,7 +36,7 @@ export interface AccessTenant {
   orgId: string
   slug: string
   name: string
-  deploymentMode: 'cloud' | 'self_hosted'
+  deploymentMode: 'cloud' | 'self_hosted' | 'air_gap'
   createdAt: string
 }
 
@@ -44,6 +44,7 @@ export interface AccessOrgWithTenants extends AccessOrg {
   tenants: {
     cloud: AccessTenant[]
     self_hosted: AccessTenant[]
+    air_gap: AccessTenant[]
   }
 }
 
@@ -99,8 +100,52 @@ export interface AccessUser {
   email: string
   name: string | null
   orgId: string
-  role: 'owner' | 'admin' | 'member'
+  role: 'owner' | 'admin' | 'member' | 'operator'
   createdAt: string
+}
+
+// ── Operator-scoped types ─────────────────────────────────────────────
+
+export interface License {
+  id: string
+  orgId: string
+  customerName: string
+  mode: 'annual' | 'perpetual'
+  seatCap: number
+  tenantCap: number
+  issuedAt: string
+  expiresAt: string
+  status: 'active' | 'expired' | 'revoked'
+}
+
+export interface IssueLicenseInput {
+  orgId: string
+  mode: 'annual' | 'perpetual'
+  expiresAfterDays: number
+  seatCap: number
+  tenantCap: number
+  customerName: string
+}
+
+export interface IssueLicenseResult {
+  id: string
+  jwt: string
+  exp: string
+}
+
+export interface ProvisionTenantInput {
+  orgId: string
+  slug: string
+  name: string
+  deploymentMode: 'cloud:us-east' | 'cloud:eu' | 'self_hosted' | 'air_gap'
+  licenseId?: string
+}
+
+export interface CreateOrgInput {
+  slug: string
+  name: string
+  plan: string
+  primaryOwnerEmail: string
 }
 
 export interface AccessInvitation {
@@ -307,6 +352,17 @@ const users = {
   get(id: string): Promise<AccessUser> {
     return apiFetch<AccessUser>(`/admin/users/${id}`)
   },
+
+  /**
+   * Set a user's global role (owner | admin | member | operator).
+   * PATCH /admin/users/:id/role
+   */
+  setRole(userId: string, role: AccessUser['role']): Promise<AccessUser> {
+    return apiFetch<AccessUser>(`/admin/users/${userId}/role`, {
+      method: 'PATCH',
+      body: JSON.stringify({ role }),
+    })
+  },
 }
 
 const invitations = {
@@ -346,6 +402,80 @@ const invitations = {
     return apiFetch<InvitationAcceptResult>(`/admin/invitations/${token}/accept`, {
       method: 'POST',
       body: JSON.stringify(payload),
+    })
+  },
+}
+
+// ── Operator-level namespaces ─────────────────────────────────────────
+
+const licenses = {
+  /**
+   * Issue a new license for an org.
+   * POST /admin/licenses
+   */
+  issue(input: IssueLicenseInput): Promise<IssueLicenseResult> {
+    return apiFetch<IssueLicenseResult>('/admin/licenses', {
+      method: 'POST',
+      body: JSON.stringify(input),
+    })
+  },
+
+  /**
+   * List licenses, optionally filtered by status and/or org.
+   * GET /admin/licenses
+   */
+  list(filter?: { status?: 'active' | 'expired' | 'all'; orgId?: string }): Promise<{ licenses: License[] }> {
+    const qs = new URLSearchParams()
+    if (filter?.status) qs.set('status', filter.status)
+    if (filter?.orgId) qs.set('orgId', filter.orgId)
+    return apiFetch<{ licenses: License[] }>(`/admin/licenses${qs.size ? `?${qs}` : ''}`)
+  },
+}
+
+const audit = {
+  /**
+   * Cross-org audit log. orgId is OPTIONAL — omit for system-wide view.
+   * GET /admin/audit
+   */
+  list(filter?: {
+    since?: string
+    cursor?: string
+    limit?: number
+    action?: string
+    orgId?: string
+  }): Promise<AccessAuditPage> {
+    const qs = new URLSearchParams()
+    if (filter?.since) qs.set('since', filter.since)
+    if (filter?.cursor) qs.set('cursor', filter.cursor)
+    if (filter?.limit !== undefined) qs.set('limit', String(filter.limit))
+    if (filter?.action) qs.set('action', filter.action)
+    if (filter?.orgId) qs.set('orgId', filter.orgId)
+    return apiFetch<AccessAuditPage>(`/admin/audit${qs.size ? `?${qs}` : ''}`)
+  },
+}
+
+const orgsOperator = {
+  /**
+   * Create a new organization.
+   * POST /admin/orgs
+   */
+  create(input: CreateOrgInput): Promise<AccessOrg> {
+    return apiFetch<AccessOrg>('/admin/orgs', {
+      method: 'POST',
+      body: JSON.stringify(input),
+    })
+  },
+}
+
+const tenants = {
+  /**
+   * Provision a new tenant under an org.
+   * POST /admin/orgs/:orgId/tenants
+   */
+  create(orgId: string, input: Omit<ProvisionTenantInput, 'orgId'>): Promise<AccessTenant> {
+    return apiFetch<AccessTenant>(`/admin/orgs/${orgId}/tenants`, {
+      method: 'POST',
+      body: JSON.stringify(input),
     })
   },
 }
@@ -408,9 +538,12 @@ const orgsBilling = {
 }
 
 export const accessAdmin = {
-  orgs: { ...orgs, ...orgsBilling },
+  orgs: { ...orgs, ...orgsBilling, ...orgsOperator },
   members,
   projects,
   users,
   invitations,
+  licenses,
+  audit,
+  tenants,
 }
